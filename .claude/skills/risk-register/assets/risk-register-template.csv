@@ -1,0 +1,6 @@
+id,description,probability,impact,owner,response,status
+R001,Identity-provider integration slips past the agreed date,0.4,120000,Sam Lee,Mitigate: start integration spike in week 1,Open
+R002,Undocumented requirements expand portal scope,0.6,40000,Dana Okoro,Mitigate: lock scope baseline and change control,Open
+R003,Lead engineer leaves mid-project,0.15,80000,Sam Lee,Mitigate: pair programming and documentation,Open
+R004,Cloud hosting costs exceed the budget,0.5,15000,Finance,Accept: monitor monthly and re-forecast,Open
+R005,Minor UI rework after usability testing,0.7,4000,Design,Accept: buffer one sprint for polish,Open
