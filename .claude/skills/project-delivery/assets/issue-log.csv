@@ -1,0 +1,9 @@
+id,type,description,owner,priority,status,due,raised
+I001,issue,Identity-provider sandbox is down and blocking auth integration testing,Carla Diaz,High,Open,2026-06-19,2026-06-12
+A001,action,Confirm auth go-live date with the identity-provider vendor,Ben Okoro,High,Open,2026-06-16,2026-06-12
+D001,decision,Launch with email login only; SSO deferred to phase 2,Ava Chen,Medium,Closed,2026-06-10,2026-06-09
+I002,issue,Page-load time on the dashboard exceeds the 2s quality gate,Devin Patel,Medium,In Progress,2026-06-24,2026-06-13
+A002,action,Draft the customer migration comms for the support team to review,Ava Chen,Medium,Open,2026-06-20,2026-06-13
+D002,decision,Adopt a weekly steering cadence through launch,Ava Chen,Low,Closed,2026-06-08,2026-06-08
+I003,issue,QA environment data is stale and producing false test failures,Frank Muller,Low,Open,2026-06-27,2026-06-14
+A003,action,Schedule the UX review of the new account-settings flow,Elena Rossi,Low,Open,2026-06-23,2026-06-14
