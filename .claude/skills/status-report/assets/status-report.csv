@@ -1,0 +1,11 @@
+metric,value,rag
+Overall status,Amber,A
+Schedule (SPI),0.88,A
+Cost (CPI),1.00,G
+Scope delivered,MVP on track,G
+Quality (open defects),3 within threshold,G
+Milestones met on time,4 of 5,A
+Budget spent,62%,G
+Identity-provider integration,60% complete,A
+Open high risks,2,A
+Decisions outstanding,1,A

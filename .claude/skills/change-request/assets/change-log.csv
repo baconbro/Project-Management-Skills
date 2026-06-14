@@ -1,0 +1,7 @@
+id,description,scope_impact,cost_impact,schedule_impact
+CR001,Add single sign-on via corporate identity provider,4,4,5
+CR002,Support dark mode in the self-service portal UI,2,1,2
+CR003,Add live-chat handoff to a support agent,5,4,4
+CR004,Change ticket export format from CSV to PDF,1,1,1
+CR005,Add multi-language support (English and French),4,3,3
+CR006,Tighten password policy to meet new security standard,2,2,1

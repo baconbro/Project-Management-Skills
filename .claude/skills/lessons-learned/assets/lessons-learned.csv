@@ -1,0 +1,8 @@
+id,category,what_happened,impact,recommendation,owner,status
+LL001,planning,Vendor onboarding for the identity provider had no named owner; sandbox access was requested late and delayed integration,High,Add a vendor/third-party onboarding workstream with a named owner to the standard project plan,PMO Lead,open
+LL002,communication,Weekly status went amber for two weeks before the sponsor was told the launch date was at risk,High,Adopt the RAG escalation rule: report amber the moment a milestone is threatened,Project Manager,in-progress
+LL003,technical,Reusable API design from a prior project cut build time for the ticket service significantly,Medium,Promote the shared API template into the engineering standards library,Tech Lead,done
+LL004,process,UAT had no dedicated test environment so testing competed with development,Medium,Provision a separate UAT environment in the plan before the build phase,QA Lead,open
+LL005,people,Daily stand-ups drifted into problem-solving and ran over 30 minutes,Low,Timebox stand-ups to 15 minutes and move problem-solving to follow-up sessions,Scrum Master,done
+LL006,scope,Early agreement on an explicit out-of-scope list prevented several late scope disputes,Medium,Keep the explicit out-of-scope list as a required charter element,Project Manager,done
+LL007,quality,Support-agent training was planned too late and risked the go-live,Medium,Schedule end-user training to finish one week before launch in the plan,Support Lead,open

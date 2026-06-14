@@ -1,0 +1,7 @@
+id,action,owner,due,status
+AI001,Confirm identity-provider sandbox access with the vendor,Tech Lead,2026-06-18,in-progress
+AI002,Draft recovery plan to add an integration engineer,PM,2026-06-17,open
+AI003,Circulate UAT entry criteria to the test team,QA Lead,2026-06-19,open
+AI004,Update the change log with the SSO decision (CR001),PM,2026-06-16,done
+AI005,Book steering committee slot to approve added budget,PM,2026-06-20,open
+AI006,Prepare support-agent training schedule for review,Support Lead,2026-06-23,blocked
