@@ -1,0 +1,9 @@
+id,name,role,power,interest,current_engagement,desired_engagement,strategy
+S01,Dana Okoye,VP Customer Support (Sponsor),H,H,Supportive,Leading,"Manage Closely: weekly 1:1, co-own outcomes, no surprises"
+S02,Marcus Bell,Head of Security & Compliance,H,L,Neutral,Supportive,"Keep Satisfied: early threat review, sign-off gate, concise updates"
+S03,Priya Shah,Call-Centre Operations Lead,M,H,Resistant,Supportive,"Keep Informed: involve in design, address job-impact fears, pilot with her team"
+S04,Helios Beta Customers,External end users,L,H,Neutral,Supportive,"Keep Informed: beta programme, feedback loop, release notes"
+S05,IdentityCo,SSO/identity vendor,M,M,Neutral,Supportive,"Manage Closely on integration: shared milestones, named contact, escalation path"
+S06,Finance Controller,Budget owner,H,L,Unaware,Neutral,"Keep Satisfied: monthly cost summary, flag variances early"
+S07,Web Platform Team,Internal dependency,M,M,Neutral,Supportive,"Keep Informed: shared roadmap, dependency tracking"
+S08,Legal/Privacy Officer,Data-privacy approver,M,L,Unaware,Neutral,"Keep Satisfied: DPIA review, contact before any data-flow change"

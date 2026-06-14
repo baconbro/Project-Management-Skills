@@ -123,7 +123,10 @@ def lint(skills_dir: str):
                 warnings.append(f"{tag} description looks short ({len(desc)} chars)")
             if "use when" not in desc.lower():
                 warnings.append(f"{tag} description has no 'use when' cue")
-            if re.search(r"\b(I |I'|you can|you should)\b", desc):
+            # Ignore quoted user trigger phrases (e.g. "where do I start") before the
+            # first/second-person check, so they don't cause false positives.
+            desc_unquoted = re.sub(r'"[^"]*"', "", desc)
+            if re.search(r"\b(I am|I can|I will|I'|you can|you should|you will)\b", desc_unquoted):
                 warnings.append(f"{tag} description may not be third person")
         # 4. related reciprocity
         for rel in fm["related"]:

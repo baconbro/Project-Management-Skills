@@ -1,0 +1,8 @@
+id,name,duration,predecessors
+A,Requirements sign-off,3,
+B,Backend & API build,4,A
+C,Portal UI build,2,A
+D,Integration with identity provider,5,B
+E,Content & knowledge base,3,C
+F,System & UAT testing,4,D E
+G,Production release,2,F

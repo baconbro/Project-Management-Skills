@@ -1,0 +1,11 @@
+audience,what,channel,frequency,owner,format
+Sponsor (VP Support),"RAG status, key risks, decisions needed",Steering meeting + 1-page summary,Bi-weekly,Project Manager,Slide + verbal
+Steering committee,"Milestones, budget vs baseline, escalations",Governance review,Monthly,Project Manager,Deck
+Finance Controller,"Cost performance (CPI/SPI), forecast vs budget",Email digest,Monthly,Project Manager,EVM summary table
+Delivery team,"Plan for the day, blockers, dependencies",Standup,Daily,Scrum Master / Lead,Verbal + board
+Delivery team,"Sprint goal, demo, retro actions",Sprint review + retro,Each sprint (2 wks),Scrum Master,Live demo + notes
+Security & Compliance,"Threat-model status, sign-off items",Review meeting,At each gate,Security Lead,Checklist + sign-off
+IdentityCo (vendor),"Integration milestones, blockers, escalations",Joint sync + shared tracker,Weekly,Integration Lead,Tracker + call
+Call-centre agents,"What changes for them, training, go-live timing",Briefing + intranet notice,At each release,Change Lead,Plain-language note
+Beta customers,"New features, how to use them, feedback ask",Release notes + in-app notice,At each release,Product Owner,Email + in-app
+All stakeholders,"Current status, upcoming milestones",Dashboard (pull),Always-on,Project Manager,Live dashboard

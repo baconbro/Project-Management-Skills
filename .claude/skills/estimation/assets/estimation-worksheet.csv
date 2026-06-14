@@ -1,0 +1,7 @@
+id,task,optimistic,most_likely,pessimistic
+T1,Requirements & user research,5,8,17
+T2,UX/UI design,4,6,14
+T3,Account & authentication module,8,12,28
+T4,Self-service ticketing module,10,15,32
+T5,System & integration testing,6,9,18
+T6,User acceptance & release,3,5,13
