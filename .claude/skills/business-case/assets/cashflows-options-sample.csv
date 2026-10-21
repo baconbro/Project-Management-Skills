@@ -1,0 +1,25 @@
+option,period,cashflow,note
+Do nothing,0,0,Sample Helios options: do-nothing is the baseline so its incremental cashflow is zero by definition
+Do nothing,1,0,Ticket handling cost keeps rising but every option is measured against this line
+Do nothing,2,0,
+Do nothing,3,0,
+Do nothing,4,0,
+Do nothing,5,0,
+Do minimum,0,-40000,Add an FAQ page and macros to the existing site
+Do minimum,1,20000,Small deflection of password-reset tickets
+Do minimum,2,20000,
+Do minimum,3,20000,
+Do minimum,4,20000,
+Do minimum,5,20000,
+Recommended,0,-500000,Build the Helios self-service portal: initial build and rollout
+Recommended,1,150000,Year 1 net benefit: ticket deflection minus run cost
+Recommended,2,180000,Year 2 net benefit
+Recommended,3,200000,Year 3 net benefit
+Recommended,4,200000,Year 4 net benefit
+Recommended,5,200000,Year 5 net benefit
+Alternative,0,-250000,Buy an off-the-shelf SaaS portal: licence and integration
+Alternative,1,100000,Faster to value but less tailored
+Alternative,2,90000,Subscription uplift erodes the net benefit
+Alternative,3,80000,
+Alternative,4,80000,
+Alternative,5,80000,

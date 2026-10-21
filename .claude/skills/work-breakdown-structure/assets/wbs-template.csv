@@ -1,0 +1,9 @@
+id,name,weight,owner,description,acceptance criterion,control account
+<1>,<project name>,,<project manager>,<one-line scope statement>,<project-level success criterion>,
+<1.1>,<project management element>,<percent of parent>,<project manager>,<planning and governance and reporting and closure>,<how the project is accepted as closed>,<1.1>
+<1.2>,<deliverable>,<percent of parent>,<deliverable owner>,<what this deliverable is>,,<control account id when performance is measured here>
+<1.2.1>,<work package>,<percent of parent>,<single accountable owner>,<scope of the work package>,<verifiable completion criterion>,<control account id>
+<1.2.2>,<work package>,<percent of parent>,<single accountable owner>,<scope of the work package>,<verifiable completion criterion>,<control account id>
+<1.3>,<deliverable>,<percent of parent>,<deliverable owner>,<what this deliverable is>,,
+<1.3.1>,<work package>,<percent of parent>,<single accountable owner>,<scope of the work package>,<verifiable completion criterion>,<control account id>
+<1.3.2>,<work package>,<percent of parent>,<single accountable owner>,<scope of the work package>,<verifiable completion criterion>,<control account id>

@@ -1,0 +1,18 @@
+period,task,pv,ev,ac,bac
+M1,Project management,8333,8333,8000,50000
+M1,Discovery & design,45000,43000,41000,75000
+M2,Project management,16666,16666,16000,50000
+M2,Discovery & design,75000,75000,70000,75000
+M2,Identity / SSO integration,30000,21000,27000,78750
+M2,Self-service UI,25000,24000,24500,67500
+M2,Knowledge base,15000,16000,15000,45000
+M3,Project management,25000,25000,24000,50000
+M3,Discovery & design,75000,75000,70000,75000
+M3,Identity / SSO integration,60000,45000,65000,78750
+M3,Self-service UI,50000,47500,49000,67500
+M3,Knowledge base,30000,33000,30000,45000
+M3,Reporting & analytics,15000,10000,14000,33750
+M3,System & UAT testing,0,0,0,70000
+M3,Hardening & launch,0,0,0,30000
+M3,Training & communications,0,0,0,25000
+M3,Operational handover,0,0,0,25000

@@ -1,0 +1,11 @@
+id,task,unit,technique,optimistic,most_likely,pessimistic,assumptions,estimators,actual
+A,Requirements & user research,weeks,three-point,2,3,5,Sample Helios project: durations in elapsed weeks for the project-schedule network; most-likely equals the baseline duration,Sam Lee + Ava Chen,
+B,UX design & prototype,weeks,three-point,1.5,2,3.5,Two usability rounds; starts after A,Elena Rossi,
+C,Identity / SSO integration,weeks,three-point,4,5,9,Vendor sandbox by week 6 (risk R001); 1 week of slack in the baseline,Ben Adeyemi + Carla Diaz,
+D,Self-service UI,weeks,three-point,3,4,6,On the critical path; two engineers,Devin Patel,
+E,Knowledge base,weeks,three-point,2,3,5,3 weeks of slack in the baseline,Carla Diaz,
+F,Reporting & analytics,weeks,three-point,1.5,2,3,On the critical path after D,Carla Diaz,
+G,System & UAT testing,weeks,three-point,3,4,7,Needs C and E and F complete; one regression cycle,Frank Müller,
+H,Hardening & launch,weeks,three-point,1.5,2,3.5,Security review and legal sign-off inside the window,Ben Adeyemi,
+I,Training & communications,weeks,three-point,0.5,1,2,Runs in parallel with H; 1 week of slack,Priya Nair,
+J,Operational handover,weeks,three-point,0.5,1,2,Needs H and I complete,Ben Adeyemi + Priya Nair,

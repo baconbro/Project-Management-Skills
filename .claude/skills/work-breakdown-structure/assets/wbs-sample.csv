@@ -1,0 +1,17 @@
+id,name,weight,owner,description,acceptance criterion,control account
+1,Helios customer self-service portal,,Sam Lee,Sample Helios project: a fictional customer self-service portal (password reset and order status and knowledge base) replacing manual support tickets,Password-reset and order-status tickets cut by 50% within 6 months of launch,
+1.1,Project management,10,Sam Lee,Level-of-effort element: planning and baselines plus bi-weekly steering and weekly status reporting and closure,Baselines approved by Dana Okoro and the closure report accepted,1.1
+1.2,Discovery & design,15,Ava Chen,Requirements and UX for the three self-service journeys,,1.2
+1.2.1,Requirements & user research,60,Ava Chen,12 customer interviews and 3 workshops with Support Operations,Requirements specification signed off by Priya Nair,1.2
+1.2.2,UX design & prototype,40,Elena Rossi,Clickable prototype for password reset and order status,Prototype passes two usability rounds with pilot customers,1.2
+1.3,Portal build,45,Ben Adeyemi,The portal application and its integrations,,
+1.3.1,Identity / SSO integration,35,Ben Adeyemi,Single sign-on with the identity provider (vendor sandbox due in week 6),Pilot users authenticate through SSO in staging and the security review by Marcus Webb is passed,1.3.1
+1.3.2,Self-service UI,30,Devin Patel,Password reset and order status screens meeting WCAG 2.2 AA,Both journeys complete end to end on desktop and mobile,1.3.2
+1.3.3,Knowledge base,20,Carla Diaz,Searchable knowledge base with 150 migrated articles,The top 50 support questions are answered and searchable,1.3.3
+1.3.4,Reporting & analytics,15,Carla Diaz,Ticket-deflection dashboard that evidences the 50% reduction benefit,Monthly deflection report reconciles with the ticketing system,1.3.4
+1.4,Test & launch,20,Frank Müller,Verified and launched portal,,
+1.4.1,System & UAT testing,70,Frank Müller,System and regression tests plus UAT with 20 Support Operations agents,Zero open severity-1 or severity-2 defects and UAT signed off by Priya Nair,1.4.1
+1.4.2,Hardening & launch,30,Ben Adeyemi,Performance and security hardening and the production cutover,Security sign-off by Marcus Webb and legal sign-off by Hana Sato - portal live to the pilot cohort of 200,1.4.2
+1.5,Adoption & handover,10,Priya Nair,Adopted portal handed to Support Operations,,
+1.5.1,Training & communications,50,Priya Nair,Train-the-trainer for Support Operations and customer communications,All support agents trained and launch communications sent,1.5.1
+1.5.2,Operational handover,50,Ben Adeyemi,Runbooks and on-call rota handed to Support Operations,Runbooks accepted and the on-call rota live for the 4-week warranty period,1.5.2

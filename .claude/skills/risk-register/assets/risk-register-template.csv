@@ -1,6 +1,7 @@
-id,description,probability,impact,owner,response,status
-R001,Identity-provider integration slips past the agreed date,0.4,120000,Sam Lee,Mitigate: start integration spike in week 1,Open
-R002,Undocumented requirements expand portal scope,0.6,40000,Dana Okoro,Mitigate: lock scope baseline and change control,Open
-R003,Lead engineer leaves mid-project,0.15,80000,Sam Lee,Mitigate: pair programming and documentation,Open
-R004,Cloud hosting costs exceed the budget,0.5,15000,Finance,Accept: monitor monthly and re-forecast,Open
-R005,Minor UI rework after usability testing,0.7,4000,Design,Accept: buffer one sprint for polish,Open
+id,description,type,category,probability,impact,owner,response,trigger,residual_probability,residual_impact,status,raised,review_date
+R001,Identity-provider integration slips past the agreed date,threat,Technical,0.4,120000,Sam Lee,Mitigate: run an integration spike in week 1 and agree a vendor SLA,Vendor sandbox not available by end of week 2,0.2,120000,Open,2026-05-12,2026-06-09
+R002,Undocumented requirements expand portal scope,threat,Scope,0.6,40000,Dana Okoro,Mitigate: lock the scope baseline and route additions through change control,More than 3 new requirements raised after baseline sign-off,0.3,40000,Open,2026-05-12,2026-06-09
+R003,Lead engineer leaves mid-project,threat,Resource,0.15,80000,Sam Lee,Mitigate: pair programming and documented designs so knowledge is shared,Resignation notice or absence longer than 2 weeks,0.15,40000,Open,2026-05-12,2026-06-09
+R004,Cloud hosting costs exceed the budget,threat,Cost,0.5,15000,Finance,Accept (active): monitor the monthly invoice and re-forecast,Monthly hosting invoice above 110% of forecast,0.5,15000,Open,2026-05-12,2026-06-09
+R005,Minor UI rework after usability testing,threat,Quality,0.7,4000,Elena Rossi,Accept: hold one sprint of buffer for polish,Usability round 1 reports more than 5 medium findings,0.7,4000,Open,2026-05-12,2026-06-09
+R006,Knowledge base deflects tickets earlier than planned,opportunity,Benefit,0.3,60000,Priya Nair,Enhance: publish the top-20 articles before the pilot and measure deflection,Pilot deflection rate above 20% in month 1,0.5,60000,Open,2026-05-12,2026-06-09

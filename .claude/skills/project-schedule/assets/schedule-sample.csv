@@ -1,0 +1,11 @@
+id,name,duration,predecessors,optimistic,most_likely,pessimistic
+A,Requirements & user research,3,,2,3,5
+B,UX design & prototype,2,A,1.5,2,3.5
+C,Identity / SSO integration,5,B,4,5,9
+D,Self-service UI,4,B,3,4,6
+E,Knowledge base,3,B,2,3,5
+F,Reporting & analytics,2,D,1.5,2,3
+G,System & UAT testing,4,C;E;F,3,4,7
+H,Hardening & launch,2,G,1.5,2,3.5
+I,Training & communications,1,G,0.5,1,2
+J,Operational handover,1,H;I,0.5,1,2

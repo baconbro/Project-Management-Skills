@@ -1,0 +1,11 @@
+id,task,unit,technique,optimistic,most_likely,pessimistic,assumptions,estimators,actual
+1.2.1,Requirements & user research,person-days,three-point,35,44,60,Sample Helios project: 12 user interviews and 3 workshops with Support Operations; pilot cohort of 200 customers available for research,Ava Chen + Elena Rossi,
+1.2.2,UX design & prototype,person-days,three-point,22,29,44,Clickable prototype for password reset and order status only; two rounds of usability testing,Elena Rossi + Ava Chen,
+1.3.1,Identity / SSO integration,person-days,wideband Delphi,55,72,130,Identity-provider vendor delivers sandbox by week 6 (risk R001); SSO is in the baseline; partner logins (CR002) excluded,Ben Adeyemi + Carla Diaz + Marcus Webb,
+1.3.2,Self-service UI,person-days,planning poker,50,65,95,Password reset + order status screens; WCAG 2.2 AA uplift (CR003) included; live chat (CR001) excluded,Devin Patel + Elena Rossi,
+1.3.3,Knowledge base,person-days,planning poker,32,44,62,English content only (CR004 Spanish excluded); search provided by the platform; 150 articles migrated by Support Operations,Carla Diaz + Priya Nair,
+1.3.4,Reporting & analytics,person-days,analogous,24,32,52,Analogous to the last support-dashboard build; ticket-deflection report needed for the 50% reduction benefit; vendor swap (CR005) not assumed,Carla Diaz + Ben Adeyemi,
+1.4.1,System & UAT testing,person-days,three-point,50,68,96,Test environment ready at the end of the build; UAT with 20 Support Operations agents; one regression cycle,Frank Müller + Priya Nair,
+1.4.2,Hardening & launch,person-days,three-point,20,28,50,Security review by Marcus Webb and legal sign-off by Hana Sato before general availability; one performance test cycle,Ben Adeyemi + Marcus Webb,
+1.5.1,Training & communications,person-days,three-point,18,24,38,Train-the-trainer for Support Operations; customer communications via existing channels,Priya Nair + Sam Lee,
+1.5.2,Operational handover,person-days,three-point,18,24,40,Runbooks and on-call rota agreed with Support Operations; warranty period 4 weeks,Ben Adeyemi + Priya Nair,

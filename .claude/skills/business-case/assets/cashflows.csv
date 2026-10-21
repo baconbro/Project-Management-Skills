@@ -1,7 +1,7 @@
 period,cashflow,note
-0,-500000,Initial build and rollout of the Helios portal
-1,150000,Year 1 net benefit (call deflection + reduced handling)
+0,-500000,Sample Helios portal: initial build and rollout (period 0 = today)
+1,150000,Year 1 net benefit: ticket deflection minus run cost
 2,180000,Year 2 net benefit
 3,200000,Year 3 net benefit
 4,200000,Year 4 net benefit
-5,180000,Year 5 net benefit (declining as channels mature)
+5,200000,Year 5 net benefit
