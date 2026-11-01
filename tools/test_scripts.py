@@ -41,20 +41,19 @@ REGISTRY = [
     },
     {
         "script": "estimation/scripts/pert_estimate.py",
-        "sample": "estimation/assets/estimation-worksheet.csv",
+        "sample": ["estimation/assets/estimation-worksheet-sample.csv", "estimation/assets/estimation-worksheet.csv"],
         "markers": ["Total", "95%"],
         "numeric_col": "most_likely",
     },
     {
         "script": "project-schedule/scripts/critical_path.py",
-        "sample": "project-schedule/assets/schedule-template.csv",
+        "sample": ["project-schedule/assets/schedule-sample.csv", "project-schedule/assets/schedule-template.csv"],
         "markers": ["Critical path", "18"],
         "numeric_col": "duration",
     },
     {
         "script": "cost-management/scripts/health_check.py",
-        "sample": "cost-management/assets/evm-snapshot.csv",
-        "fallback_sample": "cost-management/assets/cost-baseline.csv",
+        "sample": ["cost-management/assets/evm-snapshot.csv", "cost-management/assets/cost-baseline.csv"],
         "markers": ["CPI", "AMBER"],
         "numeric_col": "ev",
     },
@@ -66,27 +65,27 @@ REGISTRY = [
     },
     {
         "script": "work-breakdown-structure/scripts/wbs_validate.py",
-        "sample": "work-breakdown-structure/assets/wbs.csv",
+        "sample": ["work-breakdown-structure/assets/wbs-sample.csv", "work-breakdown-structure/assets/wbs.csv"],
         "markers": ["PASS"],
         "numeric_col": "weight",
         "broken": "id,name,weight\n1,Root,\n1.1,A,60\n1.1,Dup,30\n1.3.1,Orphan,10\n",
     },
     {
         "script": "raci-matrix/scripts/raci_validate.py",
-        "sample": "raci-matrix/assets/raci-template.csv",
+        "sample": ["raci-matrix/assets/raci-sample.csv", "raci-matrix/assets/raci-template.csv"],
         "markers": ["PASS"],
         "numeric_col": None,
         "broken": "Activity,Sponsor,PM,Dev\nWrite charter,A,A,R\nBuild portal,,,C\n",
     },
     {
         "script": "change-request/scripts/change_impact.py",
-        "sample": "change-request/assets/change-log.csv",
+        "sample": ["change-request/assets/change-log-sample.csv", "change-request/assets/change-log.csv"],
         "markers": ["CR001"],
         "numeric_col": "cost_impact",
     },
     {
         "script": "resource-management/scripts/capacity_check.py",
-        "sample": "resource-management/assets/resource-allocation.csv",
+        "sample": ["resource-management/assets/resource-allocation-sample.csv", "resource-management/assets/resource-allocation.csv"],
         "markers": ["OVER"],
         "numeric_col": "allocated",
     },
@@ -137,11 +136,10 @@ def test_script(entry, res, verbose):
             return
         res.ok(f"{label} exists", False, f"missing {script}")
         return
-    sample = os.path.join(SK, entry["sample"])
-    if not os.path.exists(sample) and entry.get("fallback_sample"):
-        sample = os.path.join(SK, entry["fallback_sample"])
-    res.ok(f"{label} sample exists", os.path.exists(sample), sample)
-    if not os.path.exists(sample):
+    candidates = entry["sample"] if isinstance(entry["sample"], list) else [entry["sample"]]
+    sample = next((os.path.join(SK, c) for c in candidates if os.path.exists(os.path.join(SK, c))), None)
+    res.ok(f"{label} sample exists", sample is not None, f"none of {candidates}")
+    if sample is None:
         return
     with open(sample, encoding="utf-8-sig", newline="") as fh:
         text = fh.read()
@@ -177,7 +175,13 @@ def test_script(entry, res, verbose):
         check("semicolon", [semi], same_as=base_out)
         js = write(tmp, "data.json", json.dumps(rows))
         check("json", [js, "--json"], same_as=base_out)
-        check("json-without-flag", [js], exit_code=2, err_prefix="error:")
+        # A .json file without --json must either be auto-detected (identical output)
+        # or rejected with a clear error -- never mis-parsed as CSV.
+        code, out, err = run([script, js])
+        res.ok(f"{label} json-without-flag: auto-detected or rejected",
+               (code == 0 and out == base_out) or (code == 2 and err.lstrip().startswith("error:")),
+               f"exit {code}; stderr={err.strip()[:200]}")
+        res.ok(f"{label} json-without-flag: no traceback", "Traceback" not in err, err.strip()[:200])
         bad_js = write(tmp, "bad.json", "[1, 2]")
         check("json-non-object", [bad_js, "--json"], exit_code=2, err_prefix="error:")
         empty = write(tmp, "empty.csv", "")
