@@ -80,8 +80,9 @@ the work is done.
   sprints done (22, 27, 31, 29 points; average 27.25, minimum 22), 149 points left including
   CR003's 12, six sprints to the release (S5–S10, the last ending 2026-09-25): the likely forecast
   fits, the pessimistic one needs a seventh sprint (2026-10-09, after the 2026-10-03 GA cutover)
-  and is 17 points short — so M6 is AMBER and 17 points of low-priority scope stay below the cut
-  line.
+  and is 17 points short, so 17 points of low-priority scope stay below the cut line. The
+  schedule network agrees that M6 is AMBER: with no schedule reserve before GA, the one-week M4
+  slip moves M6 to 2026-10-10 unless it is recovered.
 
 ## 6. Delivering bad news
 - Tell the sponsor in person before the report goes out; the written report confirms what was

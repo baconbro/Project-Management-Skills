@@ -35,10 +35,13 @@ test thresholds from the definition of done.
 | Deliverable | Acceptor | Decision | Date | Conditions or exceptions (owner, due) |
 |---|---|---|---|---|
 | D2 Requirements & user research; D3 UX design & prototype | Priya Nair; Ava Chen | Accepted | M1 | None |
-| D5 Self-service UI; D8 System & UAT testing; D10 Training & communications | Priya Nair | Accepted | M4 | None |
-| D6 Knowledge base | Priya Nair | Accepted with conditions | M4 | 4 migrated articles rewritten (Carla Diaz, M5); closed at M5 |
-| D4 Identity / SSO integration; D9 Hardening & launch | Marcus Webb | Accepted | M4, after the first production sign-ins in the pilot | None |
+| D8 System & UAT testing | Priya Nair | Accepted | M4 | None |
+| D5 Self-service UI | Priya Nair | Accepted with conditions | M4 | REQ-006 at WCAG 2.2 AA (CR003) accepted after the ACC-01 audit and retest (Frank Müller, before GA); closed 2026-09-18 |
+| D6 Knowledge base | Priya Nair | Accepted with conditions | M4 | 4 migrated articles rewritten (Carla Diaz, M5), closed at M5; REQ-006 as for D5, closed 2026-09-18 |
 | D7 Reporting & analytics | Priya Nair | Accepted | M5, after a closed month of pilot data reconciled | None |
+| D10 Training & communications | Priya Nair | Accepted with conditions | M6 go/no-go, 2026-09-30 | 6 agents on leave trained by 2026-10-06 (Priya Nair, go/no-go condition C1); closed 2026-10-06 |
+| D9 Hardening & launch | Marcus Webb | Accepted | M6, after the GA readiness reviews and the cutover on 2026-10-03 | None |
+| D4 Identity / SSO integration | Marcus Webb | Accepted | M6, after the first production SSO sign-ins at go-live 2026-10-03 | None |
 | Product at general availability | Dana Okoro | Accepted with conditions | 2026-10-14 | D11 to be accepted at hypercare exit (Priya Nair); closed 2026-10-30 |
 | D11 Operational handover | Priya Nair | Accepted | 2026-10-30 | None |
 | D1 Project management outputs | Dana Okoro | Accepted by signing this report | 2026-11-20 | None |
@@ -50,7 +53,7 @@ Could) to Ava Chen's product backlog.
 | Dimension | Baseline | Actual or final | Variance and reason |
 |---|---|---|---|
 | Scope | D1-D11 | D1-D11 accepted; CR003 approved and delivered; CR001 deferred to phase 2; CR005 rejected; CR006 withdrawn; CR002 and CR004 undecided, passed to the phase-2 backlog | Scope held; one approved change |
-| Schedule | M1, M4, M6 | All three met; hypercare exited without extension | SSO was 2 weeks late at month 3 (issue I001); the recovery plan held the M4 pilot date |
+| Schedule | M1, M4, M6 | All three met; hypercare exited without extension | SSO was 2 weeks late at month 3 (issue I001); on 2026-07-14 Dana Okoro approved the recovery plan and declined the $20,000 crash (DEC002); SSO worked in test on 2026-07-17 as the plan promised, and the remaining week was absorbed by running the real-provider retest and UAT preparation in parallel in sprint S6, so M4 held on 2026-08-07 |
 | Cost | BAC $500,000 | Final actual cost $518,600 (final CPI 0.96) | −$18,600 (−3.7%); SSO recovery and hosting above forecast exhausted the contingency. The month-3 forecast of about $535,000 improved after the recovery plan |
 | Quality | Zero open severity-1/2 defects at hypercare exit; WCAG 2.2 AA | Zero severity-1/2 for 10 consecutive business days; WCAG 2.2 AA passed on retest | 4 severity-3/4 defects transferred (section 5) |
 
@@ -64,8 +67,8 @@ Could) to Ava Chen's product backlog.
 
 | Reserve | Held | Used | Approved by | Returned |
 |---|---|---|---|---|
-| Contingency (inside BAC) | $40,000 | $40,000: CR003 $12,000; SSO recovery (R001) $21,000; UI rework (R005) $4,000; hosting above forecast (R004) $3,000 | CCB and Sam Lee within tolerance | $0 |
-| Management reserve (above BAC) | $25,000 | $18,600 for the overrun | Dana Okoro, through change control at the 2026-09-08 steering committee | $6,400 to Finance |
+| Contingency (inside BAC) | $40,000 | $40,000: CR003 $12,000; SSO recovery (R001) $25,000; hosting above forecast (R004) $3,000 | CCB and Sam Lee within tolerance | $0 |
+| Management reserve (above BAC) | $25,000 | $18,600 overrun funding (BAC not re-issued; CPI stays measured against $500,000) | Dana Okoro, through change control at the 2026-09-08 steering committee | $6,400 to Finance |
 
 ## 4. Handover
 | Item | Receiving owner | Signed on | Evidence |
@@ -111,7 +114,7 @@ review; full log: the lessons log in `lessons-learned` (LL001-LL007).
 | Lesson id | Lesson (what to repeat or change) | Owner | Routed to |
 |---|---|---|---|
 | LL001 | Give vendor onboarding a named owner from the day of award; the late sandbox request delayed SSO | PMO Lead | PMO standard plan template: vendor onboarding workstream |
-| LL002 | Report amber the moment a milestone is threatened, not two weeks later | Sam Lee | PMO status-report standard |
+| LL002 | Tell the sponsor about a RED work package the same day, and name the milestone any amber line threatens | Sam Lee | PMO status-report standard |
 | LL007 | Finish support-agent training one week before launch | Priya Nair | PMO standard plan template |
 | LL006 | Repeat: an explicit out-of-scope list prevented late scope disputes | Sam Lee | Charter template (required element) |
 | LL003 | Repeat: the reusable API design cut build time | Ben Adeyemi | Engineering standards library |

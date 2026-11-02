@@ -113,7 +113,9 @@ If nobody can say what the meeting must decide or produce, stop at step 1: that 
    change-request decisions go to the change log (`change-request`), retrospective improvement
    actions to the next sprint backlog and `lessons-learned`. Before the next meeting, run the
    issue-log check from `project-delivery` on your log and open the agenda with its overdue,
-   blocked and "for steering" items; on the Helios sample it lists DEC002, I001 and ACT003:
+   blocked and "for steering" items; on the Helios sample it lists I003 (overdue), ACT003
+   (blocked), and DEC002 and I001 (for steering); the 2026-07-14 steering agenda takes the last
+   three, and I003 (Low) stays with the team:
    `python .claude/skills/project-delivery/scripts/issue_log_check.py .claude/skills/project-delivery/assets/issue-log-sample.csv --as-of 2026-07-10`.
    An action that slips twice, or is carried through two meetings without progress, is
    escalated, re-planned or closed with a reason. *Done: notes sent, every captured row has a `log_ref`, and

@@ -36,8 +36,10 @@ risk.
 - Assumption A1 — "The existing identity provider supports customer logins without a license
   upgrade." If false, the SSO integration is reworked and slips: R001.
 - Constraint CON-2 — "MVP live to the pilot cohort of 200 at M4, general availability at M6."
-  Any slip on the 18-week critical path moves a committed date, so every critical-path
-  dependency on a vendor or another team is a candidate risk.
+  Any slip on the 25-week critical path moves a committed date (Helios holds no schedule
+  reserve before GA, and the SSO integration, knowledge base, reporting and training tasks
+  have only 1 week of float each), so every critical or near-critical dependency on a vendor
+  or another team is a candidate risk.
 Make implicit assumptions explicit; that is where projects quietly fail. An assumption judged
 safe still gets a validate-by date in the log.
 

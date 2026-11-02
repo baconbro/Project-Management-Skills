@@ -37,7 +37,8 @@ a contingent plan.
 For every material risk, record:
 - **Strategy and actions** — proactive actions done now, each with an action owner and a due date.
 - **Trigger** — the observable early-warning sign that the risk is about to occur (R001: "Vendor
-  sandbox not available by end of week 2 of the integration work").
+  sandbox not available by end of week 2 of the integration work, or unavailable at any time
+  during it" — it fired on 2026-06-12, when the sandbox went down in week 5 of the integration).
 - **Contingent plan** — what happens when the trigger fires, and who funds it (R001: build an
   identity-provider stub so sprint work continues, claim the delay credits, escalate).
 - **Fallback plan** — what to do if the contingent plan fails too (R001: the escalation path in

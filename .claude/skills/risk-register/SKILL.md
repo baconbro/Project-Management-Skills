@@ -59,8 +59,9 @@ catalog): six risks — five threats and one opportunity — scored against its 
 ## Workflow
 1. **Agree the scales and thresholds before scoring.** Decide with the sponsor whether
    probability is a fraction/percent or a 1-5 score, which single unit impact uses, and the
-   HIGH/MEDIUM bands (default 5% / 1% of BAC; the Helios sample uses `--bac 500000`, i.e.
-   HIGH >= $25,000, MEDIUM >= $5,000). Record them in the risk management plan from
+   HIGH/MEDIUM bands (policy default 5% / 1% of BAC, which the script applies only when you
+   pass `--bac`; with no flag it falls back to the Helios $25,000 / $5,000; the Helios sample
+   uses `--bac 500000`, i.e. HIGH >= $25,000, MEDIUM >= $5,000). Record them in the risk management plan from
    `risk-management` and pass the same `--bac`, `--high`/`--medium` or
    `--prob-scale`/`--impact-scale` flags to `scripts/risk_score.py` on every run. *Done:
    scales and thresholds are written down and everyone scoring the register uses the same ones.*
@@ -112,7 +113,7 @@ catalog): six risks — five threats and one opportunity — scored against its 
    probabilities of 0 or 100%, and threats whose residual exposure exceeds the inherent one.
    *Done: the check passes, or every listed problem has an owner and a date.*
 8. **Review on cadence and close correctly.** Re-score on the agreed cadence (each sprint,
-   each steering meeting, every stage gate — `project-delivery` step 4). When a trigger fires
+   each steering meeting, every stage gate — `project-delivery` step 6). When a trigger fires
    or a threat **materialises**: execute the planned response, set `status` to `Occurred` in
    `assets/risk-register-template.csv`, open an issue in the `project-delivery` issue log, and
    keep the row for `lessons-learned`. Set `Retired` when the risk window has passed and

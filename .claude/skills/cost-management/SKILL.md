@@ -67,12 +67,17 @@ earning rule agreed for that package.
 2. **Size the reserves.** Take the contingency from `risk-management` (a simulation of the
    residual register read at the confidence the sponsor accepts — Helios $40,000, about P50;
    the sponsor accepted the gap to the $99,000 P80) and set the management reserve by policy,
-   held by the sponsor above the baseline (Helios $25,000). *Done: both reserves sized and
-   recorded separately, not padded into the estimates.*
+   held by the sponsor above the baseline (Helios $25,000). Work-package costs from step 1 are
+   at expected values (sum E). The estimating reserve from `estimation` either enters the risk
+   simulation as an uncertainty line, or is held as a separate, named line inside contingency,
+   never both. State which you chose. *Done: both reserves sized and recorded separately, not
+   padded into the estimates.*
 3. **Build the baseline.** Cost baseline = work-package costs + contingency = **BAC** (Helios
    $500,000; management reserve stays outside). Time-phase it per period in
-   `assets/cost-baseline-template.csv` (`wbs_id, work_package, period, planned_cost`) and plot
-   the cumulative planned cost as the **S-curve**. *Done: BAC and an S-curve that ends at it.*
+   `assets/cost-baseline-template.csv` (`wbs_id, work_package, period, planned_cost`): each
+   package only in the periods of its window on the dated schedule, and within that window by
+   the sprint plan rather than a straight line. Plot the cumulative planned cost as the
+   **S-curve**. *Done: BAC and an S-curve that ends at it, every package inside its window.*
 4. **Fix the earning rule per work package.** Agree how EV is measured before tracking starts:
    0/100 for short packages, 50/50 for ones that straddle a period end, weighted milestones or
    physical percent complete for long ones, apportioned effort or level of effort only where
@@ -123,7 +128,8 @@ earning rule agreed for that package.
 
 ## Resources
 - `references/cost-baselining.md` — aggregation, sizing and placing the reserves (BAC excludes
-  management reserve), the Helios time-phased S-curve, earning rules, freeze and control.
+  management reserve) with the Helios per-package contingency split, time-phasing inside each
+  network window by the sprint plan and the Helios S-curve, earning rules, freeze and control.
 - `references/earned-value.md` — PV/EV/AC, earning rules, CV/SV/CPI/SPI with caveats, the four
   EAC formulas, TCPI, the RAG bands, and the Helios worked example (CPI 0.93 / SPI 0.92 / AMBER).
 - `assets/cost-baseline-template.csv` — time-phased planned cost (`wbs_id, work_package,

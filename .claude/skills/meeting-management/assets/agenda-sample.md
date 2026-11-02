@@ -25,7 +25,7 @@ protects before the M4 pilot.
 
 ## Outcomes needed by the end
 - DEC002 decided: IdentityCo's recovery plan approved or not, and whether to draw management
-  reserve now, at the plan's first milestone, or to crash SSO with premium support.
+  reserve now or once SSO works in test (2026-07-17), or to crash SSO with premium support.
 - A priority between protecting the M4 pilot and adding partner logins (CR002), for the change
   control board to apply at its 14:00 slot today.
 - An owner and a date for any sponsor action on the data-residency sign-off (DEP002).
@@ -33,8 +33,9 @@ protects before the M4 pilot.
 ## Pre-reads (sent Friday 2026-07-10, two business days ahead)
 - Weekly status report of 2026-07-10 — Sam Lee — AMBER overall (CPI 0.93, SPI 0.92); Identity /
   SSO integration RED; EAC about $535,000 against the $500,000 BAC (`status-report`).
-- Escalation note for DEC002, raised 2026-06-26 — Sam Lee — the three options and the
-  recommendation (`project-communication`).
+- Escalation note for DEC002, raised 2026-06-26 and updated 2026-07-10 with the month-3 figures
+  and the costed crash option — Sam Lee — the three options and the recommendation
+  (`project-communication`).
 - Costed change request to crash SSO with IdentityCo premium support, $20,000 — Sam Lee —
   action AI005 (issue log ACT004) from the 2026-06-30 steering (`change-request`).
 - CR002 Extend SSO to partner logins — Ava Chen — impact assessment: $18,000, 10 days,
@@ -47,7 +48,7 @@ protects before the M4 pilot.
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 10:00 | 5 | Open: purpose, outcomes, methods. Actions from 2026-06-30 by exception: ACT004 delivered in the pre-read (closes with DEC002 in item 3); ACT003 blocked by I001, taken in item 3 | Inform | Sam Lee | — | Shared context |
 | 2 | 10:05 | 5 | Status: questions on the 2026-07-10 report only, no read-through | Inform | Sam Lee | — | Questions answered or logged |
-| 3 | 10:10 | 25 | DEC002 — Approve IdentityCo's dated recovery plan? Draw management reserve for the 1.3.1 overrun now or at the plan's first milestone? Crash SSO with premium support ($20,000) to protect M4? | Decide | Ben Adeyemi presents; Sam Lee recommends | Decider decides after input — Dana Okoro, after hearing Finance on reserve and Priya Nair on the pilot | DEC002 decided and logged with rationale and options; actions owned and dated |
+| 3 | 10:10 | 25 | DEC002 — Approve IdentityCo's dated recovery plan? Draw management reserve for the 1.3.1 overrun now or once SSO works in test (2026-07-17)? Crash SSO with premium support ($20,000) to protect M4? | Decide | Ben Adeyemi presents; Sam Lee recommends | Decider decides after input — Dana Okoro, after hearing Finance on reserve and Priya Nair on the pilot | DEC002 decided and logged with rationale and options; actions owned and dated |
 | 4 | 10:35 | 10 | Contingency: $28,000 of the $40,000 remains after CR003, so the SSO crash option ($20,000) and CR002 partner logins ($18,000) cannot both be funded from it | Discuss | Ava Chen | — (CR002 itself is decided by the CCB at 14:00) | Priority agreed between protecting the M4 pilot and partner logins |
 | 5 | 10:45 | 5 | Dependency DEP002: Legal's data-residency sign-off is needed by 2026-07-24 for the M4 pilot | Discuss | Hana Sato | — | Owner and date for any sponsor action |
 | 6 | 10:50 | 5 | Parking lot review | — | Sam Lee | — | Each item has an owner and next step, or is dropped |

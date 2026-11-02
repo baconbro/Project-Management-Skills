@@ -25,9 +25,11 @@ columns are ignored; "row N" in messages = Nth data row, header excluded)
 
 UNITS AND SCALES
     Money in any one consistent unit; "80,000", "$100", "€"/"£" and accounting negatives
-    "(1,000)" are accepted. --rate is a fraction per period (0.10) or a percent ("10%"); a
-    bare value >= 1 is refused as "looks like a percentage". Factors are multipliers
-    (0.8 = benefits cut by 20%) or percents ("80%").
+    "(1,000)" are accepted. ',' is a thousands separator before groups of three digits and a
+    decimal comma before one or two ("1000,50" -> 1000.5); "1.000,50" is refused as
+    ambiguous. Values above 1e15 are refused. --rate is a fraction per period (0.10) or a
+    percent ("10%"); a bare value >= 1 is refused as "looks like a percentage". Factors are
+    multipliers (0.8 = benefits cut by 20%) or percents ("80%").
 
 FORMULAS  (r = --rate, t = period index, CF(t) = net cashflow of period t)
     discounted(t)        = CF(t) / (1 + r) ** t
@@ -46,9 +48,13 @@ FORMULAS  (r = --rate, t = period index, CF(t) = net cashflow of period t)
     sensitivity          = NPV at each rate of START:STOP:STEP plus the rate at which NPV turns
                            negative (bisection between the two bracketing rates)
     stress               = benefits x --benefit-factor and costs x --cost-factor (0.8 / 1.2 by
-                           default with --stress), shown beside the base case
+                           default with --stress), shown beside the base case. With a cashflow
+                           column only, "benefits" are the positive NET periods (run costs
+                           netted into them move with the benefit factor) and "costs" only the
+                           negative periods; give benefit and cost columns to stress run costs
     break-even           = the benefit shortfall and the cost overrun at which NPV = 0 (bisection
-                           on the factor) and the discount rate at which it does (= the IRR)
+                           on the factor) and the discount rate at which it does (= the IRR);
+                           the same net-cashflow caveat as for stress applies
     whole-life cost      = sum of costs over the appraisal period, undiscounted
 
 EXIT CODES   0 appraised  ·  2 bad input or usage (message "error: ..." on stderr, never a traceback)
@@ -185,18 +191,33 @@ def _get(row, *names, default=None):
     return default
 
 
+MAX_VALUE = 1e15  # upper bound for a money cell: keeps every sum finite
+# ',' before one or two trailing digits is a decimal comma ('2,5', '37,50'); before groups of three
+# digits it is a thousands separator ('1,000', '12,345.67'); any other comma ('1.000,50') is ambiguous.
+DECIMAL_COMMA_RE = re.compile(r"[-+]?\d+,\d{1,2}")
+THOUSANDS_RE = re.compile(r"[-+]?\d{1,3}(?:,\d{3})+(?:\.\d+)?")
+
+
 def _num(raw, where, minimum=None, maximum=None, integer=False):
-    """Parse a number tolerant of '$', ',', '€', '£', whitespace, '(1,000)' accounting negatives and a
-    trailing '%' (which is stripped, value unchanged)."""
+    """Parse a number tolerant of '$', '€', '£', whitespace, '(1,000)' accounting negatives, a trailing
+    '%' (stripped, value unchanged) and commas: '1,000' -> 1000 (thousands), '2,5' -> 2.5 (decimal
+    comma), '1.000,50' -> error."""
     if isinstance(raw, bool):
         raise ValueError(f"{where}: {raw!r} is a boolean, not a number")
     s = str(raw).strip()
     if s.endswith("%"):
         s = s[:-1]
-    s = s.replace(",", "").replace("$", "").replace("€", "").replace("£", "").strip()
+    s = s.replace("$", "").replace("€", "").replace("£", "").strip()
     m = ACCOUNTING_NEG_RE.match(s)
     if m:
         s = "-" + m.group(1).strip()
+    if "," in s:
+        if DECIMAL_COMMA_RE.fullmatch(s):
+            s = s.replace(",", ".")
+        elif THOUSANDS_RE.fullmatch(s):
+            s = s.replace(",", "")
+        else:
+            raise ValueError(f"{where}: {raw!r} is ambiguous; use '.' as the decimal point and ',' only for thousands")
     try:
         v = float(s)
     except ValueError:
@@ -326,7 +347,7 @@ def parse_flows(rows, headers, start_year):
             cf_raw = _get(norm, *CASHFLOW_ALIASES)
             if cf_raw is None:
                 raise ValueError(f"{tag}, column cashflow: value is empty")
-            net = _num(cf_raw, f"{tag}, column cashflow")
+            net = _num(cf_raw, f"{tag}, column cashflow", minimum=-MAX_VALUE, maximum=MAX_VALUE)
             benefit, cost = (net, 0.0) if net >= 0 else (0.0, -net)
         else:
             b_raw = _get(norm, *BENEFIT_ALIASES)
@@ -402,7 +423,7 @@ def parse_flows(rows, headers, start_year):
 
 
 def _magnitude(raw, where):
-    v = _num(raw, where)
+    v = _num(raw, where, maximum=MAX_VALUE)
     if v < 0:
         raise ValueError(f"{where}: {raw!r} is negative; enter benefits and costs as positive magnitudes "
                          "(a cost belongs in the cost column, a benefit in the benefit column)")
@@ -477,15 +498,17 @@ def irr_of(flows, bf=1.0, cf=1.0):
     func = lambda r: npv_at(flows, r, bf, cf)  # noqa: E731
     lo, hi = IRR_LO, IRR_HI
     f_lo, f_hi = func(lo), func(hi)
-    if not (math.isfinite(f_lo) and math.isfinite(f_hi)):
-        return None, "could not evaluate"
-    if (f_lo < 0) == (f_hi < 0):
+    finite_ends = math.isfinite(f_lo) and math.isfinite(f_hi)
+    if not finite_ends or (f_lo < 0) == (f_hi < 0):
+        # long series overflow at -99% (t >= 153): scan for a finite bracket instead of giving up
         grid = [lo + k * (hi - lo) / 400.0 for k in range(401)]
         values = [func(r) for r in grid]
         bracket = next(((grid[k], grid[k + 1]) for k in range(400)
                         if math.isfinite(values[k]) and math.isfinite(values[k + 1])
                         and (values[k] < 0) != (values[k + 1] < 0)), None)
         if bracket is None:
+            if not finite_ends:
+                return None, "could not evaluate"
             return None, f"no root between {pct(IRR_LO)} and {pct(IRR_HI)}"
         lo, hi = bracket
     irr = bisect(func, lo, hi)
@@ -630,9 +653,9 @@ def roi_label(mode):
 def break_even_text(be):
     b, c, r = be["benefit_shortfall"], be["cost_overrun"], be["rate"]
     if b is None and c is None and r is None and be["notes"].get("benefit_shortfall", "").startswith("n/a"):
-        return "n/a (" + "; ".join(n[len("n/a ("):-1] for n in
-                                   (be["notes"]["benefit_shortfall"], be["notes"]["cost_overrun"])
-                                   if n.startswith("n/a (")) + ")"
+        reasons = [n[len("n/a ("):-1] for n in (be["notes"]["benefit_shortfall"], be["notes"]["cost_overrun"])
+                   if n.startswith("n/a (")]
+        return "n/a (" + "; ".join(dict.fromkeys(reasons)) + ")"  # one reason once, not twice
     parts = [f"benefits can fall {pct(b)}" if b is not None else f"benefits: {be['notes']['benefit_shortfall']}",
              f"costs can rise {pct(c)}" if c is not None else f"costs: {be['notes']['cost_overrun']}",
              f"discount rate up to {pct(r)} (the IRR)" if r is not None else "discount rate: n/a (no IRR)"]
@@ -905,7 +928,7 @@ def render_json(ctx, options, ranked, sens):
             "switching": {name: {"kind": kind, "rate": None if value is None else round(value, 6)}
                           for name, (kind, value) in sens["switching"].items()},
         }
-    return json.dumps({"rows": rows, "summary": summary}, indent=2, ensure_ascii=False)
+    return json.dumps({"rows": rows, "summary": summary}, indent=2, ensure_ascii=False, allow_nan=False)
 
 
 def render_csv(ctx, options):
@@ -1064,6 +1087,10 @@ def main(argv=None):
         rows, headers = load_rows(text, args.json, JSON_KEY)
         parsed, mode, has_option = parse_flows(rows, headers, ctx["start_year"])
         ctx["mode"], ctx["has_option"], ctx["multi"] = mode, has_option, len(parsed) > 1
+        if mode == "net" and (ctx["stress"] or ctx["break_even"]):
+            note("net cashflows: the benefit factor scales the positive NET periods (run costs netted into them "
+                 "move with it) and the cost factor only the negative periods; give gross benefit and cost "
+                 "columns to stress run costs")
         options, ranked, sens = appraise(parsed, ctx)
         if ctx["format"] == "json":
             output = render_json(ctx, options, ranked, sens)

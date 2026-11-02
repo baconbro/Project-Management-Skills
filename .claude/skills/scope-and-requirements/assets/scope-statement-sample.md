@@ -10,14 +10,15 @@ review. Copy `scope-statement-template.md` for your own project.
 | **Sponsor** | Dana Okoro, VP Customer Operations |
 | **Project manager** | Sam Lee |
 | **Product owner / requirements lead** | Ava Chen |
-| **Version / date** | v1.1 / M2 (v1.0 baselined at M1) |
+| **Version / date** | v1.1 / 2026-06-30 (v1.0 baselined at M1, 2026-05-08) |
 | **Status** | Baselined |
 | **Charter** | Helios charter v1.0, approved by Dana Okoro |
 | **Requirements (RTM)** | `requirements-traceability-sample.csv` (extract of 12 requirements) |
 | **WBS** | `.claude/skills/work-breakdown-structure/assets/wbs-sample.csv` |
 
 Version history: v1.0 baselined at M1 at the end of Discovery. v1.1 adds the WBS ids and
-raises the accessibility standard from WCAG 2.1 AA to 2.2 AA (CR003, approved by the CCB).
+raises the accessibility standard from WCAG 2.1 AA to 2.2 AA (CR003, approved by the CCB on
+2026-06-30).
 
 ## 1. Product scope description
 A customer self-service portal where registered customers reset a forgotten password,
@@ -47,7 +48,7 @@ or the back-office CRM.
 | D6 | Knowledge base | 1.3.3 | Searchable knowledge base with 150 migrated articles | The top-50 support questions are answered and searchable | Priya Nair | REQ-004, REQ-006, REQ-010 |
 | D7 | Reporting & analytics | 1.3.4 | Ticket-deflection report evidencing OBJ-1 | Report reconciles with the ticketing system for a closed month | Priya Nair | REQ-005 |
 | D8 | System & UAT testing | 1.4.1 | System, regression and UAT with 20 Support Operations agents | Zero open severity-1 or severity-2 defects and UAT signed off | Priya Nair | product Musts |
-| D9 | Hardening & launch | 1.4.2 | Performance and security hardening and the production cutover | Security review passed, data-residency review signed by Hana Sato, live to the pilot cohort | Marcus Webb | REQ-007 |
+| D9 | Hardening & launch | 1.4.2 | Performance and security hardening and the production cutover | Security review passed, data-residency review signed by Hana Sato, GA readiness reviews passed and the portal live to all customers at the cutover | Marcus Webb | REQ-007 |
 | D10 | Training & communications | 1.5.1 | Train-the-trainer for Support Operations and customer launch communications | All agents trained and launch communications sent | Priya Nair | REQ-008 |
 | D11 | Operational handover | 1.5.2 | Runbooks, alerting and on-call rota handed to Support Operations | Runbooks accepted and the on-call rota live for the 4-week warranty period | Priya Nair | REQ-009 |
 
@@ -60,7 +61,8 @@ or the back-office CRM.
 - **Outcomes:** accept, accept with conditions, or reject with reasons tied to a criterion.
 - **Rejections:** a failed criterion returns to the team as a defect; a new need is
   raised as a change request.
-- **Final acceptance:** Dana Okoro accepts the product at general availability (M6).
+- **Final acceptance:** Dana Okoro accepts the product at general availability (M6),
+  conditional on Priya Nair accepting the operational handover (D11) at hypercare exit.
 
 ## 5. Exclusions (out of scope)
 | Excluded item | Reason | Where it goes |
@@ -113,18 +115,18 @@ change the baseline or the version.
 |---|---|---|---|---|---|
 | M1 | D2 / all | Scope statement v1.0, RTM, playback notes | Priya Nair | Accepted | — |
 | M1 | D3 / REQ-001, REQ-002 | Usability round 1 and 2 reports | Ava Chen | Accepted | — |
-| M4 | D5 / REQ-001, REQ-002, REQ-006 | UAT-01, UAT-02; ACC-01 audit signed by Hana Sato | Priya Nair | Accepted | REQ-011 (Could) accepted separately if built |
-| M4 | D6 / REQ-004, REQ-006 | UAT-04; ACC-01 | Priya Nair | Accepted with conditions | 4 migrated articles rewritten by M5 (Carla Diaz); REQ-010 (Should) accepted separately when built |
+| M4 | D5 / REQ-001, REQ-002 | UAT-01, UAT-02 | Priya Nair | Accepted with conditions | REQ-006 at WCAG 2.2 AA (CR003) is built in sprint S7 and accepted after the ACC-01 audit, before GA; REQ-011 (Could) accepted separately if built |
+| M4 | D6 / REQ-004 | UAT-04 | Priya Nair | Accepted with conditions | 4 migrated articles rewritten by M5 (Carla Diaz); REQ-006 as for D5; REQ-010 (Should) accepted separately when built |
 | M4 | D8 / product Musts | Test summary: 0 open severity-1 or severity-2 defects; UAT sign-off | Priya Nair | Accepted | — |
-| M4 | D10 / REQ-008 | TRN-01 completion report | Priya Nair | Accepted | — |
-| M4 | D4 / REQ-003 | SIT-03 passed in staging; security review | Marcus Webb | Pending | Accept after the first production SSO logins in the pilot |
-| M4 | D9 / REQ-007 | SEC-02 data-flow review signed by Hana Sato; security review | Marcus Webb | Pending | Accept after the pilot cutover |
+| M4 | D4 / REQ-003 | SIT-03 passed in staging; security review | Marcus Webb | Pending | Accept after the first production SSO logins at GA (M6) |
+| M4 | D9 / REQ-007 | SEC-02 data-flow review signed by Hana Sato; security review | Marcus Webb | Pending | Hardening runs 2026-08-17 to 09-18; accept after the GA readiness reviews and the cutover (M6) |
+| M4 | D10 / REQ-008 | Training plan | Priya Nair | Pending | Training runs 2026-08-17 to 09-11; accept at the M6 go/no-go on TRN-01 |
 | M4 | D7 / REQ-005 | UAT-05 on test data | Priya Nair | Pending | Needs one closed month of pilot data (M5) |
 
 ## 10. Approval
 | Role | Name | Decision | Date |
 |---|---|---|---|
-| Sponsor | Dana Okoro | Approved v1.0; approved v1.1 | M1; M2 |
+| Sponsor | Dana Okoro | Approved v1.0; approved v1.1 | 2026-05-08; 2026-06-30 (with CR003) |
 | Project manager | Sam Lee | Agreed | M1 |
 | Product owner | Ava Chen | Agreed | M1 |
 | Benefit owner | Priya Nair | Agreed | M1 |

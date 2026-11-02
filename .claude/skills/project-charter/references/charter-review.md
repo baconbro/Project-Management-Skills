@@ -63,7 +63,10 @@ that the sponsor decides, followed by a charter re-issue.
 
 Helios: CR001 (live-chat widget) was deferred to phase 2 at the steering committee on
 2026-06-16 because live chat is outside the chartered scope; approving it would have needed a
-charter revision as well as the change request.
+charter revision as well as the change request. CR006 (cut the pilot cohort from 200 to 50)
+saves money and is LOW on cost, but it changes the chartered 200-customer pilot and the
+cancellation criterion that counts against it, so it is Dana Okoro's decision with a charter
+re-issue if approved, not the PM's (it was withdrawn: the pilot ran with the full cohort of 200).
 
 ## 4. Common defects found in review
 - A sponsor who never reads the charter: sign-off is a formality, so the first real decision

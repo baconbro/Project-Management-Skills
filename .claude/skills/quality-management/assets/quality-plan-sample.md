@@ -20,7 +20,7 @@ two ticket types by 50% within 6 months of launch (OBJ-1).
 
 | Floor (standard) | Source | Applies to | Evidence | Owner |
 |---|---|---|---|---|
-| WCAG 2.2 level AA | Hana Sato's accessibility policy; raised from 2.1 AA by CR003 | Every journey and knowledge-base page (REQ-006) | ACC-01 independent audit; DoD scan | Elena Rossi |
+| WCAG 2.2 level AA | Hana Sato's accessibility policy; raised from 2.1 AA by CR003 | Every journey and knowledge-base page (REQ-006) | ACC-01 independent audit, retested before GA after the CR003 uplift (sprint S7); DoD scan | Elena Rossi |
 | Data residency | Hana Sato's data-residency policy (constraint CON-3) | All customer personal data (REQ-007) | SEC-02 data-flow review signed by Hana Sato | Hana Sato |
 | No open high or critical security finding | Marcus Webb's security standard | Every release candidate | Penetration test and retest (HEL-151) | Marcus Webb |
 
@@ -28,12 +28,12 @@ two ticket types by 50% within 6 months of launch (OBJ-1).
 | Metric | Formula | Target | Data source | Frequency | Owner | Latest actual |
 |---|---|---|---|---|---|---|
 | Open defects by severity | Count of open defects per severity | 0 severity-1/2 at any gate | Defect log | Weekly and at each gate | Frank Müller | 2026-09-29: 0 / 0 / 3 / 0 open, 1 severity-4 deferred |
-| Defect removal efficiency | Found before release ÷ (found before + first 30 days after) × 100 | ≥ 90% | Defect log | Pilot + 30 days; GA + 30 days | Frank Müller | Pilot 75%, confirmed at pilot + 30 days on 2026-09-03 (audit QA-05); GA due 2026-11-02 |
+| Defect removal efficiency | Found before release ÷ (found before + first 30 days after) × 100 | ≥ 90% | Defect log | Pilot + 30 days; GA + 30 days | Frank Müller | Pilot 75%, confirmed at pilot + 30 days on 2026-09-07 (audit QA-05); GA due 2026-11-02 |
 | Escaped severity-1/2 defects | Severity-1/2 defects found after a release | 0 | Defect log | Weekly in the pilot and hypercare | Frank Müller | Pilot: 1 (DEF-008) |
 | First-pass acceptance | Stories accepted at their first review ÷ stories reviewed | ≥ 90% | Sprint review records | Every sprint | Ava Chen | S7–S10: 94% |
 | DoD compliance | Sampled done items meeting every DoD line ÷ sampled | 100% | Process audit | Monthly | Sam Lee | 7 of 9 at QA-03 (2026-07-10); scan now blocking in the pipeline |
 | Page performance | Share of pages loading within 2 s, and error rate, at the forecast launch peak | ≥ 95% within 2 s; errors under 0.1% | Load test (HEL-150) | Before G4 | Ben Adeyemi | Met on release candidate 2.0 |
-| Accessibility | Failures in the independent WCAG 2.2 AA audit | 0 | ACC-01 audit report | Before G2 and G4 | Elena Rossi | 0 on release candidate 2.0 |
+| Accessibility | Failures in the independent WCAG 2.2 AA audit | 0 | ACC-01 audit report | Audit before G2; retest before G4 | Elena Rossi | 0 on release candidate 2.0 |
 | Security | Open high or critical penetration-test findings | 0 | Retest report (HEL-151) | Before G4 | Marcus Webb | 0 |
 
 ## 3. Roles
@@ -75,7 +75,7 @@ Definition of Done: `definition-of-done-sample.md`, v1.2 of 2026-07-16.
 |---|---|---|---|---|---|
 | G0 Definition of Done | Item; every story, every sprint | Story met the definition of ready and is built | Every DoD v1.2 line checked | Pipeline run; DoD checklist on the story | Frank Müller verifies; Ava Chen accepts the story |
 | G1 Criteria ready | Milestone; M1 | Scope statement and RTM drafted | Every Must has a criterion that passes the SMART-style checks and a test id; DoD v1.0 agreed; this plan approved | RTM review record | Dana Okoro |
-| G2 Ready for UAT | Stage; before the M4 pilot | Pilot-scope stories meet the DoD; system and regression tests executed; 20 UAT agents booked (A3) | 0 open severity-1/2; every pilot Must's system test passed against the real identity provider; ACC-01 shows no failures; SEC-02 signed | Test summary; defect log; audit and review reports | Frank Müller |
+| G2 Ready for UAT | Stage; before the M4 pilot | Pilot-scope stories meet the DoD; system and regression tests executed; 20 UAT agents booked (A3) | 0 open severity-1/2; every pilot Must's system test passed against the real identity provider; ACC-01 shows no failures outside the CR003 uplift scheduled for sprint S7; SEC-02 signed | Test summary; defect log; audit and review reports | Frank Müller |
 | G3 UAT exit (pilot) | Stage; before the M4 pilot go/no-go | G2 passed; UAT scripts for UAT-01 to UAT-05 ready | Every UAT script passed; 0 open severity-1/2; each open severity-3 has a published workaround and a fix date; UAT signed | UAT sign-off; defect log | Priya Nair |
 | G4 GA quality gate | Milestone; before the M6 go/no-go | Release candidate 2.0 frozen; GA stories meet the DoD; regression suite green | 0 open severity-1/2; ≥ 95% of pages within 2 s and errors under 0.1% at forecast peak; penetration retest with no open high or critical finding; ACC-01 with no failures; GA UAT signed; pilot DRE reported with its QA actions closed | Defect report; load-test, retest and audit reports; UAT sign-off; audit log | Sam Lee, on Frank Müller's recommendation |
 
@@ -97,7 +97,7 @@ Release readiness: G4's evidence becomes go/no-go criteria TE1–TE3 and SE1–S
 | Process audit | QA | Last Friday of each month; a triggered audit after a major lapse or an escaped severity-1/2 replaces that month's audit | Sam Lee with a QA lead from another team | 1.1 |
 | System and regression testing | QC — test | Before G2 and G4 | Frank Müller | 1.4.1 |
 | UAT with 20 Support Operations agents | QC — test | 2026-07-28 to 2026-07-31 (pilot); 2026-09-21 to 2026-09-25 (GA) | Frank Müller; Priya Nair signs | 1.4.1 |
-| Independent WCAG 2.2 AA audit | QC — specialist | Before G2 and G4 | Elena Rossi | 1.4.2 |
+| Independent WCAG 2.2 AA audit | QC — specialist | Audit before G2; retest of the CR003 fixes before G4 | V04 accessibility audit firm (contract owner Frank Müller); Elena Rossi reviews the findings | 1.4.2 |
 | Penetration test and retest; load test at forecast peak | QC — specialist | Before G4 | Marcus Webb; Ben Adeyemi | 1.4.2 |
 | Gate reviews G1–G4 | QC — decision | 2026-05-08, 2026-07-28, 2026-07-31, 2026-09-29 | Approvers in section 6 | 1.1 |
 
@@ -121,7 +121,7 @@ rejected or out of scope unless an approved change request changed the criterion
 | Gate | Date | Evidence reviewed | Decision | Conditions or waivers | Approver |
 |---|---|---|---|---|---|
 | G1 | 2026-05-08 | RTM review: every Must has a criterion passing the checks and a test id; DoD v1.0 | Pass | — | Dana Okoro |
-| G2 | 2026-07-28 | Test summary: 0 open severity-1/2 after DEF-005 was fixed and retested; real-provider runs (ACT003); ACC-01 no failures; SEC-02 signed | Pass | — | Frank Müller |
+| G2 | 2026-07-28 | Test summary: 0 open severity-1/2 after DEF-005 was fixed and retested; real-provider runs (ACT003); ACC-01 no failures outside the CR003 uplift (HEL-142, HEL-143, sprint S7); SEC-02 signed | Pass | — | Frank Müller |
 | G3 | 2026-07-31 | UAT-01 to UAT-05 passed; 0 open severity-1/2; DEF-006 (four outdated articles) open with a workaround | Conditional pass | DEF-006 articles rewritten by M5 (Carla Diaz) | Priya Nair |
 | G4 | 2026-09-29 | 0 open severity-1/2; DEF-010 to DEF-012 open severity-3 with known-error workarounds; DEF-013 deferred; load test met; retest 0 high or critical; ACC-01 0 failures; GA UAT signed; pilot DRE 75% with QA-05 actions closed | Conditional pass | DEF-010 to DEF-012 fixed in hypercare patch 1 by 2026-10-08 (Ben Adeyemi), carried into the go/no-go as condition C2 | Sam Lee |
 

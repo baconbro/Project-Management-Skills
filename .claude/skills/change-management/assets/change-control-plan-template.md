@@ -41,10 +41,11 @@ Fill-in template: replace every `<placeholder>`. Guidance is in
 |---|---|---|
 | PM | LOW band, cost up to <amount> and up to <days> working days | <contingency up to the limit, or a saving> |
 | CCB | Above the PM limits, within the remaining contingency, no move of <key milestone> | <contingency> |
-| Sponsor | HIGH band, or management reserve or new budget, or a move of <key milestone>, or a change to an objective | <management reserve; requests new budget> |
+| Sponsor | HIGH band, or management reserve or new budget, or a move of <key milestone>, or a change to an objective, or any change that crosses a charter boundary (<in-scope outcome, milestone definition, cancellation criterion>) | <management reserve; requests new budget> |
 
 Pass the same limits to the scorer: `--pm-limit-cost <amount> --pm-limit-days <days>
---ccb-limit-cost <undrawn contingency> --reserve-cost <contingency>`.
+--ccb-limit-cost <undrawn contingency> --reserve-cost <contingency>`. The scorer routes on
+band, money and days only; the PM routes charter-boundary changes to the sponsor.
 
 ## 5. Cadence, emergency route and freezes
 - **CCB slot:** <day, time, length; held only when a request is pending>

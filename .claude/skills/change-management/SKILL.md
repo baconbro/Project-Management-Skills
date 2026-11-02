@@ -78,8 +78,10 @@ keeps the change log, and 60 support agents must move their customers to self-se
 2. **Constitute the CCB and set tolerances.** Name the chair (normally the sponsor), members,
    quorum and slot; set PM, CCB and sponsor tiers; define the emergency route and the change
    freezes before each release. Helios: PM up to $5,000 and 2 days from contingency; CCB on
-   Tuesdays above that within contingency; sponsor for HIGH impact, management reserve or a move
-   of M6. *Done: tolerances and routes agreed by the sponsor before the baseline freeze.*
+   Tuesdays above that within contingency; sponsor for HIGH impact, management reserve, a move
+   of M6 or any change that crosses a charter boundary (CR006 cuts the chartered 200-customer
+   pilot, so it goes to Dana Okoro although the scorer says PM). *Done: tolerances and routes
+   agreed by the sponsor before the baseline freeze.*
 3. **Freeze the baselines and announce the only door in.** At baseline approval (Helios v1.0,
    2026-05-08) record each baseline's version in section 1 of the change control plan and tell
    the team and stakeholders how to raise a change. *Done: versions recorded; everyone knows that change control is the only

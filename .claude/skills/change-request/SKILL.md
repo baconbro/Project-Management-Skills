@@ -52,7 +52,8 @@ customer logins is part of the Helios baseline; CR002 asks to extend it to partn
 - The current baselines (scope/WBS, schedule, cost with contingency and management reserve) to
   rate impact against, and the 1-5 anchors in `references/change-request-fields.md`.
 - The approval tolerances from `change-management` (Helios: the PM approves up to $5,000 and 2
-  days; larger changes go to the CCB; HIGH-impact ones to the sponsor).
+  days; larger changes go to the CCB; HIGH-impact ones, and any that cross a charter boundary,
+  to the sponsor).
 - Estimates in real units: cost value (+ adds, - saves) and schedule days; the affected tasks
   and whether they are on the critical path.
 
@@ -80,14 +81,16 @@ customer logins is part of the Helios baseline; CR002 asks to extend it to partn
    (HIGH >= 4.0, MEDIUM >= 2.5, else LOW) and the authority (PM / CCB / Sponsor), totals committed
    and pending cost value and days against the reserve, and flags bands that flip when one weight
    is halved or doubled. Helios: CR002 scores 3.40 MEDIUM (CCB), CR004 2.60 MEDIUM but
-   weight-sensitive, CR006 1.60 LOW (PM); committed + pending would draw $42,000 of the $40,000
-   contingency. *Done: the CR has a score, band, authority and margin, and the burden is known.*
+   weight-sensitive, CR006 1.60 LOW (script: PM; routed to the sponsor because it changes the
+   chartered pilot); committed + pending would draw $42,000 of the $40,000 contingency.
+   *Done: the CR has a score, band, authority and margin, and the burden is known.*
 6. **Lay out options and recommend one.** In sections 4-5 of
    `assets/change-request-template.md` compare at least "do nothing" and one alternative with
    pros, cons, cost and days, then give a clear recommendation and its conditions. *Done: at
    least two options and one recommended option with a reason.*
 7. **Route for decision and record it.** Take the CR to the authority named in step 5 through the
-   `change-management` process; complete section 6 of `assets/change-request-template.md` — the
+   `change-management` process, unless the change crosses a charter boundary, which goes to the
+   sponsor; complete section 6 of `assets/change-request-template.md` — the
    decision, decider and date, conditions, funding source (contingency reserve, management reserve
    or new budget), baselines to update and implementation owner — and update `status`,
    `decided_by` and `decision_date` in `assets/change-log.csv`. *Done: decision, decider, date,

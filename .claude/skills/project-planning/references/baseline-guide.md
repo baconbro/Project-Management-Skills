@@ -25,13 +25,18 @@ against. Where the reserves sit:
   baseline and inside BAC; the project manager draws it down.
 - **Management reserve** (unidentified risks, set by policy) sits **above** the baseline: part of
   the total budget, not of BAC, never planned as PV or earned as EV. The sponsor releases it,
-  only through change control, and the release raises BAC.
+  only through change control: a release for unplanned in-scope work raises BAC; a release
+  that funds an overrun on baselined work raises the funded budget but not BAC, so the cost
+  variance and CPI stay measured against the original BAC.
 - **Schedule reserve** is held once, visibly, before the milestone it protects — not spread
   into task durations.
 
 Helios: $460,000 work packages + $40,000 contingency = BAC $500,000; the $25,000 management
-reserve brings the total budget to $525,000; a 2.4-week schedule reserve sits before general
-availability.
+reserve brings the total budget to $525,000. Helios holds no schedule reserve: the 25-week
+schedule ends on 2026-09-25, leaving only the cutover week before general availability on
+2026-10-03. Dana Okoro accepted that gap at baseline (a 27% chance of GA readiness by week 26;
+the 2-week M6 tolerance covers about P75) with a crash of H, Hardening & launch, ready. An
+accepted gap is recorded in the baseline decision like any reserve.
 
 ## Baselines by approach
 - **Waterfall:** firm scope, schedule and cost baselines for the whole project, approved together.
@@ -72,7 +77,8 @@ availability.
 |---|---|---|
 | An approved change request | The affected baseline component gets a new version; variance history is kept | No |
 | Contingency drawn down for a risk that occurred | Moves budget between work packages inside BAC | No |
-| Management reserve released by the sponsor | BAC rises by the released amount, through change control | No, but it is a baseline change |
+| Management reserve released for unplanned in-scope work | BAC rises by the released amount, through change control | No, but it is a baseline change |
+| Management reserve released to fund an overrun | Funding rises; BAC and the variance history stay | No |
 | Rolling-wave: a planning package is detailed into work packages | Detail added inside the same control-account budget and dates | No |
 | The remaining plan is so different that variances against it mean nothing (a major scope or funding change, an approved recovery plan) | The whole remaining baseline is replaced | **Yes** |
 

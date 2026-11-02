@@ -38,8 +38,10 @@ make decision that later turns into a buy is a change, not a quiet substitution.
 | Customer sign-in, password reset, MFA (1.3.1) | Buy: extend the existing identity provider, IdentityCo, to customer logins | Commodity security capability; an in-house credential store is high risk; scope assumption A1 says the current licence tier covers customer logins |
 | SSO integration with the portal (1.3.1) | Make: Ben Adeyemi and Carla Diaz build it; IdentityCo supplies sandbox, configuration and support | The decision tree in `risk-management` gives build an EMV of -$77k against -$90k for the vendor's widget |
 | Cloud hosting | Buy: call-off under the existing enterprise agreement | No new sourcing; usage cost watched under risk R004 |
-| Independent WCAG 2.2 AA audit (CR003) | Buy: $4,000 purchase order | Independence matters; one-off specialist work |
 | Portal UI, knowledge base, reporting | Make | Core to the 50% ticket-reduction benefit; skills in the team |
+
+Added in delivery: once CR003 was approved (2026-06-30), an independent WCAG 2.2 AA audit was
+bought on a $4,000 purchase order (one quote, below the $10,000 threshold).
 
 ## 2. Contract types and who carries the cost risk
 ```

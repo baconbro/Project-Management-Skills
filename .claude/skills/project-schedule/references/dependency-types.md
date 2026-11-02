@@ -39,12 +39,12 @@ task is tied:
 ## Encoding rules for the FS-only tool
 | Relationship | Encode as explicit FS tasks | Helios example rows (`id,name,duration,predecessors`) |
 |---|---|---|
-| FS + lag *n* | a **lag task** of duration *n* between the two; zero resources, named "Lag: ..." | `L1,Lag: vendor test tenant,2,C` and `G,System & UAT testing,4,L1;E;F` |
-| FS − lead *n* (overlap) | **split the predecessor** into P1 (duration − *n*) and P2 (*n*); the successor depends on P1; P2 keeps the old successors | `D1,Self-service UI (core),3,B` · `D2,Self-service UI (polish),1,D1` · `F,Reporting & analytics,2,D1` · `G,...,4,C;E;D2;F` |
-| SS + lag *n* | split the predecessor into P1 (first *n*) and P2 (rest); the successor depends on P1 | `B1,UX design (structure),1,A` · `B2,UX design (prototype),1,B1` · `E,Knowledge base,3,B1` · `C,...,5,B2` · `D,...,4,B2` |
-| FF + lag *n* | split the successor into S1 (all but the last *n*) and S2 (last *n*); S2 depends on the predecessor and on S1 | `I1,Training material,0.5,G` · `I2,Training delivery,0.5,I1;H` · `J,Operational handover,1,H;I2` |
+| FS + lag *n* | a **lag task** of duration *n* between the two; zero resources, named "Lag: ..." | `L1,Lag: vendor test tenant,2,C` and `G,System & UAT testing,4,L1;D;E;F` |
+| FS − lead *n* (overlap) | **split the predecessor** into P1 (duration − *n*) and P2 (*n*); the successor depends on P1; P2 keeps the old successors | `G1,System & UAT testing (to pilot launch),3,C;D;E;F` · `G2,System & UAT testing (stabilisation),1,G1` · `I,Training & communications,4,G1` · `H,...,5,G2` |
+| SS + lag *n* | split the predecessor into P1 (first *n*) and P2 (rest); the successor depends on P1 | `B1,UX design (structure),1,A` · `B2,UX design (prototype),1,B1` · `E,Knowledge base,9,B1` · `C,...,9,B2` · `D,...,10,B2` · `F,...,9,B2` |
+| FF + lag *n* | split the successor into S1 (all but the last *n*) and S2 (last *n*); S2 depends on the predecessor and on S1 | `I1,Training material,3,G` · `I2,Training delivery,1,I1;H` · `J,Operational handover,1,H;I2` |
 | SF | add a zero-duration **start milestone** for the predecessor; the successor's final part depends on it | `M5,Portal go-live,0,H` · `K2,Close manual reset desk,0.5,K1;M5` |
-| Milestone or imposed date | a zero-duration task; compare its computed date with the imposed one (SKILL.md step 5, `--target`) | `M4,MVP live to pilot,0,H` |
+| Milestone or imposed date | a zero-duration task; compare its computed date with the imposed one (SKILL.md step 5, `--target`) | `G1,System test & pilot UAT,3,C;D;E;F` · `M4,MVP live to pilot,0,G1` · `G2,Pilot stabilisation,1,M4` |
 
 The splits keep the effort-to-duration link intact (each part is estimated on its own), show
 up as separate bars in `--gantt`, and let the tool report float for each part. Give lag tasks
@@ -54,9 +54,10 @@ no resource so the capacity check in `resource-management` ignores them.
 - **Mandatory (hard logic):** inherent in the work — G *System & UAT testing* cannot start
   before the code it tests exists. These cannot be reordered.
 - **Discretionary (soft logic):** a preferred sequence the team chose, not a physical
-  necessity — Helios runs F *Reporting & analytics* after D *Self-service UI* because the
-  same engineers do both. Discretionary links *can* be re-sequenced or overlapped, and are
-  the first place to look when fast-tracking.
+  necessity — Helios starts C, D, E and F only when the whole prototype (B) is agreed at
+  M1, although the build could start on the agreed page structure (the SS row above).
+  Discretionary links *can* be re-sequenced or overlapped, and are the first place to look
+  when fast-tracking.
 - **External:** outside the project's control — the identity-provider sandbox for C
   (risk R001), legal sign-off inside H. Model the delivery as a milestone the task depends
   on, and track it in `risk-register` as well as in the schedule.

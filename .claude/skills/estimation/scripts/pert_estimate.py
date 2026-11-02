@@ -15,9 +15,13 @@ INPUT COLUMNS / KEYS  (case-insensitive; extra columns are carried or ignored)
     most_likely   most-likely value (M)                      aliases: m, likely, most likely, mostlikely, ml, mode (required)
     pessimistic   worst-case value (P)                       aliases: p, worst, max, high     (required)
     technique, assumptions, estimators, actual               basis-of-estimate columns; carried, not used by the math
-  Values must be finite numbers >= 0 with O <= M <= P. '$', ',', EUR/GBP signs and a trailing
-  '%' are stripped ("80,000" -> 80000, "$100" -> 100, "40%" -> 40). One unit per worksheet
+  Values must be finite numbers >= 0 with O <= M <= P. '$', EUR/GBP signs and a trailing '%' are
+  stripped ("$100" -> 100, "40%" -> 40); ',' is a thousands separator before groups of three digits
+  ("80,000" -> 80000) and a decimal comma before one or two digits ("2,5" -> 2.5); any other comma
+  ("1.000,50") is rejected as ambiguous. One unit per worksheet
   (mixed units are an error); --unit labels the totals when there is no unit column.
+  Ids from an id column must be unique (case-insensitive): a repeated id is an error, never
+  counted twice in a --ids chain.
   CSV delimiter is auto-detected (, ; tab |); a UTF-8 BOM and CRLF line ends are tolerated.
   JSON is a list of objects or {"items": [...]}; files ending in .json parse as JSON
   automatically, otherwise pass --json (always needed for JSON on stdin).
@@ -46,7 +50,7 @@ EXIT CODES   0 success  -  2 bad input, bad option or internal error ("error: ..
 EXAMPLES
   python .claude/skills/estimation/scripts/pert_estimate.py .claude/skills/estimation/assets/estimation-worksheet-sample.csv
   python .claude/skills/estimation/scripts/pert_estimate.py .claude/skills/estimation/assets/estimation-worksheet-sample.csv --confidence P80 --simulate 20000 --seed 42
-  python .claude/skills/estimation/scripts/pert_estimate.py .claude/skills/estimation/assets/duration-worksheet-sample.csv --ids A,B,D,F,G,H,J
+  python .claude/skills/estimation/scripts/pert_estimate.py .claude/skills/estimation/assets/duration-worksheet-sample.csv --ids A,B,D,G,H,J
   python .claude/skills/estimation/scripts/pert_estimate.py items.json --json --format json
   cat worksheet.csv | python .claude/skills/estimation/scripts/pert_estimate.py - --format csv > estimates.csv
 """
@@ -169,14 +173,28 @@ def require_columns(headers, groups):
         raise ValueError(f"missing column(s): {missing}; found headers: {[h for h in headers if h]}")
 
 
+# ',' before one or two trailing digits is a decimal comma ('2,5', '37,50'); before groups of three
+# digits it is a thousands separator ('1,000', '12,345.67'); any other comma ('1.000,50') is ambiguous.
+DECIMAL_COMMA_RE = re.compile(r"[-+]?\d+,\d{1,2}")
+THOUSANDS_RE = re.compile(r"[-+]?\d{1,3}(?:,\d{3})+(?:\.\d+)?")
+
+
 def _num(raw, where, minimum=None, maximum=None, integer=False):
-    """Parse a number tolerant of '$', ',', '€', '£', whitespace and a trailing '%' (which is stripped, value unchanged)."""
+    """Parse a number tolerant of '$', '€', '£', whitespace, a trailing '%' (stripped, value unchanged)
+    and commas: '1,000' -> 1000 (thousands), '2,5' -> 2.5 (decimal comma), '1.000,50' -> error."""
     if isinstance(raw, bool):
         raise ValueError(f"{where}: {raw!r} is a boolean, not a number")
     s = str(raw).strip()
     if s.endswith("%"):
         s = s[:-1]
-    s = s.replace(",", "").replace("$", "").replace("€", "").replace("£", "").strip()
+    s = s.replace("$", "").replace("€", "").replace("£", "").strip()
+    if "," in s:
+        if DECIMAL_COMMA_RE.fullmatch(s):
+            s = s.replace(",", ".")
+        elif THOUSANDS_RE.fullmatch(s):
+            s = s.replace(",", "")
+        else:
+            raise ValueError(f"{where}: {raw!r} is ambiguous; use '.' as the decimal point and ',' only for thousands")
     try:
         v = float(s)
     except ValueError:
@@ -235,15 +253,21 @@ def _cell(row, aliases, label, where):
 
 def parse_items(rows):
     """Turn worksheet rows into validated item dicts with E, std and var."""
-    items = []
+    items, first_row = [], {}
     for i, row in enumerate(rows, start=1):
         ident = _get(row, *ID_ALIASES)
+        from_id_column = ident is not None
         name = _sanitize(_get(row, *TASK_ALIASES, default=""))
         if ident is None:
             ident = name or f"T{i:03d}"
         ident = _sanitize(ident)
         if name == ident:
             name = ""
+        if from_id_column:
+            key = ident.lower()
+            if key in first_row:
+                raise ValueError(f"row {i}: duplicate id '{ident}' (first used in row {first_row[key]})")
+            first_row[key] = i
         where = f"row {i} ({ident})"
         o = _cell(row, O_ALIASES, "optimistic", where)
         m = _cell(row, M_ALIASES, "most_likely", where)
@@ -506,7 +530,7 @@ def _rounded(obj):
 
 
 def render_json(result):
-    return json.dumps(_rounded(result), indent=2, ensure_ascii=False)
+    return json.dumps(_rounded(result), indent=2, ensure_ascii=False, allow_nan=False)
 
 
 RENDERERS = {"table": render_table, "json": render_json, "csv": render_csv, "md": render_md}

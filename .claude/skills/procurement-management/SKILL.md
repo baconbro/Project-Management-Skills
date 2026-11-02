@@ -43,8 +43,9 @@ your legal and procurement functions (Helios: Hana Sato, Legal & Compliance).
 - A contract must be closed: deliverables accepted, final payment, warranty, access and data.
 - Do NOT use this to build the cost baseline or track earned value — use `cost-management`;
   this skill supplies the contract values and the approved invoices.
-- Do NOT use this to identify and score vendor risks — use `risk-management`; this skill
-  writes the chosen responses into contract terms.
+- Do NOT use this to identify vendor risks or choose their responses — use `risk-management`;
+  log and score them in `risk-register`; this skill writes the chosen responses into contract
+  terms.
 - Do NOT use this to staff the project with your own people or check their capacity — use
   `resource-management`.
 - Do NOT use this to decide whether a change to the baseline is approved — use
@@ -81,10 +82,10 @@ cannot buy what you cannot describe.
    date and the lead time, and log it as `planned` in `assets/vendor-register-template.csv`.
    Helios: buy customer sign-in on the existing identity provider, build the integration
    in-house (the `risk-management` decision tree favours build at an EMV of -$77k against
-   -$90k for the vendor's widget), call off hosting under the enterprise agreement, and buy a
-   $4,000 accessibility audit for CR003 on a purchase order. *Done: every candidate work
-   package has a recorded decision and reason, and every buy has a route, an owner and a
-   need-by date in the register.*
+   -$90k for the vendor's widget), call off hosting under the enterprise agreement, and, once
+   CR003 was approved in delivery, buy a $4,000 accessibility audit on a purchase order.
+   *Done: every candidate work package has a recorded decision and reason, and every buy has
+   a route, an owner and a need-by date in the register.*
 2. **Write the statement of work.** Fill `assets/statement-of-work-template.md`: objectives,
    in-scope and excluded work, deliverables each with an acceptance criterion, a named
    acceptor and a due date, service levels with credits, both parties' obligations (what you
@@ -126,8 +127,8 @@ cannot buy what you cannot describe.
    work starts. Debrief unsuccessful bidders on their own scores. Pass the contract value to
    `cost-management` as a commitment, the vendor's contacts and escalation path to
    `stakeholder-management`, contract milestones to the schedule, and residual vendor risks
-   to `risk-management`; set the vendor's row in your copy of
-   `assets/vendor-register-template.csv` to `awarded`. *Done: a signed contract and a
+   to `risk-register` (responses chosen with `risk-management`); set the vendor's row in your
+   copy of `assets/vendor-register-template.csv` to `awarded`. *Done: a signed contract and a
    purchase order exist, and the cost baseline, schedule, stakeholder register and risk
    register all reflect them.*
 7. **Onboard the vendor.** Name one onboarding owner and work through

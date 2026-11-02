@@ -53,8 +53,9 @@ it: record the consequence in `risk-register` or the `project-delivery` issue lo
       each residual is a recorded sponsor decision.
 - [ ] Activities are sequenced, the critical path is computed (not guessed) and the
       near-critical tasks are named. See `project-schedule`.
-- [ ] Every charter milestone has a baseline date on or before its charter date (Helios: M4
-      MVP live to pilot, M6 general availability).
+- [ ] Every charter milestone has a baseline date on or before its charter date (Helios: M1
+      Discovery complete 2026-05-08, M4 MVP live to pilot 2026-08-07, M6 general
+      availability 2026-10-03).
 - [ ] Key-person dependencies have a named cover and a risk in the register.
 
 ## Risk and reserves (step 7)
@@ -64,7 +65,8 @@ it: record the consequence in `risk-register` or the `project-delivery` issue lo
       threat has an owner, a response and a trigger.
 - [ ] Response actions that cost time or money are in the WBS, estimates and schedule.
 - [ ] The contingency reserve is sized from the register at a stated confidence; the
-      management reserve is set by policy; one schedule reserve is held, not spread into tasks.
+      management reserve is set by policy; one schedule reserve is held, not spread into tasks,
+      or the sponsor has accepted its absence at a stated probability (Helios: 27% by week 26).
 
 ## Quality (step 8)
 - [ ] The definition of done, acceptance criteria and quality gates with entry and exit

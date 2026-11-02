@@ -52,9 +52,9 @@ two-week sprints inside fixed milestones, run hybrid.
   retrospective opens; a wider retrospective per release. A theme that recurs in three
   retrospectives is promoted to an organisational lesson.
 - **Hybrid:** team retrospectives inside the sprints plus milestone reviews and post-mortems
-  with stakeholders. Helios: sprint review and retrospective every second Friday, a post-mortem
-  on the two-week SSO slip on 2026-07-22, the M4 milestone review on 2026-08-11 and the
-  post-project review on 2026-11-04.
+  with stakeholders. Helios: a sprint review, then a team-only retrospective, every second
+  Friday; a post-mortem on the two-week SSO slip on 2026-07-22; the M4 milestone review on
+  2026-08-11; and the post-project review on 2026-11-04.
 
 ## Inputs you need
 - The review type, the period covered, and the participants: the people who did the work, plus

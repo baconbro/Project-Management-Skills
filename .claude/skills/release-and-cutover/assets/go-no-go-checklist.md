@@ -116,7 +116,7 @@ plan is the sample in `assets/hypercare-plan-template.md`.
 | TE2 | Test and quality | UAT signed off by Priya Nair after testing with 20 Support Operations agents | Frank Müller | UAT sign-off | Y | Met |
 | TE3 | Test and quality | Load test at forecast launch peak: 95% of pages under 2 s, error rate under 0.1% (HEL-150) | Ben Adeyemi | Load-test report | Y | Met |
 | SE1 | Security and compliance | Penetration retest shows no open high or critical finding (HEL-151) | Marcus Webb | Retest report | Y | Met |
-| SE2 | Security and compliance | Privacy notice and terms updated for SSO; legal sign-off; WCAG 2.2 AA audit passed (CR003) | Hana Sato | Signed memo; accessibility audit by Elena Rossi | Y | Met |
+| SE2 | Security and compliance | Privacy notice and terms updated for SSO; legal sign-off; WCAG 2.2 AA audit passed (CR003) | Hana Sato | Signed memo; WCAG 2.2 AA audit report from the V04 audit firm | Y | Met |
 | DA1 | Data | 150 knowledge-base articles migrated and reviewed; top 50 questions answered; snapshot restore tested | Carla Diaz | Content audit; restore test in rehearsal | N | Met |
 | OP1 | Operations | Runbook and alerting accepted (HEL-155); on-call rota published for the 4-week hypercare | Ben Adeyemi | Service-desk sign-off of the runbook review | Y | Met |
 | OP2 | Operations | Synthetic probes, dashboards and paging live for all three journeys | Ben Adeyemi | Paging test; probe list | Y | Waived (W1) |

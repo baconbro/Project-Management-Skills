@@ -56,7 +56,8 @@ OPTIONS
   --strict        also fail (exit 1) when any open item is overdue
   --format table|json|csv
                   table (default, aligned text), json (the full report), csv (the input columns
-                  plus group, days_to_due, days_open, attention, problems; re-importable)
+                  plus group, days_to_due, days_open, attention, problems; re-importable: those
+                  computed columns are recomputed, so a second run gives the same file)
 
 EXIT CODES
   0  no problems (overdue items alone do not fail unless --strict)
@@ -508,11 +509,13 @@ def render_json(items, report, problems, warnings, args, as_of, risk_summary, st
 def render_csv(items, headers):
     buf = io.StringIO()
     extra = ["group", "days_to_due", "days_open", "attention", "problems"]
+    # computed columns already in the input (a re-imported csv output) are dropped and written fresh
+    base = [h for h in headers if h and h.strip().lower() not in extra]
     w = csv.writer(buf, lineterminator="\n")
-    w.writerow([h for h in headers if h] + [e for e in extra if e not in headers])
+    w.writerow(base + extra)
     for i in items:
         group = "open" if i["open"] else ("done" if i["done"] else "unknown")
-        w.writerow([i["raw"].get(h, "") for h in headers if h] + [
+        w.writerow([i["raw"].get(h, "") for h in base] + [
             group, "" if i["days_to_due"] is None else i["days_to_due"],
             "" if i["days_open"] is None else i["days_open"], ";".join(i["attention"]), "; ".join(i["problems"])])
     return buf.getvalue().rstrip("\n")

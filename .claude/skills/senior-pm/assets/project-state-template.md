@@ -23,8 +23,10 @@ Context (one line each):
 ## 2. Health against the baseline
 
 Thresholds (from `status-report`): GREEN when CPI and SPI are both >= 0.95, RED when either
-is < 0.85, else AMBER. The overall RAG is no greener than the worst material dimension. With
-no baseline, every dimension is "unknown — no baseline" and that is the top gap.
+is < 0.85, else AMBER. Rate scope, quality and risk with the per-dimension table in
+`.claude/skills/status-report/references/rag-criteria.md` §3. The overall RAG is no greener
+than the worst material dimension. With no baseline, every dimension is "unknown — no
+baseline" and that is the top gap.
 
 | Dimension | Baseline (approved) | Position now / forecast | Measure | RAG | Source |
 |---|---|---|---|---|---|
@@ -37,9 +39,9 @@ no baseline, every dimension is "unknown — no baseline" and that is the top ga
 Helper commands (run from the repository root on your own files):
 - Earned value: `python .claude/skills/cost-management/scripts/health_check.py <your-evm.csv>`
 - Velocity and release outlook: `python .claude/skills/agile-delivery/scripts/velocity_forecast.py <your-sprint-history.csv> --sprints-left <N>`
-- Risk exposure: `python .claude/skills/risk-register/scripts/risk_score.py <your-risk-register.csv>`
+- Risk exposure: `python .claude/skills/risk-register/scripts/risk_score.py <your-risk-register.csv> --bac <BAC>`
 - Open, overdue and escalated items: `python .claude/skills/project-delivery/scripts/issue_log_check.py <your-issue-log.csv> --as-of <YYYY-MM-DD>`
-- Change burden against the contingency: `python .claude/skills/change-request/scripts/change_impact.py <your-change-log.csv> --reserve-cost <contingency>`
+- Change burden against the contingency: `python .claude/skills/change-request/scripts/change_impact.py <your-change-log.csv> --reserve-cost <contingency> --pm-limit-cost <PM cost limit> --pm-limit-days <PM day limit>`
 
 ## 3. Artifact checklist by stage
 

@@ -126,18 +126,20 @@ facts the next project needs.
 |---|---|---|---|
 | Week 5 | IdentityCo contract signed; sandbox requested only now; no onboarding owner | Vendor register V01 | No decision was made: a gap |
 | Week 6 (2026-05-11) | 1.3.1 starts with sprint S1; no sandbox access yet | Sprint history; schedule | Start against documentation only |
+| 2026-06-05 | M2 close: 1.3.1 RED (CPI 0.78, SPI 0.70), reported as AMBER | RAG history | Report AMBER only (see LL002) |
 | 2026-06-12 | Sandbox goes down; R001 occurs; issue I001 opened | Issue log | Report AMBER only (see LL002) |
 | 2026-06-16 | Plan sprint S4 around testing against a stub (decided during S3) | DEC001 | Sound given the information |
 | 2026-06-22 | Identity-provider stub live in test | ACT002 | — |
 | 2026-06-25 | Recovery plan agreed; $880 delay credit claimed | ACT001 | — |
-| 2026-06-26 | 1.3.1 turns RED; escalated as DEC002 | Communication review log | Sponsor first told now |
+| 2026-06-26 | 1.3.1 (RED since the M2 close) escalated as DEC002 | Issue log (DEC002) | Sponsor first told now |
 | 2026-07-06 | Sandbox restored | Recovery plan | — |
 | 2026-07-17 | SSO working in test, two weeks late | Earned-value milestone | — |
 
 Contributing factors: no onboarding owner (in control), no test fallback (in control), the
-vendor outage (vendor's control, managed under the contract), a RAG rule that told the sponsor
-only at RED (in control). Went well: the stub decision kept S4 on its goal; the service level
-in the contract gave an immediate remedy. Actions: LL001 (prevent) and LL002 (prevent).
+vendor outage (vendor's control, managed under the contract), a weekly status that rated
+dimensions only, so 1.3.1's RED at the M2 close never reached the sponsor (in control). Went
+well: the stub decision kept S4 on its goal; the service level in the contract gave an
+immediate remedy. Actions: LL001 (prevent) and LL002 (prevent).
 
 ## Running the session
 Facilitation mechanics (timebox, parking lot, reading actions back) are in `meeting-management`.

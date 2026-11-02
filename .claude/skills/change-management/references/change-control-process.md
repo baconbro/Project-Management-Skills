@@ -70,8 +70,9 @@ anyone  change  5 impact  PM / CCB /  requester +    baseline      PM checks eve
 | **Request more information** | The assessment cannot support a decision yet | The specific questions, who answers each, and the return date (normally the next CCB slot) | back to `Under assessment` |
 
 Helios: CR003 (WCAG 2.2 AA uplift) approved with conditions by the CCB on 2026-06-30, $12,000
-from contingency; CR005 (swap analytics vendor) rejected by the CCB on 2026-07-07 because it
-moved the critical Reporting & analytics task 5 days for no gain against the objective; CR001
+from contingency; CR005 (swap analytics vendor) rejected by the CCB on 2026-07-07 because its 5
+days on Reporting & analytics would use all of that task's float for no gain against the
+objective; CR001
 (live-chat widget, $60,000, more than the whole contingency) deferred to phase 2 by Dana Okoro on
 2026-06-16; CR002 (extend SSO to partner logins) sent back on 2026-07-14 for IdentityCo's quote
 and Marcus Webb's security view, so it stays `Under assessment`.
@@ -130,22 +131,24 @@ the tolerances so routine changes flow and only material ones reach the board.
 ## Approval tolerances
 | Authority | Decides | Helios |
 |---|---|---|
-| PM | LOW impact band and within the PM limits, funded from contingency or a saving | Up to $5,000 and 2 working days (inclusive); CR006 |
+| PM | LOW impact band and within the PM limits, funded from contingency or a saving | Up to $5,000 and 2 working days (inclusive) |
 | CCB | Everything above the PM limits that the remaining contingency can fund, with no move of general availability | CR002-CR005 |
-| Sponsor | HIGH band; management reserve or new budget; a move of the GA milestone (M6); a change to an objective or benefit | CR001 |
+| Sponsor | HIGH band; management reserve or new budget; a move of the GA milestone (M6); a change to an objective or benefit; or any change that crosses a charter boundary (an in-scope outcome, a fixed milestone's definition such as M4's 200-customer pilot, a cancellation criterion) or a sponsor-owned constraint; a charter re-issue follows | CR001; CR006 (pilot cohort 200 → 50: LOW and within the PM's money limits, but it changes the chartered pilot) |
 
 Helios in one line: the PM approves changes up to $5,000 and 2 days within contingency, larger
-ones go to the CCB, and HIGH-impact ones, any management-reserve release and any move of M6 go
-to the sponsor. Give the same numbers to the scorer so its routing matches the plan, setting
-`--ccb-limit-cost` to the contingency still undrawn ($40,000 at baseline, $28,000 after CR003):
+ones go to the CCB, and HIGH-impact ones, any management-reserve release, any move of M6 and any
+change that crosses a charter boundary go to the sponsor. Give the same numbers to the scorer
+so its routing matches the plan, setting `--ccb-limit-cost` to the contingency still undrawn
+($40,000 at baseline, $28,000 after CR003):
 
 ```bash
 python .claude/skills/change-request/scripts/change_impact.py .claude/skills/change-request/assets/change-log.csv --pm-limit-cost 5000 --pm-limit-days 2 --ccb-limit-cost 28000 --reserve-cost 40000
 ```
 
 The scorer routes on impact band, money and days only. The PM applies the other sponsor
-triggers (management reserve, a move of M6, a change to an objective) when routing, and a
-request may always be escalated a tier, never routed down one.
+triggers (management reserve, a move of M6, a change to an objective, a charter boundary) when
+routing, and a request may always be escalated a tier, never routed down one: the scorer sends
+CR006 to the PM, but it cuts the chartered pilot cohort, so it goes to Dana Okoro.
 
 ## Emergency route and change freezes
 - **Emergency route:** for a severity-1 or severity-2 production fix, or a change needed now to
@@ -196,7 +199,9 @@ approved changes and the change burden in the next `status-report`.
 ## Approved change or re-baseline?
 An approved CR gives the affected baseline components a new version and keeps the variance
 history; it is not a re-baseline. Drawing contingency moves budget inside BAC; releasing
-management reserve raises BAC through change control. Re-baseline (replace the whole remaining
+management reserve for unplanned in-scope work raises BAC through change control, while
+releasing it to fund an overrun on baselined work raises the funded budget but not BAC, so the
+cost variance stays visible. Re-baseline (replace the whole remaining
 baseline, with the sponsor's approval, keeping the old snapshot) only when the remaining plan is
 so different that variances against it mean nothing. The test and the procedure are in
 `.claude/skills/project-planning/references/baseline-guide.md`. Helios: CR003 was an approved

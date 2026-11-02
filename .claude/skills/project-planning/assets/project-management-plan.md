@@ -68,8 +68,9 @@ See `procurement-management`. Every lead time appears in section 7, every price 
 | <milestone> | <date> | <date> | <weeks> |
 
 - Critical path: <task chain> = <duration>; near-critical: <tasks with little float>.
-- Schedule reserve: <amount> at <P80 or chosen confidence>, held once before <milestone> —
-  see `project-schedule`.
+- Schedule reserve: <amount> at <P80 or chosen confidence>, held once before <milestone>, or
+  <the probability of meeting the date that the sponsor accepted without one> — see
+  `project-schedule`.
 - Agile: sprint length <n weeks>, sprints to release <n>, forecast range <optimistic / likely /
   pessimistic> — see `agile-delivery`.
 

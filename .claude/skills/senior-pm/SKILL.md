@@ -86,8 +86,10 @@ desired outcome at all, start at `project-initiation`.
    with the evidence that placed it and the missing artifacts listed.*
 3. **Read health against the baseline.** Rate scope, schedule, cost and risk separately with
    the `status-report` thresholds: GREEN when CPI and SPI are both ≥ 0.95, RED when either is
-   < 0.85, else AMBER; scope AMBER while change requests are pending; risk RED when a HIGH
-   risk has no owner or response. Roll up no greener than the worst material dimension. If
+   < 0.85, else AMBER; rate scope, quality and risk with the per-dimension table in
+   `.claude/skills/status-report/references/rag-criteria.md` §3. A HIGH risk with no owner or
+   response is a governance gap (`risk_score.py --check` fails), not a colour. Roll up no
+   greener than the worst material dimension. If
    the user has PV/EV/AC, run
    `python .claude/skills/cost-management/scripts/health_check.py <evm.csv>`
    (Helios sample: `python .claude/skills/cost-management/scripts/health_check.py .claude/skills/cost-management/assets/evm-snapshot.csv`
@@ -109,9 +111,9 @@ desired outcome at all, start at `project-initiation`.
    | "Is my project on track?" (running, no baseline) | `project-delivery` | Build the one-day interim baseline; sponsor approves it |
    | "Is my project on track?" (not started, no baseline) | `project-planning` | Baseline scope, schedule and cost |
    | "Log or escalate this problem" (happening now) | `project-delivery` | Log it with one owner and due date; escalate past the owner's authority |
-   | "We are always late" | `project-schedule`, then `cost-management` | Find the critical path; read SPI and the forecast |
+   | "We are always late" | `project-schedule`, then `estimation` | Find the critical path and float; re-estimate the drivers at P80 |
    | "We are over budget" | `cost-management` | Run the earned-value check; size the EAC |
-   | "Scope keeps growing" | `change-management`, then `scope-and-requirements` | Set the change threshold; re-baseline scope |
+   | "Scope keeps growing" | `change-management`, then `scope-and-requirements` | Baseline the scope statement if none exists; set the change threshold and CCB; put every unapproved addition through `change-request` |
    | "Is this in scope?" | `scope-and-requirements` | Check the signed in/out list; route a new item to `change-request` |
    | "My vendor is late" | `procurement-management` | Apply the contract remedies; log the issue |
    | "Should we build or buy?" / "write an RFP or SOW" | `procurement-management` | Decide make-or-buy per work package; write the SOW |
@@ -120,7 +122,7 @@ desired outcome at all, start at `project-initiation`.
    | "Who is overloaded?" | `resource-management` | Run the capacity check; level the peaks |
    | "Nobody knows who decides" | `raci-matrix` | One Accountable per deliverable and decision |
    | "The sponsor has gone quiet" | `stakeholder-management` | Re-map power/interest; plan a 1:1 |
-   | "Something big might go wrong" | `risk-management` | Score it; choose a response; check the reserve |
+   | "Something big might go wrong" | `risk-management`, then `risk-register` | Score it; choose a response; check the reserve |
 
    *Done: the user has one or two named skills, a first action and the artifact to expect.*
 6. **Hand off.** Give the filled canvas back so the next conversation starts from it; offer

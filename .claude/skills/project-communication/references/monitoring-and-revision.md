@@ -36,8 +36,8 @@ can support a strong one but never replace it.
 - **On a trigger, at once:**
   - a stakeholder is re-rated, added or changes role (Helios: Marketing re-rated at M4 starts
     the GA launch row);
-  - a dimension or a work package turns RED (Helios: SSO RED in month 3 tightened Finance's
-    forecast flag);
+  - a dimension or a work package turns RED (Helios: SSO, RED since the M2 close and escalated
+    as DEC002 in month 3, tightened Finance's forecast flag);
   - an approved change touches an audience, or a proposed one would (a smaller pilot cohort
     changes who is invited and what they are told);
   - a measure misses its target twice in a row;
@@ -77,11 +77,12 @@ can support a strong one but never replace it.
 - **Monthly sample (2026-06-05):** only 41% of support agents knew what would change for them —
   not landing — because no message yet covered redeployment; briefings were booked for the week
   the redeployment plan is agreed, and huddle questions now feed an FAQ.
-- **Trigger (2026-06-26):** SSO turned RED; Finance received the forecast flag two weeks before
-  the 2026-07-14 steering decision, and the vendor review moved to the week before each steering.
+- **Trigger (2026-06-30):** SSO escalated as DEC002; Finance received the forecast flag two weeks
+  before the 2026-07-14 steering decision, and the vendor review moved to the week before each
+  steering.
 - **Monthly sample (2026-07-03):** agents' pulse up to 58% (partly landing); six pilot customers
   joined the usability test.
-- **M4 (2026-08-07):** pilot problems arrived as support tickets rather than through the feedback
+- **M4 review (2026-08-11):** pilot problems arrived as support tickets rather than through the feedback
   button, so pilot-tagged tickets joined the feedback channel; Marketing's GA row started.
 - **Trigger (2026-09-04):** four weeks before the 2026-10-03 cutover, the GA release row (C18) was
   added with Priya Nair as owner, and its timed steps went into the `release-and-cutover` runbook.

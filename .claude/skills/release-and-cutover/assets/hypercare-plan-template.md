@@ -105,7 +105,7 @@ this catalog), as agreed before the go/no-go of 2026-09-30. Exit status is shown
 | Field | Value |
 |---|---|
 | Release and go-live | Release 2.0, general availability (M6), go-live Saturday 2026-10-03 09:00 |
-| Hypercare period | 2026-10-03 to Friday 2026-10-30 (4 weeks, the warranty period in WBS 1.5.2) |
+| Hypercare period | 2026-10-03 to Friday 2026-10-30 (4 weeks, the warranty period in the acceptance criterion of WBS 1.5.2; Priya Nair accepts D11 Operational handover at exit) |
 | Extension rule | Extend week by week while any exit criterion fails; Sam Lee and Priya Nair decide at the Friday exit check |
 | Hypercare lead | Sam Lee, project manager |
 | Operations owner | Priya Nair, Head of Support Operations |

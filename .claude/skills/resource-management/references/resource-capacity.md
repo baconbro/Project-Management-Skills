@@ -2,8 +2,10 @@
 
 Load this to put people onto work without over- or under-loading them, and to read
 `scripts/capacity_check.py`. Worked numbers come from the sample Helios project (a fictional
-customer self-service portal used throughout this catalog): six people over the build peak,
-weeks 6–9, in `assets/resource-allocation-sample.csv`.
+customer self-service portal used throughout this catalog): six people over the first four
+build weeks, W6–W9, in `assets/resource-allocation-sample.csv`. W1 is the week of 2026-04-06,
+so W6 starts on 2026-05-11 with sprint S1, when the four build tasks C, D, E and F of
+`project-schedule` all begin.
 
 ## Before the numbers: roles, skills and cover
 - Derive **demand by role** from the work packages (`work-breakdown-structure`) and the
@@ -78,9 +80,9 @@ below it are filled up to it, best match first: same role, then a role listed un
 then (only with `--any-role`) anyone, marked cross-role. Helios: 34 hours move (Carla → Ben
 6/6/2 in W6–W8, Devin → Elena 10/10 in W7–W8); Devin is resolved; Carla keeps a residual of
 30 hours above the target, 6 of them above capacity (4 in W7, 2 in W8). Same-period
-reassignment cannot fix that, so smoothing does: the knowledge base (schedule task E) has 3
-weeks of total float, so move 6 hours of its backend work into W9–W10 in `project-schedule`
-and re-run for those weeks.
+reassignment cannot fix that, so smoothing does: the knowledge base (schedule task E) runs
+W6–W14 with 1 week of total float, so move 6 hours of its backend work into W9–W10, inside
+its own window, and re-run for those weeks; no date in `project-schedule` moves.
 
 Read the plan as a proposal: all of Carla's moves land on Ben, who is also the lead
 engineer behind R003 (lead engineer leaves) and the only cover for both engineers. Leveling

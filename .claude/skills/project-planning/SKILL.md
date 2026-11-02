@@ -24,7 +24,7 @@ reserves before the cost baseline), keeps the assumptions and constraints log, r
 parts and takes the whole baseline to the sponsor for one approval. The techniques live in the
 specialist skills; this skill owns the sequence, the consistency checks and the integrated
 plan. The examples use the sample Helios project (a fictional customer self-service portal used
-throughout this catalog): eleven work packages, an 18-week critical path, a cost baseline (BAC) of
+throughout this catalog): eleven work packages, a 25-week critical path, a cost baseline (BAC) of
 $500,000 ($460,000 of work-package costs plus $40,000 contingency) with a $25,000 management
 reserve held above it, all approved by the sponsor Dana Okoro in one decision at M1
 (Discovery complete).
@@ -110,10 +110,12 @@ before step 12. `references/planning-sequence.md` maps each step's inputs, outpu
    move work within free then total float, re-run the critical path, and repeat until nobody is
    over-allocated, or take the residual to the sponsor as a scope, capacity or date decision.
    Agile: sprint capacity and the release forecast from `agile-delivery` replace the network.
-   Helios: A→B→D→F→G→H→J = 18 weeks; the backend engineer's 125% peak in W7 is leveled by moving
-   34 hours to colleagues and smoothing knowledge-base work into its float. *Done: the capacity
-   gate in `resource-management` passes (no one OVER in any period) and the leveled schedule
-   meets the charter dates or carries an escalated decision.*
+   Helios: A→B→D→G→H→J = 25 weeks, 2026-04-06 to 2026-09-25; the backend engineer's 125% W7
+   peak and the frontend engineer's 105% are leveled by moving 34 hours (Carla to Ben, Devin
+   to Elena) and smoothing 6 hours of the backend engineer's knowledge-base work into later
+   weeks of that task's window (W9–W10). *Done: the capacity gate in `resource-management`
+   passes (no one OVER in any period) and the leveled schedule meets the charter dates or
+   carries an escalated decision.*
 7. **Analyse risk and size the reserves.** Run `risk-management`: identify risks (including an
    assumptions analysis of the log and the vendor dependencies), analyse them, choose responses.
    Log a risk — every one — in `risk-register` with an owner, response, trigger and residual
@@ -122,14 +124,21 @@ before step 12. `references/planning-sequence.md` maps each step's inputs, outpu
    sponsor accepts, set the management reserve by policy, and hold one schedule reserve from
    the `project-schedule` simulation. Helios: R001 (identity-provider integration slips, EMV
    $48,000) is the top threat; contingency $40,000 (about P50 of the residual simulation; the
-   sponsor accepted the gap to the $99,000 P80), management reserve $25,000, schedule reserve
-   about 2.4 weeks (P80 20.4 against 18). *Done: every HIGH or MEDIUM threat has an
-   owner, a response and a trigger, and each reserve is justified by a stated confidence.*
+   sponsor accepted the gap to the $99,000 P80), management reserve $25,000, and no schedule
+   reserve before GA: P80 is 28.25 weeks against a deterministic 25 and GA readiness by week
+   26 has a 27% chance, which the sponsor accepted with the 2-week M6 tolerance and a
+   pre-identified crash of H. *Done: every HIGH or MEDIUM threat has an owner, a response and
+   a trigger, and each reserve (or accepted gap) is justified by a stated confidence.*
 8. **Plan quality.** Run `quality-management`: acceptance criteria from the scope statement,
    the definition of done, quality gates with entry and exit criteria (Helios: the M4 pilot
    go/no-go and the M6 general-availability gate) and the review and test cadence. Gates,
-   reviews and tests are work: put them in the estimates and schedule. *Done: every gate has
-   entry and exit criteria and every quality activity is scheduled and costed.*
+   reviews and tests are work: put them in the estimates and schedule. Plan the transition
+   with `release-and-cutover` step 1: release strategy and stages, freezes, rehearsals,
+   hypercare length and staffing, decommissioning. Put the rehearsals, readiness reviews and
+   hypercare into WBS 1.4.2/1.5.2, the schedule and the cost baseline (Helios: pilot at M4,
+   GA flag ramp 25/50/100% from 2026-10-03, four weeks of hypercare). *Done: every gate has
+   entry and exit criteria and every quality and transition activity is scheduled and
+   costed.*
 9. **Set the cost baseline.** Run `cost-management`: aggregate the work-package costs from
    steps 4–8 (Helios $460,000), add the contingency to reach the cost baseline (BAC $500,000),
    time-phase it on the leveled schedule into the S-curve, and agree an earning rule per work

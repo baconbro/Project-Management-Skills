@@ -146,7 +146,8 @@ budget at completion (BAC) that holds a $40,000 contingency reserve.
    the steering committee, with the decision needed and options (ladder in
    `.claude/skills/project-communication/references/escalation-paths.md`). Feed what you
    learn to `lessons-learned`. Helios: R001 occurred on 2026-06-12 (issue I001); the stub and
-   the delay credit were executed and the slip went to the steering committee. *Done: reviews
+   the delay credit were executed, but the slip reached the steering committee late (DEC002,
+   raised 2026-06-26 against a 2026-06-16 due date). *Done: reviews
    happen on cadence, every fired trigger has an issue and an executed response, and reserve
    drawdown is reported against remaining exposure.*
 

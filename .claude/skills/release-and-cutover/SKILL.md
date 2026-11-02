@@ -74,14 +74,15 @@ If nobody can name the operations owner who will accept the service, stop and ge
 without one there is nobody to hand over to, and hypercare never ends.
 
 ## Workflow
-1. **Choose the release strategy and the window.** Work through the eight questions in
-   `references/release-strategies.md` (coexistence, reversibility, blast radius, data
-   ownership, absorbable change, dual-running cost, fixed dates, what is still to learn), choose
-   the strategy and its stages, set the code, change and business freezes, and size the window
-   as rehearsed critical path + 20-30% contingency + full rollback time. Helios: a pilot at M4,
-   then a GA flag ramp; window Saturday 2026-10-03 06:00-12:00 with go-live (T0) at 09:00; code
-   freeze from 2026-09-28. *Done: strategy, stages, freezes and window are recorded with their
-   reasons and agreed by the sponsor.*
+1. **Choose the release strategy and the window.** Do this during planning, with
+   `project-planning`, so rehearsals, readiness reviews and hypercare reach the baseline. Work
+   through the eight questions in `references/release-strategies.md` (coexistence,
+   reversibility, blast radius, data ownership, absorbable change, dual-running cost, fixed
+   dates, what is still to learn), choose the strategy and its stages, set the code, change and
+   business freezes, and size the window as rehearsed critical path + 20-30% contingency + full
+   rollback time. Helios: a pilot at M4, then a GA flag ramp; window Saturday 2026-10-03
+   06:00-12:00 with go-live (T0) at 09:00; code freeze from 2026-09-28. *Done: strategy, stages,
+   freezes and window are recorded with their reasons and agreed by the sponsor.*
 2. **Set readiness criteria and decision rights.** At T-6 to T-4 weeks copy the template in
    `assets/go-no-go-checklist.md` and fill sections 1-2: one measurable criterion per line across
    the workstreams in `references/go-no-go-and-rollback.md`, each with an owner, an evidence
@@ -122,10 +123,11 @@ without one there is nobody to hand over to, and hypercare never ends.
    a prepared rollback message), then fill `assets/hypercare-plan-template.md`: period and
    extension rule, ramp and decommission steps, L1/L2/L3 triage path, severity service levels,
    staffing by week, daily stand-down, metrics with thresholds, patch cadence and measurable
-   exit criteria. Helios: 4 weeks from 2026-10-03 to 2026-10-30 (the warranty period in WBS
-   1.5.2 Operational handover), accepted by Priya Nair (Head of Support Operations). *Done:
-   comms have owners and approved templates, and the hypercare plan names the operations owner
-   and measurable exit criteria.*
+   exit criteria. Helios: 4 weeks from 2026-10-03 to 2026-10-30, the warranty period in the
+   acceptance criterion of WBS 1.5.2 Operational handover (its network task J prepared the
+   handover in the week to 2026-09-25); Priya Nair (Head of Support Operations) accepts it at
+   hypercare exit. *Done: comms have owners and approved templates, and the hypercare plan
+   names the operations owner and measurable exit criteria.*
 7. **Hold the go/no-go.** Run the meeting in `references/go-no-go-and-rollback.md`: walk the
    criteria by exception, review open HIGH risks and the rollback design, poll each consulted
    lead aloud, and let the approver decide. Record the verdict, conditions (owner, due date, the
@@ -178,7 +180,9 @@ without one there is nobody to hand over to, and hypercare never ends.
 - Leaving training and service-desk readiness to the last week (lesson LL007 in `lessons-learned`).
 - A Friday-evening go-live with nobody on hand on Monday morning.
 - Hypercare that ends on a date regardless of incidents, or never ends because nobody owns exit.
-- Switching off the old process before hypercare exit, so a rollback has nowhere to go.
+- Switching off the old process irreversibly before hypercare exit, or before a week of stable
+  full-ramp operation, so a rollback has nowhere to go (Helios retires the ticket-form
+  categories on 2026-10-19 but can restore them by configuration).
 
 ## Resources
 - `references/release-strategies.md` — deployment versus release versus cutover; big-bang,

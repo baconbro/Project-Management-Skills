@@ -24,8 +24,8 @@ shortest possible project duration. This skill builds that network, turns it int
 milestones, checks it against the people available, compresses it when the finish date is
 too late, and quantifies schedule risk. The worked numbers come from the sample Helios project
 (a fictional customer self-service portal used throughout this catalog): ten tasks (every WBS
-work package except level-of-effort project management), finish-to-start links, an 18-week
-critical path.
+work package except level-of-effort project management), finish-to-start links, a 25-week
+critical path dated from Monday 2026-04-06.
 
 ## When to use this skill
 - The user wants to build a schedule or timeline, or sequence tasks and milestones.
@@ -49,7 +49,8 @@ critical path.
   the backlog and is never a task row.
 - **Hybrid (Helios):** the contracted identity/SSO integration, testing and launch gates are
   scheduled as a network; the self-service UI and knowledge-base work appear as single tasks
-  whose durations come from the team's throughput; one project-level reserve.
+  whose durations come from the team's throughput; schedule risk is held at project level,
+  never padded into tasks.
 
 ## Inputs you need
 The tasks (work packages from `work-breakdown-structure`, plus milestones and external
@@ -83,20 +84,26 @@ assigned (for the capacity check in `resource-management`).
    ```
    Per task it prints ES/EF/LS/LF, total float (TF, shared along the chain), free float (FF,
    usable without delaying any successor) and the critical flag, then every critical path,
-   the tasks common to all of them, and the duration. Helios: A → B → D → F → G → H → J =
-   18 weeks; C *Identity / SSO integration* has 1 week of float, E 3, I 1, so the
-   near-critical list is C and I. When two or more paths are critical the tool says so —
+   the tasks common to all of them, and the duration. Helios: A → B → D → G → H → J =
+   25 weeks; C *Identity / SSO integration*, E *Knowledge base*, F *Reporting & analytics*
+   and I *Training & communications* each have 1 week of float, so all four are
+   near-critical. When two or more paths are critical the tool says so —
    only a task on every one of them can shorten the project. *Done: critical path(s), float
    per task and the project duration are computed, not guessed.*
 5. **Make it a calendar and check it.** State the start date and working calendar, then
    re-run with dates and a Gantt:
    ```bash
-   python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --start-date 2027-01-04 --workdays --holidays holidays.txt --gantt
+   python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --start-date 2026-04-06 --workdays --gantt
    ```
-   `--workdays` counts Monday–Friday (one week = 5 working days) and skips the dates in the
-   holidays file; without it, units map to calendar days. Compare every milestone's date with
-   its imposed date, and use `--target N` for a must-finish duration: a miss means negative
-   float, which only step 6 or a scope/date decision can remove. Then run the capacity check
+   `--workdays` counts Monday–Friday (one week = 5 working days) and, with
+   `--holidays <your-holidays.txt>` (one YYYY-MM-DD per line, `#` comments allowed), skips
+   those dates; without `--workdays`, units map to calendar days. Helios: B ends Friday
+   2026-05-08 (M1 *Discovery complete*), C–F start 2026-05-11 with sprint S1, G runs
+   2026-07-20 to 08-14 and holds the pilot launch (M4, Friday 2026-08-07), and J ends Friday
+   2026-09-25, leaving only the cutover week before general availability (M6, Saturday
+   2026-10-03). Compare every milestone's date with its imposed date, and use `--target N`
+   for a must-finish duration: a miss means negative float, which only step 6 or a
+   scope/date decision can remove. Then run the capacity check
    (`python .claude/skills/resource-management/scripts/capacity_check.py` on the assignments)
    and, where someone is over-allocated, move tasks within their free float first, then their
    total float, and re-run; if the float is not enough, the schedule lengthens — better to
@@ -106,26 +113,33 @@ assigned (for the capacity check in `resource-management`).
    crash the critical task with the cheapest cost slope, or fast-track a discretionary link
    on the critical path (encode the overlap as a split task and log the rework risk).
    Re-run after every change and watch `--near-critical`: the Helios worked example goes
-   from 18 to 15 weeks by crashing B, G and D for an illustrative $26,000 and ends with two
-   critical paths, the signal to stop. *Done: the target is met with the cost and risk
-   recorded, or the constraint is escalated to the sponsor.*
+   from 25 to 22 weeks by crashing B, G and H, the cheapest critical slope each time, for an
+   illustrative $24,000 and ends with two critical paths, the signal to stop. *Done: the
+   target is met with the cost and risk recorded, or the constraint is escalated to the
+   sponsor.*
 7. **Quantify schedule risk and size the reserve.** With the three-point columns filled:
    ```bash
-   python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --simulate 10000 --seed 42 --target 20
+   python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --simulate 10000 --seed 42 --target 26
    ```
    Each trial draws every task from its PERT-Beta (`--dist triangular` for a triangular)
-   distribution and recomputes the critical path. Helios: P50 ≈ 19.3, P80 ≈ 20.4, P90 ≈ 21.0
-   weeks; only 15% of futures finish within the deterministic 18. The criticality index (CI%)
-   shows A, B, G, H and J critical in every trial, D and F in 76%, and C in 24% — C has float
-   today but drives the finish in a quarter of futures, so it stays on the watch-list.
-   Reserve at P80 = 20.4 − 18 ≈ 2.4 weeks, held once and visibly, not spread into tasks.
-   *Done: commit level, reserve and watch-list are written down.*
+   distribution and recomputes the critical path. Helios: P50 ≈ 26.9, P80 ≈ 28.2, P90 ≈ 29.0
+   weeks; only 10% of futures finish within the deterministic 25 and 27% by week 26, the
+   cutover week. The criticality index (CI%) shows A, B, G and J critical in every trial, H
+   in 90%, D in 52%, C in 25%, E 12%, F 11% and I 10%: four parallel build tasks of similar
+   length take turns driving the finish (merge bias), so the deterministic date is
+   optimistic. Reserve at P80 ≈ 28.2 − 25 ≈ 3.2 weeks, held once and visibly, not spread
+   into tasks. Helios has no room for it before GA: the sponsor accepted the 27% at baseline,
+   with the 2-week M6 tolerance (to 2026-10-17) covering about P75 and a crash of H ready.
+   *Done: commit level, reserve or accepted risk, and watch-list are written down.*
 8. **Baseline and hand off.** Freeze the dated schedule as the schedule baseline in
    `project-planning`; export it with `--format csv` (one row per task with dates and float)
    or `--format md` for the plan and status reporting. During delivery re-run with actual
    durations: a slip inside a task's free float affects no one, inside its total float it
-   consumes float shared with successors, beyond it the finish date moves. *Done: baseline
-   stored, export shared, re-run cadence agreed.*
+   consumes float shared with successors, beyond it the finish date moves. Helios: "SSO
+   working in test" slipped 2 weeks (forecast 2026-07-17), pushing C to finish 2026-07-24,
+   one week past its late finish, so G and M4 would move a week; running the real-provider
+   retest and UAT preparation in parallel in sprint S6 (fast-tracking) absorbed it and M4
+   held on 2026-08-07. *Done: baseline stored, export shared, re-run cadence agreed.*
 
 ## Quality checklist
 - [ ] Every work package and milestone has a unique id, one elapsed duration in the stated
@@ -160,7 +174,7 @@ assigned (for the capacity check in `resource-management`).
 - `references/dependency-types.md` — FS/SS/FF/SF, lead/lag, mandatory vs. discretionary vs.
   external links, and the table for encoding each as explicit FS tasks for the tool.
 - `references/schedule-compression.md` — crashing by cost slope, fast-tracking, multiple
-  critical paths, schedule reserve, resource leveling; Helios worked example 18 → 15 weeks.
+  critical paths, schedule reserve, resource leveling; Helios worked example 25 → 22 weeks.
 - `assets/schedule-template.csv` — fill-in network (`<placeholders>`): id, name, duration,
   predecessors, optional optimistic/most_likely/pessimistic.
 - `assets/schedule-sample.csv` — sample Helios network: ten tasks in weeks with three-point

@@ -19,13 +19,13 @@ Self-service UI and 1.3.3 Knowledge base.
 
 ## 2. Justification
 - **Reason / driver:** the company's accessibility policy now requires WCAG 2.2 AA for all new
-  customer channels; the baselined acceptance criteria only cover WCAG 2.1 A.
+  customer channels; the baselined acceptance criteria cover WCAG 2.1 AA (constraint CON-4).
 - **Benefit / business-case impact:** keeps the portal usable for every customer the 50% ticket
   reduction depends on; no change to the business-case benefit figures.
 - **Cost of doing nothing:** a non-compliant launch, legal exposure, and a retrofit after general
   availability estimated at three times the cost.
-- **Urgency:** decide before the Self-service UI build passes its midpoint (2026-07-03);
-  afterwards the retrofit cost applies.
+- **Urgency:** decide before the sprint S4 review accepts the pilot-ready reset and order
+  journeys (2026-07-03); afterwards the retrofit cost applies.
 
 ## 3. Impact assessment
 | Dimension | Rating (1-5) | Detail (real units) |
@@ -65,6 +65,6 @@ materialising.
 | **Conditions / rationale** | Audit runs in parallel with UAT preparation so no milestone moves; widget risk tracked to closure |
 | **Funding source** | Contingency reserve — $12,000 of $40,000 (BAC stays $500,000) |
 | **Baselines to update** | Scope (1.3.2 acceptance criteria), cost (move $12,000 from contingency to the 1.3.2 control account), schedule (+2 days on Self-service UI), quality plan (definition of done), risk register (new widget risk) |
-| **Implementation owner** | Devin Patel — due 2026-07-31 |
-| **Verification** | Frank Müller runs the WCAG 2.2 AA audit in UAT; Sam Lee confirms all five baselines updated — verified by: pending |
+| **Implementation owner** | Devin Patel — due 2026-08-14 (sprint S7 review) |
+| **Verification** | The V04 audit firm runs the WCAG 2.2 AA audit in UAT and Frank Müller retests the fixes; Sam Lee confirms all five baselines updated — verified by: pending |
 | **Closed** | Pending (status moves to Implemented, then Closed after verification) |

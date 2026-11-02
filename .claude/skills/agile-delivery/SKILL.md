@@ -77,9 +77,11 @@ backlog cannot be forecast.
    (product owner orders and accepts; a facilitator runs the events; developers own the how),
    the release goal, the fixed constraints, the definition of ready (in
    `references/backlog-and-stories.md`), and the definition of done. Helios: Ava Chen is
-   product owner and Sam Lee facilitates; sprints S1–S6 ran 2026-05-11 to 2026-07-31 toward
-   the M4 pilot, and S7–S10 remain before GA. *Done: cadence, roles, release goal, and both
-   definitions are written down and agreed with the product owner.*
+   product owner and Sam Lee facilitates; sprints follow the schedule network: S1–S5
+   (2026-05-11 to 07-17) build the portal, S6 runs system test and the pilot UAT, S7 launches
+   the M4 pilot on 2026-08-07 and stabilises it, and S8–S10 (to 2026-09-25) cover hardening,
+   pilot feedback, approved changes and GA readiness. *Done: cadence, roles, release goal, and
+   both definitions are written down and agreed with the product owner.*
 2. **Build the product backlog.** Copy `assets/product-backlog-template.csv`: one row per
    story in "As a … I want … so that …" form, Given/When/Then acceptance criteria, MoSCoW
    priority, status, and the `wbs_id` that traces it to the scope baseline. Order by value,
@@ -109,10 +111,11 @@ backlog cannot be forecast.
 5. **Plan the sprint.** Fill `assets/sprint-plan-template.md` in sprint planning (agenda in
    `references/ceremonies.md`): goal first, then capacity (available ÷ usual days × trailing-3
    velocity), then ready items in backlog order up to that capacity, one stretch item, and the
-   skipped items with reasons. Helios S7: 42 of 45 usual days × 28.00 = 26.1, so 26 points
-   (HEL-142, HEL-143, HEL-145, HEL-150) with HEL-152 as stretch; HEL-141 is skipped as not
-   ready. *Done: one sprint goal, a commitment no larger than planning capacity, and every
-   committed item ready.*
+   skipped items with reasons. Helios S7, the pilot-launch sprint: 38 of 45 usual days (leave
+   and pilot support) × 28.00 = 23.6, so 21 points (HEL-142, HEL-143, HEL-153, HEL-152), with
+   the spare capacity kept for pilot defects; HEL-141 is skipped as not ready. *Done: one
+   sprint goal, a commitment no larger than planning capacity, and every committed item
+   ready.*
 6. **Run the sprint.** Hold the 15-minute daily stand-up against the sprint goal, keep the
    board and sprint burndown visible, and clear blockers the day they appear. Apply the
    mid-sprint change rule: the goal holds; urgent work enters only by swapping out work of
@@ -129,10 +132,11 @@ backlog cannot be forecast.
    action has an owner and a backlog item.*
 8. **Report and bridge to the baseline.** Re-run the forecast after every review:
    ```bash
-   python .claude/skills/agile-delivery/scripts/velocity_forecast.py .claude/skills/agile-delivery/assets/sprint-history-sample.csv --format md
+   python .claude/skills/agile-delivery/scripts/velocity_forecast.py .claude/skills/agile-delivery/assets/sprint-history-sample.csv --backlog .claude/skills/agile-delivery/assets/product-backlog-sample.csv --sprints-left 4 --format md
    ```
    and paste the velocity range, burnup, and outlook into the `status-report` (the outlook
-   rule is in `references/metrics-and-forecasting.md`). Where earned value is tracked,
+   rule is in `references/metrics-and-forecasting.md`; the outlook and cut line need
+   `--sprints-left N`). Where earned value is tracked,
    convert per work package: EV = accepted ÷ planned points × package BAC. At the end of S4
    (the month-3 snapshot) Helios Self-service UI had 57 of 81 points accepted, so EV =
    $47,500 of $67,500, matching `cost-management`. Watch the scope line: Helios grew from 246

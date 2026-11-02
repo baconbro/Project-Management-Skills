@@ -15,8 +15,10 @@ INPUT COLUMNS / KEYS  (case-insensitive; extra columns are ignored)
     pessimistic   worst-case duration (P)  for --simulate  aliases: p, worst, worst_case
     unit          unit label, one per file                 aliases: units, uom                           (optional)
   Durations are ELAPSED time in one unit (weeks, days ...), never effort; an 'effort' or
-  'hours' column without a 'duration' column is rejected. Numbers tolerate '$', ',' and a
-  trailing '%' ("1,500" -> 1500); nan, inf, negative and boolean values are rejected.
+  'hours' column without a 'duration' column is rejected. Numbers tolerate '$' and a
+  trailing '%'; ',' is a thousands separator before groups of three digits ("1,500" -> 1500)
+  and a decimal comma before one or two digits ("2,5" -> 2.5); any other comma ("1.000,50")
+  is rejected as ambiguous. nan, inf, negative, boolean and values above 1e15 are rejected.
   Predecessors: "A;B", "A,B" or "A B" (whitespace splits only when no ',' or ';' is present,
   so ids containing spaces must be separated by ',' or ';'); in JSON a string or an array of
   ids. A task that lists itself, an unknown id, or a cycle is an error naming the loop.
@@ -40,9 +42,10 @@ METHOD  (finish-to-start links only; model lag, SS/FF/SF and leads as explicit l
   --near-critical N   lists non-critical tasks with TF <= N (the second-tier drivers).
   --target T          compares the project duration with an imposed finish T (margin/shortfall).
   --start-date D      maps ES/EF/LS/LF to dates: start = first day of work, finish = last day of
-                      work (a milestone has start = finish). Needs --unit days or weeks (or a
-                      unit column). --workdays counts Mon-Fri only and skips --holidays FILE
-                      (one YYYY-MM-DD per line, '#' comments allowed).
+                      work; a milestone has start = finish = the last day of work before it
+                      (the start date when it has no predecessors). Needs --unit days or weeks
+                      (or a unit column). --workdays counts Mon-Fri only and skips --holidays
+                      FILE (one YYYY-MM-DD per line, '#' comments allowed).
   --gantt             text Gantt after the table: '#' critical, '=' non-critical, '.' float
                       (EF..LF), a diamond for milestones; one column = duration / chart width.
   --simulate N        Monte Carlo: each trial draws every task that has O/M/P from a PERT-Beta
@@ -60,8 +63,8 @@ EXIT CODES   0 success  -  2 bad input, bad option or internal error ("error: ..
 EXAMPLES
   python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks
   python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --near-critical 1 --gantt
-  python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --start-date 2027-01-04 --workdays --holidays holidays.txt
-  python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --simulate 10000 --seed 42 --target 20
+  python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --start-date 2026-04-06 --workdays
+  python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --simulate 10000 --seed 42 --target 26
   python .claude/skills/project-schedule/scripts/critical_path.py schedule.json --json --format json
   cat schedule.csv | python .claude/skills/project-schedule/scripts/critical_path.py - --format csv > schedule-dates.csv
 """
@@ -87,6 +90,7 @@ EPS = 1e-9
 MAX_PATHS = 20
 MAX_TRIALS = 200_000
 MAX_CAL_DAYS = 36_500
+MAX_VALUE = 1e15  # upper bound for a duration: keeps every sum finite
 NAME_WIDTH = 32
 DEFAULT_UNIT = "periods"
 MILESTONE = "◆"
@@ -188,14 +192,28 @@ def require_columns(headers, groups):
         raise ValueError(f"missing column(s): {missing}; found headers: {[h for h in headers if h]}")
 
 
+# ',' before one or two trailing digits is a decimal comma ('2,5', '37,50'); before groups of three
+# digits it is a thousands separator ('1,000', '12,345.67'); any other comma ('1.000,50') is ambiguous.
+DECIMAL_COMMA_RE = re.compile(r"[-+]?\d+,\d{1,2}")
+THOUSANDS_RE = re.compile(r"[-+]?\d{1,3}(?:,\d{3})+(?:\.\d+)?")
+
+
 def _num(raw, where, minimum=None, maximum=None, integer=False):
-    """Parse a number tolerant of '$', ',', '€', '£', whitespace and a trailing '%' (which is stripped, value unchanged)."""
+    """Parse a number tolerant of '$', '€', '£', whitespace, a trailing '%' (stripped, value unchanged)
+    and commas: '1,000' -> 1000 (thousands), '2,5' -> 2.5 (decimal comma), '1.000,50' -> error."""
     if isinstance(raw, bool):
         raise ValueError(f"{where}: {raw!r} is a boolean, not a number")
     s = str(raw).strip()
     if s.endswith("%"):
         s = s[:-1]
-    s = s.replace(",", "").replace("$", "").replace("€", "").replace("£", "").strip()
+    s = s.replace("$", "").replace("€", "").replace("£", "").strip()
+    if "," in s:
+        if DECIMAL_COMMA_RE.fullmatch(s):
+            s = s.replace(",", ".")
+        elif THOUSANDS_RE.fullmatch(s):
+            s = s.replace(",", "")
+        else:
+            raise ValueError(f"{where}: {raw!r} is ambiguous; use '.' as the decimal point and ',' only for thousands")
     try:
         v = float(s)
     except ValueError:
@@ -266,9 +284,9 @@ def _three_point(row, where):
         return None
     if len(given) < 3:
         raise ValueError(f"{where}: optimistic, most_likely and pessimistic must all be given or all be blank")
-    o = _num(o_raw, f"{where}, column optimistic", minimum=0)
-    m = _num(m_raw, f"{where}, column most_likely", minimum=0)
-    p = _num(p_raw, f"{where}, column pessimistic", minimum=0)
+    o = _num(o_raw, f"{where}, column optimistic", minimum=0, maximum=MAX_VALUE)
+    m = _num(m_raw, f"{where}, column most_likely", minimum=0, maximum=MAX_VALUE)
+    p = _num(p_raw, f"{where}, column pessimistic", minimum=0, maximum=MAX_VALUE)
     if not (o <= m <= p):
         raise ValueError(f"{where}: require optimistic <= most_likely <= pessimistic "
                          f"(got O={_fmt(o)}, M={_fmt(m)}, P={_fmt(p)})")
@@ -301,7 +319,7 @@ def parse_tasks(rows, headers):
         dur_raw = _get(row, *DUR_ALIASES)
         if _blank(dur_raw):
             raise ValueError(f"{where}, column duration: value is missing")
-        duration = _snap(_num(dur_raw, f"{where}, column duration", minimum=0))
+        duration = _snap(_num(dur_raw, f"{where}, column duration", minimum=0, maximum=MAX_VALUE))
         raw_preds = _get(row, *PRED_ALIASES)
         if isinstance(raw_preds, (list, tuple)):
             spec = ("list", [_sanitize(p) for p in raw_preds if not _blank(p)])
@@ -580,7 +598,11 @@ class Calendar:
         return self._days[index]
 
     def span(self, es, ef):
-        """(start date, finish date): first and last day of work; a milestone has start = finish."""
+        """(start date, finish date): first and last day of work. A milestone has start = finish =
+        the last working day of its predecessors (the MS Project convention), or the start date at 0."""
+        if ef - es < EPS and es > EPS:
+            i = int(math.ceil(es * self.dpu - EPS)) - 1
+            return self.date_at(i), self.date_at(i)
         s = int(math.floor(es * self.dpu + EPS))
         f = max(s, int(math.ceil(ef * self.dpu - EPS)) - 1)
         return self.date_at(s), self.date_at(f)
@@ -844,7 +866,7 @@ def _rounded(obj):
 
 def render_json(result, unit, gantt_width=None):
     payload = {"unit": unit, "tasks": result["tasks"], "summary": result["summary"]}
-    return json.dumps(_rounded(payload), indent=2, ensure_ascii=False)
+    return json.dumps(_rounded(payload), indent=2, ensure_ascii=False, allow_nan=False)
 
 
 RENDERERS = {"table": render_table, "json": render_json, "csv": render_csv, "md": render_md}

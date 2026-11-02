@@ -20,14 +20,18 @@ INPUT COLUMNS / KEYS  (case-insensitive; extra columns are ignored)
     bac      budget at completion    aliases: budget, budget_at_completion, budget at completion (optional)
     period   status period of the row (M3, 2026-07, Sprint 8 ...)  aliases: month, sprint, as_of (optional)
   pv/ev/ac must be finite numbers >= 0; bac must be > 0 and ev must not exceed bac.
-  '$', ',', EUR/GBP signs and a trailing '%' are stripped ("80,000" -> 80000, "$100" -> 100).
+  '$', EUR/GBP signs and a trailing '%' are stripped ("$100" -> 100); ',' is a thousands separator
+  before groups of three digits ("80,000" -> 80000) and a decimal comma before one or two digits
+  ("2,5" -> 2.5); any other comma ("1.000,50") is rejected as ambiguous.
   CSV delimiter is auto-detected (, ; tab |); a UTF-8 BOM and CRLF line ends are tolerated.
   JSON is a list of objects or {"rows": [...]}; pass --json for JSON input (a JSON file
   given without --json is refused with a hint, never misread as CSV).
-  With a period column every row needs one. Each period's rows are a cumulative-to-date
-  snapshot and the LAST period in input order is the headline; pass --incremental when the
-  rows hold per-period increments instead (they are then accumulated; a task column is
-  required and bac is the work package's total budget).
+  Values above 1e15 are rejected. With a period column every row needs one. Each period's
+  rows are a cumulative-to-date snapshot holding ONE row per work package (a repeated task
+  name in the same period is an error, never summed twice), and the LAST period in input
+  order is the headline; pass --incremental when the rows hold per-period increments
+  instead (they are then accumulated; a task column is required and bac is the work
+  package's total budget).
 
 FORMULAS  (per row and for the TOTAL)
   CV  = EV - AC                     SV  = EV - PV            (negative = over budget / behind)
@@ -79,7 +83,9 @@ import sys
 
 BOM = "﻿"
 JSON_KEY = "rows"
-TASK_WIDTH = 40
+TASK_WIDTH = 40   # display width of a task name (the full name is the key and goes to csv/json)
+PERIOD_WIDTH = 20  # display width of a period label
+MAX_VALUE = 1e15  # upper bound for pv/ev/ac/bac: keeps every sum finite
 CURVE_WIDTH = 40
 TREND_DELTA = 0.02
 TOLERANCE = 0.5  # money differences below this are "equal" (display rounds to whole units)
@@ -183,14 +189,28 @@ def require_columns(headers, groups):
         raise ValueError(f"missing column(s): {missing}; found headers: {[h for h in headers if h]}")
 
 
+# ',' before one or two trailing digits is a decimal comma ('2,5', '37,50'); before groups of three
+# digits it is a thousands separator ('1,000', '12,345.67'); any other comma ('1.000,50') is ambiguous.
+DECIMAL_COMMA_RE = re.compile(r"[-+]?\d+,\d{1,2}")
+THOUSANDS_RE = re.compile(r"[-+]?\d{1,3}(?:,\d{3})+(?:\.\d+)?")
+
+
 def _num(raw, where, minimum=None, maximum=None, integer=False):
-    """Parse a number tolerant of '$', ',', '€', '£', whitespace and a trailing '%' (which is stripped, value unchanged)."""
+    """Parse a number tolerant of '$', '€', '£', whitespace, a trailing '%' (stripped, value unchanged)
+    and commas: '1,000' -> 1000 (thousands), '2,5' -> 2.5 (decimal comma), '1.000,50' -> error."""
     if isinstance(raw, bool):
         raise ValueError(f"{where}: {raw!r} is a boolean, not a number")
     s = str(raw).strip()
     if s.endswith("%"):
         s = s[:-1]
-    s = s.replace(",", "").replace("$", "").replace("€", "").replace("£", "").strip()
+    s = s.replace("$", "").replace("€", "").replace("£", "").strip()
+    if "," in s:
+        if DECIMAL_COMMA_RE.fullmatch(s):
+            s = s.replace(",", ".")
+        elif THOUSANDS_RE.fullmatch(s):
+            s = s.replace(",", "")
+        else:
+            raise ValueError(f"{where}: {raw!r} is ambiguous; use '.' as the decimal point and ',' only for thousands")
     try:
         v = float(s)
     except ValueError:
@@ -319,7 +339,7 @@ def _cell(row, aliases, label, where):
     raw = _get(row, *aliases)
     if raw is None:
         raise ValueError(f"{where}, column {label}: value is missing")
-    return _num(raw, f"{where}, column {label}", minimum=0)
+    return _num(raw, f"{where}, column {label}", minimum=0, maximum=MAX_VALUE)
 
 
 def parse_records(rows, headers):
@@ -327,8 +347,9 @@ def parse_records(rows, headers):
     has_period = _has_column(headers, PERIOD_ALIASES)
     records = []
     for i, row in enumerate(rows, start=1):
-        name = _sanitize(_get(row, *TASK_ALIASES, default=""), TASK_WIDTH) or f"Item {i}"
-        period = _sanitize(_get(row, *PERIOD_ALIASES, default=""), 20) if has_period else ""
+        # full names and periods are the keys; they are truncated only when displayed
+        name = _sanitize(_get(row, *TASK_ALIASES, default="")) or f"Item {i}"
+        period = _sanitize(_get(row, *PERIOD_ALIASES, default="")) if has_period else ""
         where = f"row {i} ({name}" + (f", period {period}" if period else "") + ")"
         if has_period and not period:
             raise ValueError(f"{where}: period is blank; every row needs one when a period column is present")
@@ -338,15 +359,28 @@ def parse_records(rows, headers):
         bac_raw = _get(row, *BAC_ALIASES)
         bac = None
         if bac_raw is not None:
-            bac = _num(bac_raw, f"{where}, column bac", minimum=0)
+            bac = _num(bac_raw, f"{where}, column bac", minimum=0, maximum=MAX_VALUE)
             if bac == 0:
                 raise ValueError(f"{where}, column bac: must be > 0 (leave it blank if the budget is unknown)")
         records.append({"task": name, "period": period, "pv": pv, "ev": ev, "ac": ac, "bac": bac})
     return records, has_period
 
 
+def _check_unique(records):
+    """A cumulative snapshot holds one row per work package: a repeated (task, period) would be summed twice."""
+    seen = {}
+    for n, r in enumerate(records, start=1):
+        key = (r["task"], r["period"])
+        if key in seen:
+            raise ValueError(f"duplicate work package '{r['task']}'" + (f" in period '{r['period']}'" if r["period"] else "")
+                             + f" (rows {seen[key]} and {n}): each snapshot needs one row per work package")
+        seen[key] = n
+
+
 def build_snapshots(records, has_period, incremental):
     """Ordered [(period, [record...])] where every record holds cumulative-to-date values."""
+    if not incremental:
+        _check_unique(records)
     if not has_period:
         return [("", records)]
     periods, by_period = [], {}
@@ -514,8 +548,8 @@ def _summary_lines(result):
     th = s["thresholds"]
     out = []
     if s["period"]:
-        seen = ", ".join(s["periods_seen"])
-        out.append(f"Headline period: {s['period']} (latest of {seen}; values {s['values']})")
+        seen = ", ".join(_sanitize(p, PERIOD_WIDTH) for p in s["periods_seen"])
+        out.append(f"Headline period: {_sanitize(s['period'], PERIOD_WIDTH)} (latest of {seen}; values {s['values']})")
     cpi = _idx(t["cpi"]) or "n/a"
     spi = _idx(t["spi"]) or "n/a"
     out.append(f"Overall status: {t['rag']}   (CPI={cpi}, SPI={spi}; GREEN when both >= {th['green']:.2f}, "
@@ -528,7 +562,8 @@ def _summary_lines(result):
     else:
         head = t["eac_method"]
         if t["eac"] is None:
-            why = "CPI is 0 (nothing earned yet)" if head == "cpi" else "CPI x SPI is 0 or undefined"
+            why = (("CPI is 0 (nothing earned yet)" if t["cpi"] == 0 else "CPI is undefined (no actual cost yet)")
+                   if head == "cpi" else "CPI x SPI is 0 or undefined")
             out.append(f"Forecast ({head}):  EAC undefined - {why}; try --eac-method atypical")
         else:
             out.append(f"Forecast ({head}: EAC = {METHOD_LABEL[head]}):  EAC={_money(t['eac'])}  "
@@ -561,7 +596,7 @@ def _summary_lines(result):
 
 def _trend_table(trend):
     headers = ["Period", "PV", "EV", "AC", "CPI", "SPI", "RAG", "CPI trend", "SPI trend"]
-    rows = [[e["period"], _money(e["pv"]), _money(e["ev"]), _money(e["ac"]), _idx(e["cpi"]) or "n/a",
+    rows = [[_sanitize(e["period"], PERIOD_WIDTH), _money(e["pv"]), _money(e["ev"]), _money(e["ac"]), _idx(e["cpi"]) or "n/a",
              _idx(e["spi"]) or "n/a", e["rag"], e["cpi_trend"], e["spi_trend"]] for e in trend]
     return headers, rows, {0, 6, 7, 8}
 
@@ -574,11 +609,11 @@ def _curve_lines(trend, bac):
     title = f"S-curve / burn line (cumulative; 1 column = {_money(unit)}"
     title += f"; BAC {_money(bac)} = full width):" if bac else "; peak = full width):"
     lines = [title]
-    width = max(len(e["period"]) for e in trend)
+    width = max(len(_sanitize(e["period"], PERIOD_WIDTH)) for e in trend)
     for e in trend:
         for label, key, ch in (("PV", "pv", "#"), ("EV", "ev", "="), ("AC", "ac", "$")):
             n = int(round(e[key] / peak * CURVE_WIDTH))
-            head = e["period"].rjust(width) if key == "pv" else " " * width
+            head = _sanitize(e["period"], PERIOD_WIDTH).rjust(width) if key == "pv" else " " * width
             lines.append(f"  {head}  {label} |{ch * n}{' ' * (CURVE_WIDTH - n)}| {_money(e[key])}")
     return lines
 
@@ -668,7 +703,7 @@ def _rounded(obj):
 
 
 def render_json(result):
-    return json.dumps(_rounded(result), indent=2, ensure_ascii=False)
+    return json.dumps(_rounded(result), indent=2, ensure_ascii=False, allow_nan=False)
 
 
 RENDERERS = {"table": render_table, "json": render_json, "csv": render_csv, "md": render_md}

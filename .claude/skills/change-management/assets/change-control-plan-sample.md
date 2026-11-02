@@ -15,7 +15,7 @@ first decisions made under it. For your own project, copy `assets/change-control
 | Baseline | Version and date | Contents | Baseline owner |
 |---|---|---|---|
 | Scope | v1.0, 2026-05-08 | Scope statement (11 deliverables, exclusions), traceability matrix, WBS and WBS dictionary | Ava Chen (requirements), Sam Lee (WBS) |
-| Schedule | v1.0, 2026-05-08 | M1 Discovery complete, M4 MVP live to pilot (2026-08-07), M6 general availability (2026-10-03); 18-week critical path A→B→D→F→G→H→J; 2.4-week schedule reserve before GA | Sam Lee |
+| Schedule | v1.0, 2026-05-08 | M1 Discovery complete, M4 MVP live to pilot (2026-08-07), M6 general availability (2026-10-03); 25-week critical path A→B→D→G→H→J, 2026-04-06 to 2026-09-25, then the cutover week; no schedule reserve before GA (accepted by the sponsor: 27% chance of GA readiness by week 26, 2-week M6 tolerance to 2026-10-17) | Sam Lee |
 | Cost | v1.0, 2026-05-08 | BAC $500,000 = $460,000 of work packages + $40,000 contingency reserve; $25,000 management reserve held by the sponsor above BAC | Sam Lee with Finance |
 | Quality | v1.0, 2026-05-08 | Definition of done, quality-gate and UAT exit criteria | Frank Müller |
 
@@ -43,11 +43,12 @@ first decisions made under it. For your own project, copy `assets/change-control
 |---|---|---|
 | PM (Sam Lee) | LOW band, cost up to $5,000 and up to 2 working days (inclusive) | Contingency up to $5,000, or a saving |
 | CCB | Above the PM limits, within the remaining contingency, no move of M6 | Contingency still undrawn |
-| Sponsor (Dana Okoro) | HIGH band, or management reserve or new budget, or a move of M6, or a change to the objective | Management reserve ($25,000); requests new budget |
+| Sponsor (Dana Okoro) | HIGH band, or management reserve or new budget, or a move of M6, or a change to the objective, or any change that crosses a charter boundary (an in-scope outcome such as the 200-customer pilot, a milestone's definition, a cancellation criterion); a charter re-issue follows | Management reserve ($25,000); requests new budget |
 
 Scorer settings: `--pm-limit-cost 5000 --pm-limit-days 2 --ccb-limit-cost 40000 --reserve-cost
-40000` at baseline; after CR003, `--ccb-limit-cost 28000`. Optional: `--reserve-days 12` (the
-2.4-week schedule reserve in working days).
+40000` at baseline; after CR003, `--ccb-limit-cost 28000`. No `--reserve-days`: Helios holds no
+schedule reserve before GA, so any day a change adds to the critical path moves GA readiness.
+The scorer cannot see charter boundaries: Sam Lee routes those to the sponsor himself.
 
 ## 5. Cadence, emergency route and freezes
 - **CCB slot:** Tuesdays 14:00, 30 minutes, held only when a request is pending.
@@ -72,7 +73,7 @@ and the lifecycle in `references/change-control-process.md`. Decisions so far:
 |---|---|---|---|---|
 | CR001 Live-chat widget | Defer to phase 2 | Dana Okoro / 2026-06-16 | $60,000 exceeds the whole contingency; live chat moves contacts rather than deflecting them; revisit at the phase-2 business case | Deferred |
 | CR003 WCAG 2.2 AA uplift | Approve with conditions | CCB / 2026-06-30 | $12,000 from contingency; audit in parallel with UAT preparation so no milestone moves | Approved |
-| CR005 Swap analytics vendor | Reject | CCB / 2026-07-07 | 5 days on the critical Reporting & analytics task for no gain against the objective; re-raise only with a cost or quality case | Rejected |
+| CR005 Swap analytics vendor | Reject | CCB / 2026-07-07 | 5 days on Reporting & analytics would use all of its 1 week of float, for no gain against the objective; re-raise only with a cost or quality case | Rejected |
 | CR002 Partner-login SSO | Request more information | CCB / 2026-07-14 | IdentityCo's quote and Marcus Webb's security view needed; back on 2026-07-28 | Under assessment |
 
 ## 7. Communicating decisions
@@ -82,8 +83,8 @@ and the lifecycle in `references/change-control-process.md`. Decisions so far:
 - **Then:** listed in the weekly status report; approved changes announced at stand-up.
 
 Sent for CR005 on 2026-07-08: "CR005 Swap analytics vendor was rejected by the CCB on
-2026-07-07. Rationale: it adds 5 days to Reporting & analytics, a critical-path task, and gives
-no gain against the 50% ticket objective. Conditions: none. Funding: none. Next: the current
+2026-07-07. Rationale: it adds 5 days to Reporting & analytics, using all of that task's float
+before the pilot, and gives no gain against the 50% ticket objective. Conditions: none. Funding: none. Next: the current
 analytics vendor stays; re-raise after GA if you have a cost or quality case. Questions to Sam Lee."
 
 ## 8. Updating baselines after approval

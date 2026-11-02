@@ -102,6 +102,9 @@ gates (data residency, security assurance, SAML 2.0 / OpenID Connect support).
 | Viability and references (10) | 4 | 3 | 3 |
 | **Weighted total** | **80.1** | **73.5** | **66.0** |
 
+IdentityCo's three run years are priced at its quoted annual renewal of $14,000, not 12 x the
+$1,200 monthly project-phase rate.
+
 IdentityCo: (25x4 + 20x5 + 15x4 + 15x2 + 15x4.7 + 10x4) / 5 = 400.5 / 5 = 80.1. Its raw margin
 over SignInCo is 400.5 - 367.5 = 33. Delivery support flips the result if raised by
 33 / (4 - 2) = 16.5, from 15 to 31.5; integration effort flips it if lowered by

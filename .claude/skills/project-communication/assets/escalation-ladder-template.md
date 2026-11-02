@@ -18,7 +18,7 @@ the ladder to three or four levels; most items should resolve at level 1 or 2.
 | Level | Owner (named) | May decide alone | Time-box at this level | How to reach them | Deputy when absent |
 |---|---|---|---|---|---|
 | 1 | <team lead or work-package owner> | <technical choices and blockers inside the sprint or work package> | <1 working day> | <stand-up; team chat channel> | <name> |
-| 2 | <project manager> | <changes up to $ amount and n days; contingency draws for fired risk triggers and approved changes> | <2 working days> | <channel> | <name> |
+| 2 | <project manager> | <changes up to $ amount and n days; contingency draws within that amount for fired risk triggers and approved changes> | <2 working days> | <channel> | <name> |
 | 3 | <sponsor> | <management reserve; milestone moves beyond the PM's tolerance; scope trade-offs> | <2 working days> | <channel> | <name> |
 | 4 | <steering committee or portfolio board> | <re-baselining; cross-project conflicts; anything beyond the sponsor's authority> | <next meeting, or an extra session within n business days> | <channel> | <chair's delegate> |
 

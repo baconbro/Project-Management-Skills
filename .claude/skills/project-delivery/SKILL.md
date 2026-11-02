@@ -9,7 +9,7 @@ metadata:
   version: 1.1.0
   category: phase
   phase: delivery
-  related: [senior-pm, project-planning, status-report, change-management, cost-management, risk-register, project-closure, lessons-learned, change-request, agile-delivery, release-and-cutover, procurement-management, resource-management]
+  related: [senior-pm, project-planning, status-report, change-management, cost-management, risk-register, project-closure, lessons-learned, change-request, agile-delivery, release-and-cutover, procurement-management, resource-management, business-case]
 license: MIT
 ---
 
@@ -113,7 +113,7 @@ $500,000, six months, run hybrid.
    It exits 1 on any item without one owner, a valid type, priority, status or due date, or
    closed without a resolution, and lists overdue, due-soon (`--days`, default 7), blocked and
    for-steering items and each owner's load. Helios on 2026-07-10: 14 items, 9 open, PASS; I003
-   is 2 days overdue, 6 items fall due within 7 days, ACT003 is blocked, and DEC002 and I001
+   is 2 days overdue, 5 items fall due within 7 days, ACT003 is blocked, and DEC002 and I001
    go to steering. *Done: the check passes and every overdue item has a new agreed date or an
    escalation.*
 6. **Monitor risk; when one occurs, execute its response.** Re-score on the cadence with
@@ -147,13 +147,21 @@ $500,000, six months, run hybrid.
     exceeds the team's authority, money or time or threatens a baseline. Build the steering
     agenda from the check's "for steering" list, take decisions at the steering committee
     (`meeting-management` runs the meeting) and write each one back as a closed decision with
-    who decided and why. Capture lessons as they surface, at milestones and retrospectives,
-    with `lessons-learned`. *Done: every escalation has a decision or a dated next step in the log.*
-11. **Prepare go-live.** About four weeks before any go-live, start `release-and-cutover` for
-    readiness criteria, the go/no-go, the cutover runbook and hypercare. Delivery keeps the log
-    and steering running underneath: the go/no-go verdict is logged as a decision and release
-    problems as issues. *Done: `release-and-cutover` owns the go-live plan and the verdict is
-    in the log.*
+    who decided and why. At each milestone gate (Helios M4, M6), update the cashflows with the
+    current EAC and benefit forecast, run
+    `python .claude/skills/business-case/scripts/roi_npv.py <updated-cashflows.csv> --irr --break-even`,
+    compare the result with the charter's stop triggers, and log the sponsor's continue/stop
+    decision as a closed decision item (Helios: the month-3 EAC of about $535,000 is 7% above
+    the $500,000 investment, well inside the 39% switching value, and NPV at 10% stays about
+    $161,000, so continue). Capture lessons
+    as they surface, at milestones and retrospectives, with `lessons-learned`. *Done: every
+    escalation has a decision or a dated next step in the log, and every gate has a dated
+    continue/stop decision.*
+11. **Prepare go-live.** No later than six weeks (T-6) before any go-live, with the release
+    strategy from planning, start `release-and-cutover` for readiness criteria, the go/no-go,
+    the cutover runbook and hypercare. Delivery keeps the log and steering running underneath:
+    the go/no-go verdict is logged as a decision and release problems as issues. *Done:
+    `release-and-cutover` owns the go-live plan and the verdict is in the log.*
 12. **Hand over to closure.** When every in-scope deliverable has been accepted or formally
     deferred, go-live and hypercare are complete, and every open item is closed or
     transferred to a named owner, hand `project-closure` the issue log, acceptance log, change
@@ -169,6 +177,7 @@ $500,000, six months, run hybrid.
 - [ ] No baseline change without a decided change request.
 - [ ] Vendor and people items name the specialist skill's next action and owner.
 - [ ] Every escalation has a decision or a dated next step recorded as a decision item.
+- [ ] Every milestone gate has a re-run business-case appraisal and a dated continue/stop decision in the log.
 - [ ] Go-live runs through `release-and-cutover`; its go/no-go verdict is a logged decision.
 
 ## Anti-patterns
@@ -212,6 +221,7 @@ $500,000, six months, run hybrid.
 - `lessons-learned` — captures lessons from milestones, retrospectives and resolved items while delivery runs (step 10).
 - `change-request` — raises and assesses each change an issue or decision here would make to the baseline (step 7).
 - `agile-delivery` — runs sprints, backlog and velocity inside the frame this skill controls; impediments and fixed-frame changes come back here (steps 3 and 4).
-- `release-and-cutover` — runs go-live from about four weeks out; its go/no-go verdict and release issues come back to this log (step 11).
+- `release-and-cutover` — runs go-live from no later than six weeks out (T-6); its go/no-go verdict and release issues come back to this log (step 11).
 - `procurement-management` — acts on the vendor issues logged here: remedies, escalation ladder, acceptance before payment (step 8).
 - `resource-management` — acts on the people issues logged here: overload, departures, onboarding and leveling (step 8).
+- `business-case` — re-appraised at each milestone gate with the current EAC and benefit forecast; the sponsor's continue/stop decision against its switching values is logged here (step 10).

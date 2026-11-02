@@ -1,6 +1,6 @@
 period,task,pv,ev,ac,bac
 M1,Project management,8333,8333,8000,50000
-M1,Discovery & design,45000,43000,41000,75000
+M1,Discovery & design,75000,75000,70000,75000
 M2,Project management,16666,16666,16000,50000
 M2,Discovery & design,75000,75000,70000,75000
 M2,Identity / SSO integration,30000,21000,27000,78750

@@ -51,8 +51,9 @@
 ## Slide 6 — Milestones, budget range and stop triggers
 - **M1 Discovery complete** (end of month 1): requirements and UX prototype agreed; scope,
   schedule and cost baselines approved. **M4 MVP live to pilot** (end of month 4): password
-  reset, order status, knowledge base and SSO live for the 200 pilot customers. **M6 General
-  availability** (end of month 6): live to all customers; Support Operations trained.
+  reset, order status and knowledge base live for the 200 pilot customers. **M6 General
+  availability** (end of month 6): live to all customers with SSO sign-in; Support Operations
+  trained.
 - **Budget range:** $450,000 – $550,000 including all reserves, from the Customer Operations
   investment budget. Until the baseline: Discovery and project management only; no new vendor
   or hosting commitment.

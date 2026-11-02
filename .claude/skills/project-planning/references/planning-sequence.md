@@ -47,10 +47,10 @@ used throughout this catalog).
 | A fixed date is missed after leveling | Compression in `project-schedule` (crash or fast-track) | 7 (new risk), 9 (cost) |
 | BAC plus management reserve exceeds the charter range | Scope (2), approach, or a funding decision by the sponsor | 9 |
 
-Helios closed two loops before approval: leveling the W6–W9 build peak moved knowledge-base
-work within its float (step 6, no date change), and the cross-training response to R003 (lead
-engineer leaves) became scheduled work, so the capacity check in step 6 was re-run before the
-cost baseline.
+Helios closed two loops before approval: leveling the first build weeks (W6–W9) moved 6 hours
+of knowledge-base work into later weeks of that task's window (step 6, no date change), and the
+cross-training response to R003 (lead engineer leaves) became scheduled work, so the capacity
+check in step 6 was re-run before the cost baseline.
 
 ## Agile and hybrid variants
 | Step | Agile form | Skill |

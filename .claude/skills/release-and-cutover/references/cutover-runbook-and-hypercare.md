@@ -60,8 +60,9 @@ hand beside operations, fixes problems fast and transfers knowledge. It differs 
 usual support, though it often overlaps the warranty.
 
 - **Duration:** typically 2-6 weeks, long enough to cover one full business cycle (a month-end,
-  a billing run, the last ramp step) and the slowest-arriving defects. Helios: 4 weeks, the
-  warranty period named in its WBS (1.5.2 Operational handover).
+  a billing run, the last ramp step) and the slowest-arriving defects. Helios: 4 weeks after
+  the 2026-10-03 go-live, the warranty period named in the acceptance criterion of WBS 1.5.2
+  Operational handover, whose network task J prepared the handover in the week to 2026-09-25.
 - **Entry:** go-live declared; on-call rota, triage path and dashboards working; known-error
   articles published.
 - **Staffing:** heaviest in week 1 (extended hours, squad beside the service desk), tapering as

@@ -1,8 +1,8 @@
 # Project Management Plan — Helios (sample)
 
 Sample: the integrated plan for the sample Helios project (a fictional customer self-service
-portal used throughout this catalog) as approved by the sponsor at M1, the end of Discovery.
-Each section summarises the output of the skill named in it. Copy
+portal used throughout this catalog) as approved by the sponsor at M1 (2026-05-08), the end of
+Discovery. Each section summarises the output of the skill named in it. Copy
 `project-management-plan.md` for your own project.
 
 | Field | Value |
@@ -11,9 +11,9 @@ Each section summarises the output of the skill named in it. Copy
 | **Sponsor (baseline approver)** | Dana Okoro, VP Customer Operations |
 | **Project manager** | Sam Lee |
 | **Delivery approach** | Hybrid — fixed budget, milestones and integration work; UI and knowledge-base scope flexes in two-week sprints |
-| **Version / date** | v1.0 / M1 |
+| **Version / date** | v1.0 / 2026-05-08 (M1) |
 | **Status** | Approved baseline |
-| **Target approval** | M1 (Discovery complete) |
+| **Target approval** | M1 (Discovery complete, 2026-05-08) |
 
 ## 1. Purpose and objectives
 - **Business need:** 40% of support tickets are password resets and order-status questions,
@@ -44,7 +44,8 @@ contingency, so none is a separate risk.
 ## 3. Scope baseline
 - Scope statement v1.0 approved by Dana Okoro at M1 — 11 deliverables (D1–D11), each with
   acceptance criteria and one acceptor — see `scope-and-requirements`.
-- Exclusions: native mobile apps, back-office CRM changes, replacing the ticketing system.
+- Exclusions (6): native mobile apps; live chat (phase 2 candidate); back-office CRM changes;
+  SSO for partner logins; non-English knowledge base; replacing the ticketing system.
 - WBS: 5 level-1 elements, 11 work packages, validator PASS — see `work-breakdown-structure`.
 
 ## 4. Procurement and external dependencies
@@ -66,24 +67,37 @@ See `procurement-management`. The vendor's sandbox is an external dependency of 
   integration and UI work — see `raci-matrix`.
 - Team: Ava Chen (product owner), Ben Adeyemi (tech lead), Carla Diaz (backend), Devin Patel
   (frontend), Elena Rossi (UX), Frank Müller (QA).
-- Capacity gate over the build peak W6–W9: Carla Diaz peaked at 125% in W7 and Devin Patel at
-  105%. Leveling moved 34 hours (Carla to Ben, Devin to Elena) and smoothed Carla's remaining
-  knowledge-base hours into W9–W10 within that task's 3 weeks of float; the gate now passes —
-  see `resource-management`.
+- Capacity gate over the first four build weeks, W6–W9 (2026-05-11 to 06-05, sprints S1–S2,
+  with C, D, E and F all running): Carla Diaz peaked at 125% in W7 and Devin Patel at 105%.
+  Leveling moved 34 hours (Carla to Ben, Devin to Elena) and smoothed Carla's remaining 6
+  knowledge-base hours into W9–W10, still inside that task's window (W6–W14); the gate now
+  passes — see `resource-management`.
 - Key-person risk: Ben is the only backend cover and the lead engineer in R003; response is
   cross-training, not more hours on Ben.
 
 ## 7. Schedule baseline
-| Milestone | Charter date | Baseline | Float or reserve |
-|---|---|---|---|
-| Discovery complete | M1 | M1 — baseline approved at this milestone | — |
-| MVP live to pilot | M4 | Week 17 (end of H, Hardening & launch) | 0 weeks: critical |
-| General availability | M6 | After the pilot, at M6 | 2.4-week schedule reserve held before GA |
+Dated with `critical_path.py --unit weeks --start-date 2026-04-06 --workdays` (week 1 is the
+week of 2026-04-06).
 
-- Critical path A→B→D→F→G→H→J = 18 weeks; near-critical C (Identity / SSO integration, 1 week
-  of float, vendor-dependent) and I (1 week).
-- Simulation P50 19.3, P80 20.4 weeks: a 2.4-week reserve held once, not spread into tasks —
-  see `project-schedule`.
+| Milestone | Charter date | Baseline date | Float or reserve |
+|---|---|---|---|
+| Discovery complete | M1, end of month 1 | 2026-05-08 (end of B, week 5); baseline approved at this milestone | 0 weeks: critical |
+| SSO working in test (interim) | — | 2026-07-03 (end of C's eighth week) | 1 week: C finishes 2026-07-10, late finish 2026-07-17 |
+| MVP live to pilot | M4, end of month 4 | 2026-08-07 (week 18, inside G System & UAT testing, 2026-07-20 to 08-14) | 0 weeks: critical; 2-week M4 tolerance |
+| General availability | M6, end of month 6 | Cutover Saturday 2026-10-03, after J ends on 2026-09-25 and the cutover week | No schedule reserve; the 2-week M6 tolerance (to 2026-10-17) covers about P75 |
+
+- Critical path A→B→D→G→H→J = 25 weeks, 2026-04-06 to 2026-09-25; near-critical, with 1 week
+  of float each: C (Identity / SSO integration, vendor-dependent), E (Knowledge base), F
+  (Reporting & analytics) and I (Training & communications).
+- C, D, E and F build from 2026-05-11 in sprints S1–S5; G 2026-07-20 to 08-14 (pilot UAT 07-28
+  to 07-31, pilot launch 08-07, then stabilisation); H 08-17 to 09-18 (GA readiness reviews
+  09-02 and 09-16); I 08-17 to 09-11; J 09-21 to 09-25. Week 26 is the cutover week: dress
+  rehearsal 09-26, code freeze 09-28, go/no-go 09-30.
+- Simulation (10,000 trials, seed 42): P50 26.94, P80 28.25 weeks; 10% of futures finish
+  within the deterministic 25 weeks and 27% by week 26. No schedule reserve fits before GA:
+  Dana Okoro accepted this at baseline, with the 2-week M6 tolerance covering about P75
+  (P(≤ 28 weeks) = 75%) and a crash of H, Hardening & launch, pre-identified — see
+  `project-schedule`.
 
 ## 8. Risk plan
 - Probability 0–1, impact in dollars; HIGH at 5% and MEDIUM at 1% of BAC; reviewed at every
@@ -103,7 +117,8 @@ See `procurement-management`. The vendor's sandbox is an external dependency of 
   sprint increment — see `quality-management`.
 - Gates: M4 pilot go/no-go and M6 general availability; Frank Müller verifies, the named
   acceptor accepts.
-- System & UAT testing (1.4.1) runs 4 weeks with 20 Support Operations agents (A3).
+- System & UAT testing (1.4.1) runs 4 weeks, 2026-07-20 to 08-14, with 20 Support
+  Operations agents in the pilot UAT of 07-28 to 07-31 (A3).
 
 ## 10. Cost baseline and reserves
 ```
@@ -124,16 +139,17 @@ Total project budget            $525,000   held by Dana Okoro
 | **= Total project budget** | **$525,000** | — | — |
 | Charter budget range | $450,000 – $550,000 | | |
 
-- Cumulative planned value: M1 $53,333 · M2 $161,666 · M3 $255,000 · M4 $368,333 · M5
+- Cumulative planned value: M1 $83,333 · M2 $161,666 · M3 $255,000 · M4 $368,333 · M5
   $436,666 · M6 $500,000; contingency distributed to work packages by WBS weight.
 - Earned value monthly against this baseline; RAG GREEN when CPI and SPI are both at least
   0.95, RED when either is below 0.85 — see `cost-management`.
 
 ## 11. Stakeholder engagement and communications
-- Manage closely: Dana Okoro (sponsor), Priya Nair (benefit owner). Keep satisfied: Marcus Webb
-  (security acceptor for D4 and D9), Hana Sato (data residency and accessibility), Finance
-  (budget holder). Keep informed: the pilot cohort of 200 customers — see
-  `stakeholder-management`.
+- Manage closely: Dana Okoro (sponsor), Priya Nair (benefit owner), IdentityCo
+  (identity-provider vendor). Keep satisfied: Marcus Webb (security acceptor for D4 and D9),
+  Hana Sato (data residency and accessibility), Finance (budget holder), the order management
+  team (order API). Keep informed: the pilot cohort of 200 customers and the 60 support
+  agents. Monitor: Marketing (GA launch) — see `stakeholder-management`.
 - Cadence: daily stand-up (team), weekly status report (sponsor and key stakeholders),
   bi-weekly steering committee (decisions and escalations) — see `project-communication`.
 - Escalation: team → Sam Lee within a day → steering committee → Dana Okoro.
@@ -150,15 +166,17 @@ Total project budget            $525,000   held by Dana Okoro
 |---|---|
 | $460,000 + $40,000 = BAC $500,000; S-curve ends at $500,000 | Pass |
 | BAC + $25,000 management reserve = $525,000, inside $450k–$550k | Pass |
-| M1, M4 and M6 met by the leveled 18-week schedule plus 2.4-week reserve | Pass |
+| M1 (2026-05-08), M4 (2026-08-07) and M6 (2026-10-03) met on the deterministic dates of the leveled 25-week schedule | Pass |
+| No schedule reserve before GA (27% chance of readiness by week 26), accepted by Dana Okoro with the 2-week M6 tolerance and the crash option on H | Pass (risk accepted) |
+| S-curve phased on the leveled schedule: every work package's planned cost falls inside its dated window (Discovery M1; build M2–M4; testing M4–M5; hardening and training M5–M6; handover M6) | Pass |
 | Capacity gate passes on the baselined schedule (no one OVER) | Pass |
 | CON-1 to CON-4 honoured (section 2) | Pass |
 
 | Role | Name | Decision | Date |
 |---|---|---|---|
-| Sponsor | Dana Okoro | Approved scope, schedule and cost baselines v1.0 | M1 |
-| Project manager | Sam Lee | Agreed | M1 |
-| Benefit owner | Priya Nair | Agreed | M1 |
+| Sponsor | Dana Okoro | Approved scope, schedule and cost baselines v1.0 | 2026-05-08 |
+| Project manager | Sam Lee | Agreed | 2026-05-08 |
+| Benefit owner | Priya Nair | Agreed | 2026-05-08 |
 
 Baseline snapshot v1.0 stored with the plan; freeze announced in the first weekly status
 report; handed to `project-delivery` at M1.

@@ -65,7 +65,8 @@ history. See `references/techniques.md` to pick a technique.
    per work package from `work-breakdown-structure`, using the WBS id as `id` so coverage
    can be diffed against the WBS. A level-of-effort element such as Helios 1.1 Project
    management is estimated parametrically (a percentage of the delivery effort), not
-   three-point. *Done: every work package is on the list and nothing extra.*
+   three-point (remove its row from an `--export-estimation` file before running
+   `pert_estimate.py`). *Done: every work package is on the list and nothing extra.*
 2. **Choose a technique per item** with `references/techniques.md` and its estimate-class
    table: analogous for early order-of-magnitude figures, parametric where per-unit data
    exists, three-point/PERT where uncertainty matters, story points/planning poker for an
@@ -73,8 +74,10 @@ history. See `references/techniques.md` to pick a technique.
    named per item.*
 3. **Capture the basis of estimate** in the worksheet: unit, technique, O/M/P, assumptions
    and exclusions, and the estimators (planning poker or Delphi reduces anchoring).
-   `assets/estimation-worksheet-sample.csv` shows the ten Helios work packages filled in,
-   in person-days, with the SSO integration estimated by Delphi because of the vendor risk.
+   `assets/estimation-worksheet-sample.csv` shows ten of the eleven Helios work packages
+   filled in (1.1 Project management is level of effort, sized parametrically outside the
+   worksheet), in person-days, with the SSO integration estimated by Delphi because of the
+   vendor risk.
    *Done: every row has unit, technique, O ≤ M ≤ P, assumptions, and estimators.*
 4. **Compute expected values, ranges, and drivers:**
    ```bash
@@ -107,17 +110,22 @@ history. See `references/techniques.md` to pick a technique.
    per task (`assets/duration-worksheet-sample.csv`, in weeks) and total only one chain with
    `--ids`, e.g. the Helios critical path:
    ```bash
-   python .claude/skills/estimation/scripts/pert_estimate.py .claude/skills/estimation/assets/duration-worksheet-sample.csv --ids A,B,D,F,G,H,J
+   python .claude/skills/estimation/scripts/pert_estimate.py .claude/skills/estimation/assets/duration-worksheet-sample.csv --ids A,B,D,G,H,J
    ```
-   That gives 19.17 weeks expected along the critical path (18 weeks on most-likely
-   durations, the baseline in `project-schedule`) versus 28.92 weeks if the expected
-   durations of all ten tasks were simply summed. Costs and the reserve go to `cost-management`, effort to `resource-management`,
-   story points to `agile-delivery`; `--format csv|json|md` exports the per-item E for those
-   hand-offs. Record `actual` in the worksheet when work completes and compare. *Done:
-   figures handed off and actuals tracked.*
+   That gives 26.42 weeks expected along the critical path (25 weeks on most-likely
+   durations, the baseline in `project-schedule`) versus 58.42 weeks if the expected
+   durations of all ten tasks were simply summed. Expected costs (sum E) go to
+   `cost-management`; the commit range and its drivers go to `risk-management`, which
+   combines them with the register into the one contingency inside the baseline (never a
+   second reserve on top); effort goes to `resource-management` and story points to
+   `agile-delivery`. `--format csv|json|md` exports the per-item E for those hand-offs.
+   Record `actual` in the worksheet when work completes and compare. *Done: figures handed
+   off and actuals tracked.*
 
 ## Quality checklist
-- [ ] Every WBS work package has exactly one row keyed by its WBS id; nothing extra.
+- [ ] Every WBS work package has exactly one row keyed by its WBS id, except a
+      level-of-effort element sized parametrically (Helios 1.1), whose basis is recorded
+      instead; nothing extra.
 - [ ] One unit per worksheet; technique, assumptions, and estimators recorded per row.
 - [ ] Uncertain work carries a range (O ≤ M ≤ P), not a single number; `wide` items revisited.
 - [ ] Estimates were made by more than one person where it matters (poker / Delphi).
@@ -141,9 +149,9 @@ history. See `references/techniques.md` to pick a technique.
   confidence level.
 - `assets/estimation-worksheet-template.csv` — fill-in worksheet (`<placeholders>`): id,
   task, unit, technique, O/M/P, assumptions, estimators, actual.
-- `assets/estimation-worksheet-sample.csv` — sample worksheet for the Helios project: the
-  ten WBS work packages estimated bottom-up, in person-days (1.1 Project management is
-  level-of-effort and sized parametrically); the default script input.
+- `assets/estimation-worksheet-sample.csv` — sample worksheet for the Helios project: ten
+  of the eleven WBS work packages estimated bottom-up, in person-days (1.1 Project
+  management is level-of-effort and sized parametrically); the default script input.
 - `assets/duration-worksheet-sample.csv` — sample duration worksheet for the Helios
   schedule network (ids A–J, weeks) for `--ids` chains.
 - `scripts/pert_estimate.py` — per-item E, std, and variance share; totals, two-sided
@@ -155,8 +163,8 @@ history. See `references/techniques.md` to pick a technique.
 ## Related skills
 - `project-planning` — the planning phase that commissions these estimates and folds them
   into the performance baseline.
-- `cost-management` — turns the cost estimates and the reserve into the cost baseline and
-  tracks them with earned value.
+- `cost-management` — turns the cost estimates into the cost baseline and tracks them with
+  earned value.
 - `work-breakdown-structure` — supplies the work packages (WBS ids) the worksheet must cover
   100%.
 - `project-schedule` — consumes the per-task duration estimates and derives the project

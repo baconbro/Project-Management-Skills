@@ -80,7 +80,8 @@ Sections: [Lifecycle and governance](#lifecycle-and-governance) ·
   integrated and earned value is measured.
 - **100% rule** — the children of every WBS element add up to 100% of the parent's work: nothing
   missing, nothing extra.
-- **8/80 rule** — a heuristic that a work package should take between 8 and 80 hours of effort.
+- **8/80 rule** — a heuristic that a work package should take between 8 and 80 hours of effort
+  (a small-project heuristic; larger projects use one or two reporting periods).
 - **SMART** — objectives that are Specific, Measurable, Achievable, Relevant and Time-bound
   (Helios: cut the two ticket types by 50% within 6 months of launch).
 
@@ -110,17 +111,22 @@ Sections: [Lifecycle and governance](#lifecycle-and-governance) ·
 
 ## Schedule
 - **Critical path** — the longest chain of dependent activities; it sets the shortest possible
-  duration, and any slip on it slips the finish (Helios: A → B → D → F → G → H → J, 18 weeks).
+  duration, and any slip on it slips the finish (Helios: A → B → D → G → H → J, 25 weeks).
   See `project-schedule`.
 - **Float (slack)** — how far an activity can slip. *Total float*: without delaying the
-  project finish (zero on the critical path; Helios task C, SSO integration, has 1 week).
-  *Free float*: without delaying any successor's early start.
+  project finish (zero on the critical path; Helios task C, SSO integration, has 1 week, as
+  do E, F and I). *Free float*: without delaying any successor's early start.
 - **Near-critical** — a path or task with small float that can become critical after a slip.
 - **Finish-to-start (FS)** — the successor starts after the predecessor finishes; the default
   dependency type.
 - **Milestone** — a zero-duration checkpoint marking a significant event (Helios: M1, M4, M6).
 - **Crashing / fast-tracking** — shortening the schedule by adding resources to critical tasks
   / by overlapping tasks that were planned in sequence (more risk, rework).
+- **Schedule reserve (buffer)** — time held before a committed date to cover the gap between
+  the deterministic finish and a chosen confidence level. Parallel paths make the
+  deterministic finish optimistic (Helios: 25 weeks on the critical path, P80 28.25 in the
+  simulation). Helios holds none before GA: the sponsor accepted a 27% chance of GA readiness
+  by week 26, with the 2-week M6 tolerance covering about P75. See `project-schedule`.
 - **Resource leveling vs smoothing** — moving work to remove over-allocation even if the finish
   moves / moving work only within float so the finish does not. See `resource-management`.
 - **Gantt chart** — bars on a calendar showing each task's dates and dependencies.
@@ -158,12 +164,15 @@ Sections: [Lifecycle and governance](#lifecycle-and-governance) ·
 - **Cost baseline** — the time-phased budget, including contingency, against which cost
   performance is measured.
 - **Contingency reserve vs management reserve** — contingency is held *inside* the cost
-  baseline (in BAC) for identified risks and its drawdown is managed by the PM (Helios:
-  $40,000, about P50 of a simulation of the residual register; P80 $99,000; the $52,300
-  summed residual EMV is the mean, not the reserve; the sponsor accepted the gap to P80). A
-  forecast EAC above BAC has already used the whole contingency. Management reserve is held *above* the baseline (not in BAC) by the sponsor for
-  unidentified risks, and using it needs a baseline change (Helios: $25,000). Cost baseline +
-  management reserve = total budget (Helios: $525,000). See `cost-management`, `risk-management`.
+  baseline (in BAC) for identified risks and the PM manages its drawdown through change
+  control (Helios: $40,000, about P50 of a simulation of the residual register; P80 $99,000;
+  the $52,300 summed residual EMV is the mean, not the reserve; the sponsor accepted the gap
+  to P80; Sam Lee draws up to $5,000, the CCB larger amounts). A forecast EAC above BAC has
+  already used the whole contingency. Management reserve is held *above* the baseline (not in
+  BAC) by the sponsor for unidentified risks, and releasing it needs a change-control decision
+  by the sponsor (Helios: $25,000). A release for unplanned in-scope work raises BAC; one that
+  funds an overrun does not, so the cost variance stays visible. Cost baseline + management
+  reserve = total budget (Helios: $525,000). See `cost-management`, `risk-management`.
 
 ## Business case
 - **Do-nothing option** — the baseline every option is compared with. See `business-case`.

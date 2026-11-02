@@ -7,7 +7,7 @@ Functional fit: customer sign-in; self-service password reset; MFA,25,4,5,3,3 = 
 Integration effort with the existing stack,20,5,2,3,5 = extends the tenant already used by staff; 2 = new tenant and a second directory to synchronise
 Security and compliance beyond the gates,15,4,4,3,3 = gates met; 5 = gates plus independent penetration-test summary and breach-notice within 24 hours
 Delivery support: sandbox lead time; named engineer; support levels,15,2,4,3,"2 = sandbox in 3+ weeks and pooled support only; 4 = sandbox in 1 week, named engineer and P1 response within 1 business hour"
-Whole-life cost (project + 3 years' run),15,4.7,3.5,5.0,"5 x lowest / own: $70,000 (28,000 + 3 x 14,000); $95,000 (47,000 + 3 x 16,000); $66,000 (27,000 + 3 x 13,000)"
+Whole-life cost (project + 3 years' run),15,4.7,3.5,5.0,"5 x lowest / own: $70,000 (28,000 + 3 x 14,000 at the quoted annual renewal price; the project-phase rate is $1,200 a month);$95,000 (47,000 + 3 x 16,000); $66,000 (27,000 + 3 x 13,000)"
 Vendor viability and references,10,4,3,3,Two reference calls each plus two years' accounts; SignInCo and AuthHostCo are younger with fewer comparable clients
 Weighted total (out of 100),100,80.1,73.5,66.0,Sum of weight x score / 5; IdentityCo = (100 + 100 + 60 + 30 + 70.5 + 40) / 5
 Rank,,1,2,3,"Margin 6.6 points; the result flips only if integration effort fell from 20 to 9 or delivery support rose from 15 to 31.5; award to IdentityCo approved by Dana Okoro with a dated sandbox, a named engineer and delay and service credits in the SOW"

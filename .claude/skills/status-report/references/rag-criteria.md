@@ -62,9 +62,11 @@ Use the row when your governance asks for a risk colour.
 - **Helios, end of month 3** (`.claude/skills/cost-management/assets/evm-history-sample.csv`):
   cumulative PV is $161,666 at M2 and $255,000 at M3; EV is $235,500. ES = 2 + (235,500 −
   161,666) / (255,000 − 161,666) = **2.79 months**, SPI(t) = 2.79 / 3 = **0.93**, SV(t) =
-  **−0.9 weeks** (−0.21 months). That agrees with the schedule logic: Identity / SSO integration
-  (task C) is 2 weeks late with 1 week of float, so M4 is forecast 1 week late. Helios is 47%
-  complete, so SPI still carries information.
+  **−0.9 weeks** (−0.21 months). That agrees with the schedule logic: "SSO working in test", an
+  interim milestone inside Identity / SSO integration (task C, baseline 2026-07-03), is forecast
+  2 weeks late, so C finishes 2026-07-24, one week past its late finish of 2026-07-17 (1 week of
+  float). M4 is therefore forecast 1 week late, and so is M6, because the plan holds no schedule
+  reserve before GA. Helios is 47% complete, so SPI still carries information.
 
 ## 5. Cost: rate the forecast, not just the index
 - **Pick the EAC formula that matches the cause** (`.claude/skills/cost-management/references/earned-value.md`):
@@ -132,7 +134,7 @@ arrows is `assets/rag-history-sample.csv`.
 
 | Dimension | Evidence | Test that decided it | Rating, trend |
 |---|---|---|---|
-| Schedule | SPI 0.92, SPI(t) 0.93; "SSO working in test" forecast 2026-07-17 (+2 weeks, 1 week beyond task C's float); M4 forecast 2026-08-14 (+1 week); M6 holds on the likely release forecast, misses on the pessimistic one | M4 slip inside the 2-week tolerance; SPI in 0.85–0.95 | **AMBER**, → steady |
+| Schedule | SPI 0.92, SPI(t) 0.93; "SSO working in test" (interim milestone in task C) forecast 2026-07-17 (+2 weeks), so C finishes 2026-07-24, 1 week past its late finish; M4 forecast 2026-08-14 and M6 2026-10-10 (+1 week each, no schedule reserve before GA); the pessimistic release forecast also misses M6 | M4 and M6 slips inside the 2-week tolerance; SPI in 0.85–0.95 | **AMBER**, → steady |
 | Cost | EAC $535,032 (BAC / CPI; range $516,500–$558,468), VAC −$35,032 (−7.0%), TCPI(BAC) 1.07 vs CPI 0.93 | EAC above BAC and above BAC + management reserve ($525,000) by about $10,000, still inside the $550,000 tolerance; CPI in 0.85–0.95 | **AMBER**, → steady |
 | Scope | CR002 partner logins pending ($18,000, 10 days, MEDIUM, CCB on 2026-07-14); $28,000 of contingency undrawn after CR003, while the SSO crash option ($20,000) and CR002 together need $38,000 | Pending change above the PM's tolerance; committed + pending beyond the remaining contingency | **AMBER**, ↓ worsening |
 | Quality | Stale QA data (I003) 2 days overdue, so test results are unreliable; real-provider journey tests (ACT003) still blocked until SSO works in test; I002 and the two S4 acceptance conditions due 2026-07-17; no gate failed | Something the M4 gate depends on is overdue (GREEN at 2026-07-03, when every item still had a dated fix) | **AMBER**, ↓ worsening |
@@ -143,7 +145,7 @@ Roll-up: no dimension is RED, the worst is AMBER, so the **overall RAG is AMBER 
 schedule hold where the month-3 close left them (CPI 1.00 → 0.93 and SPI 0.94 → 0.92 since the
 month-2 close). The recovery plan for SSO is
 not counted: it is the decision requested (DEC002). **Red triggers:** SSO not working in test by
-2026-07-24 (each week past the plan's 2026-07-17 moves M4 a week, so M4 would then be more than
-2 weeks late), or an EAC above $550,000 — the composite forecast is already there if the
+2026-07-24 (each week past the plan's 2026-07-17 moves M4 and M6 a week, so both would then be
+more than 2 weeks late), or an EAC above $550,000 — the composite forecast is already there if the
 schedule slip keeps adding cost, and the $20,000 crash option on top of the CPI forecast
 ($555,000) would cross it too.

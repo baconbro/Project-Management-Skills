@@ -66,9 +66,10 @@ which `cost-management` will measure performance (control accounts).
    1.3 Portal build, 1.4 Test & launch, 1.5 Adoption & handover. *Done: one principle per
    level, and nothing the charter lists as out of scope.*
 2. **Decompose each deliverable into work packages** named as nouns ("Identity / SSO
-   integration", not "integrate SSO"), mutually exclusive, and sized by the 8/80 rule in
-   `references/decomposition-rules.md`; stop when a package has one owner and a verifiable
-   "done". A level-of-effort element such as project management may stay undecomposed.
+   integration", not "integrate SSO"), mutually exclusive, and sized by the reporting-period
+   test (8/80 hours on small projects) in `references/decomposition-rules.md`; stop when a
+   package has one owner and a verifiable "done". A level-of-effort element such as project
+   management may stay undecomposed.
    *Done: every leaf is a work package.*
 3. **Weight the children of every parent to 100** in the `weight` column of your copy of
    `assets/wbs-template.csv` (percent of the parent's effort, cost, or value). Helios level 1:
@@ -124,7 +125,8 @@ which `cost-management` will measure performance (control accounts).
 - [ ] Siblings are mutually exclusive; no parent has a single child.
 - [ ] Every work package has one owner, a description, a verifiable acceptance criterion,
       and a control account.
-- [ ] Work packages respect the 8/80 rule and none exceeds about 20% of the project.
+- [ ] Work packages fit within one or two reporting periods (8/80 hours on small projects)
+      and none exceeds about 20% of the project.
 - [ ] `scripts/wbs_validate.py` passes with `--require owner,acceptance` and no unexplained
       warning.
 - [ ] The dictionary, estimation worksheet, schedule, and cost baseline all key on the same
@@ -142,9 +144,9 @@ which `cost-management` will measure performance (control accounts).
   `project-schedule` and `raci-matrix`.
 
 ## Resources
-- `references/decomposition-rules.md` — 100% rule, 8/80 rule, deliverable- vs
-  phase-oriented decomposition, work-package definition, control accounts, numbering and
-  weights, with the Helios WBS as the example.
+- `references/decomposition-rules.md` — 100% rule, 8/80 rule and reporting-period test,
+  deliverable- vs phase-oriented decomposition, work-package definition, control accounts,
+  numbering and weights, with the Helios WBS as the example.
 - `assets/wbs-template.csv` — fill-in WBS and dictionary in one CSV (`<placeholders>`): id,
   name, weight, owner, description, acceptance criterion, control account.
 - `assets/wbs-sample.csv` — sample WBS for the Helios project (deliverable-oriented, 16

@@ -22,7 +22,9 @@ columns are passed through; "row N" in messages = Nth data row, header excluded)
     status                 open (default) | occurred | retired | realised | closed ...  optional
 
 A negative impact is rejected: store every impact as a positive magnitude and mark upside
-risks with type=opportunity. Rows whose status is closed / occurred / retired / realised are
+risks with type=opportunity. Impacts above 1e15 are rejected. Numbers tolerate '$' and a
+trailing '%'; ',' is a thousands separator before groups of three digits ("25,000" -> 25000)
+and a decimal comma before one or two digits ("0,4" -> 0.4); "1.000,50" is refused as ambiguous. Rows whose status is closed / occurred / retired / realised are
 validated but excluded from scoring unless --include-closed is given.
 
 SCALES
@@ -32,7 +34,8 @@ SCALES
                            or --prob-scale 1-5. A cell written "40%" is always a percent.
     --prob-scale fraction  values must be 0-1      --prob-scale percent   values must be 0-100
     --prob-scale 1-5 --impact-scale 1-5   (always together) score = P x I on the 1-25 grid;
-                           default bands HIGH >= 15, MEDIUM >= 8.
+                           default bands HIGH >= 15, MEDIUM >= 8. Grid scores are ordinal: they
+                           rank and band only, so no totals are printed (JSON keeps the keys).
     --impact-scale units   (default) impact in ONE consistent unit (money, days, points).
                            Default bands HIGH >= 25,000 and MEDIUM >= 5,000 (5% / 1% of the
                            sample Helios BAC of $500,000). Prefer --bac B (bands = 5% / 1% of
@@ -195,14 +198,29 @@ def require_columns(headers, groups):
         raise ValueError(f"missing column(s): {missing}; found headers: {[h for h in headers if h]}")
 
 
+MAX_VALUE = 1e15  # upper bound for money/impact cells: keeps every sum finite
+# ',' before one or two trailing digits is a decimal comma ('2,5', '37,50'); before groups of three
+# digits it is a thousands separator ('1,000', '12,345.67'); any other comma ('1.000,50') is ambiguous.
+DECIMAL_COMMA_RE = re.compile(r"[-+]?\d+,\d{1,2}")
+THOUSANDS_RE = re.compile(r"[-+]?\d{1,3}(?:,\d{3})+(?:\.\d+)?")
+
+
 def _num(raw, where, minimum=None, maximum=None, integer=False):
-    """Parse a number tolerant of '$', ',', '€', '£', whitespace and a trailing '%' (which is stripped, value unchanged)."""
+    """Parse a number tolerant of '$', '€', '£', whitespace, a trailing '%' (stripped, value unchanged)
+    and commas: '1,000' -> 1000 (thousands), '2,5' -> 2.5 (decimal comma), '1.000,50' -> error."""
     if isinstance(raw, bool):
         raise ValueError(f"{where}: {raw!r} is a boolean, not a number")
     s = str(raw).strip()
     if s.endswith("%"):
         s = s[:-1]
-    s = s.replace(",", "").replace("$", "").replace("€", "").replace("£", "").strip()
+    s = s.replace("$", "").replace("€", "").replace("£", "").strip()
+    if "," in s:
+        if DECIMAL_COMMA_RE.fullmatch(s):
+            s = s.replace(",", ".")
+        elif THOUSANDS_RE.fullmatch(s):
+            s = s.replace(",", "")
+        else:
+            raise ValueError(f"{where}: {raw!r} is ambiguous; use '.' as the decimal point and ',' only for thousands")
     try:
         v = float(s)
     except ValueError:
@@ -293,7 +311,7 @@ def _prob_cell(raw, where):
 def _impact(raw, where, impact_scale):
     if impact_scale == "1-5":
         return _num(raw, where, minimum=1, maximum=5)
-    v = _num(raw, where)
+    v = _num(raw, where, maximum=MAX_VALUE)
     if v < 0:
         raise ValueError(
             f"{where}: {raw!r} is negative; store impacts as positive magnitudes and set "
@@ -623,11 +641,16 @@ def summary_lines(s, grid):
         f"Bands: HIGH >= {money(s['band_high'])}, MEDIUM >= {money(s['band_medium'])} ({s['band_source']}).",
     ]
     if s["risks_shown"] < s["risks_scored"]:
-        lines.append(f"Showing the top {s['risks_shown']} of {s['risks_scored']} scored risk(s); totals cover all scored risks.")
-    lines.append(f"Total threat {label}:        {money(s['total_threat_emv'])}  ({s['threats']} threat(s))")
-    lines.append(f"Total opportunity {label}:   {money(s['total_opportunity_emv'])}  ({s['opportunities']} opportunity(ies))")
-    lines.append(f"Net {label} (threats - opportunities): {money(s['net_emv'])}")
-    if s["has_residual"]:
+        lines.append(f"Showing the top {s['risks_shown']} of {s['risks_scored']} scored risk(s)"
+                     + ("." if grid else "; totals cover all scored risks."))
+    if grid:
+        lines.append(f"{s['threats']} threat(s), {s['opportunities']} opportunity(ies). Grid scores are ordinal: "
+                     "rank and band only; they are not added up (quantify in money to size reserves).")
+    else:
+        lines.append(f"Total threat {label}:        {money(s['total_threat_emv'])}  ({s['threats']} threat(s))")
+        lines.append(f"Total opportunity {label}:   {money(s['total_opportunity_emv'])}  ({s['opportunities']} opportunity(ies))")
+        lines.append(f"Net {label} (threats - opportunities): {money(s['net_emv'])}")
+    if s["has_residual"] and not grid:
         verb = "reduce" if s["threat_reduction"] >= 0 else "INCREASE"
         lines.append(
             f"Total residual threat {label}: {money(s['total_residual_threat_emv'])}  "
@@ -729,7 +752,7 @@ def render_json(shown, summary, sim, check):
         payload["simulation"] = sim
     if check is not None:
         payload["check"] = check
-    return json.dumps(payload, indent=2, ensure_ascii=False)
+    return json.dumps(payload, indent=2, ensure_ascii=False, allow_nan=False)
 
 
 def render_csv(shown, headers):

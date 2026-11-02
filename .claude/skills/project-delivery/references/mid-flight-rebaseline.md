@@ -72,7 +72,8 @@ without one, the snapshot would read:
   progress; 1.4 Test & launch and 1.5 Adoption & handover not started. Out of scope: live chat
   (CR001, phase 2). Partner logins (CR002) pending a decision.
 - **Milestones:** M1 Discovery complete, met; M4 MVP live to pilot, at risk (SSO is two weeks
-  late after the IdentityCo sandbox outage); M6 general availability, likely.
+  late after the IdentityCo sandbox outage, one week beyond its float); M6 general
+  availability, at risk by the same week (no schedule reserve before GA).
 - **Budget to date:** approved $500,000; actual $252,000; estimate at completion about
   $535,000, so about $35,000 over, against $40,000 of contingency already largely committed.
 - **Risks and issues:** R001 identity-provider slip has occurred as issue I001; R002 scope

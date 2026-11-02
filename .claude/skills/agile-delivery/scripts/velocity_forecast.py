@@ -18,7 +18,8 @@ SPRINT HISTORY COLUMNS / KEYS  (case-insensitive; one row per sprint, oldest fir
                                                 aliases: scope, scope_points, total_scope, release_points (optional;
                                                 a blank cell repeats the previous sprint's scope)
     sprint_goal       carried into the JSON/CSV output             aliases: goal
-  Points are numbers >= 0 (decimals allowed); '$', ',', and a trailing '%' are stripped. Only the
+  Points are numbers >= 0 (decimals allowed); '$' and a trailing '%' are stripped, ',' is read as a
+  thousands separator ('1,000' -> 1000) or a decimal comma ('2,5' -> 2.5), and '1.000,50' is refused. Only the
   LAST rows may leave completed_points blank: they are unfinished (in-progress or planned) sprints,
   shown but excluded from every statistic. Rows must be in sprint order; dated sprints must not overlap.
   CSV delimiter is auto-detected (, ; tab |); a UTF-8 BOM and CRLF line ends are tolerated. JSON is a list
@@ -196,14 +197,28 @@ def require_columns(headers, groups):
         raise ValueError(f"missing column(s): {missing}; found headers: {[h for h in headers if h]}")
 
 
+# ',' before one or two trailing digits is a decimal comma ('2,5', '37,50'); before groups of three
+# digits it is a thousands separator ('1,000', '12,345.67'); any other comma ('1.000,50') is ambiguous.
+DECIMAL_COMMA_RE = re.compile(r"[-+]?\d+,\d{1,2}")
+THOUSANDS_RE = re.compile(r"[-+]?\d{1,3}(?:,\d{3})+(?:\.\d+)?")
+
+
 def _num(raw, where, minimum=None, maximum=None, integer=False):
-    """Parse a number tolerant of '$', ',', '€', '£', whitespace and a trailing '%' (which is stripped, value unchanged)."""
+    """Parse a number tolerant of '$', '€', '£', whitespace, a trailing '%' (stripped, value unchanged)
+    and commas: '1,000' -> 1000 (thousands), '2,5' -> 2.5 (decimal comma), '1.000,50' -> error."""
     if isinstance(raw, bool):
         raise ValueError(f"{where}: {raw!r} is a boolean, not a number")
     s = str(raw).strip()
     if s.endswith("%"):
         s = s[:-1]
-    s = s.replace(",", "").replace("$", "").replace("€", "").replace("£", "").strip()
+    s = s.replace("$", "").replace("€", "").replace("£", "").strip()
+    if "," in s:
+        if DECIMAL_COMMA_RE.fullmatch(s):
+            s = s.replace(",", ".")
+        elif THOUSANDS_RE.fullmatch(s):
+            s = s.replace(",", "")
+        else:
+            raise ValueError(f"{where}: {raw!r} is ambiguous; use '.' as the decimal point and ',' only for thousands")
     try:
         v = float(s)
     except ValueError:
@@ -935,7 +950,7 @@ def _jsonable(obj):
 
 
 def render_json(result):
-    return json.dumps(_jsonable(result), indent=2, ensure_ascii=False)
+    return json.dumps(_jsonable(result), indent=2, ensure_ascii=False, allow_nan=False)
 
 
 RENDERERS = {"table": render_table, "json": render_json, "csv": render_csv, "md": render_md}
@@ -1005,7 +1020,10 @@ def main(argv=None) -> int:
         backlog = None
         if args.backlog:
             text = read_text(args.backlog)
-            b_rows, b_headers = load_rows(text, text.lstrip()[:1] in ("[", "{"), BACKLOG_JSON_KEY)
+            try:
+                b_rows, b_headers = load_rows(text, text.lstrip()[:1] in ("[", "{"), BACKLOG_JSON_KEY)
+            except ValueError as exc:  # name the file: two inputs can fail the same way
+                raise ValueError(f"--backlog {args.backlog}: {exc}")
             backlog = parse_backlog(b_rows, b_headers)
         result = analyse(sprints, flags, args, backlog)
         print(RENDERERS[args.format](result))

@@ -22,7 +22,7 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
 | Team | Ava Chen (product owner), Ben Adeyemi (tech lead), Carla Diaz (backend), Devin Patel (frontend), Elena Rossi (UX), Frank Müller (QA) |
 | Key stakeholders | Priya Nair (Head of Support Operations, benefit owner), Marcus Webb (Security lead), Hana Sato (Legal & Compliance), Finance (budget holder), 200 pilot customers |
 | Money | Charter range $450k-$550k; BAC $500,000 including $40,000 contingency; $25,000 management reserve above BAC |
-| Time | 6 months: Discovery complete M1, MVP live to pilot M4, general availability M6 |
+| Time | 6 months: Discovery complete M1 (2026-05-08), MVP live to pilot M4 (2026-08-07), general availability M6 (cutover Saturday 2026-10-03) |
 | Cadence | Daily stand-up, weekly status report, bi-weekly steering committee, two-week sprints |
 | Approach | Hybrid |
 
@@ -120,17 +120,27 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
   ```bash
   python .claude/skills/estimation/scripts/pert_estimate.py .claude/skills/estimation/assets/estimation-worksheet-sample.csv --confidence 0.8
   ```
-- Result: expected effort 451.83 person-days, P80 468.63 (a 16.80-day reserve); 1.3.1
-  Identity / SSO integration drives 39.2% of the variance, so it is de-risked first.
+- Result: expected effort 451.83 person-days, P80 468.63 (a 16.80-day gap, recorded with the
+  basis of estimate rather than held as a second contingency: the range and its drivers feed
+  the one contingency sized in 2.8); 1.3.1 Identity / SSO integration drives 39.2% of the
+  variance, so it is de-risked first. Expected costs go to `cost-management` (2.9).
 
 **2.5 How long will it take?** — `project-schedule`
 - Artifact: `.claude/skills/project-schedule/assets/schedule-sample.csv`.
 - Command:
   ```bash
-  python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --near-critical 1
+  python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --start-date 2026-04-06 --workdays
+  python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --simulate 10000 --seed 42 --target 26
   ```
-- Result: critical path A → B → D → F → G → H → J = 18 weeks to operational handover, with
-  the M4 pilot after hardening and launch; C (SSO integration) has 1 week of float, E 3, I 1.
+- Result: critical path A → B → D → G → H → J = 25 weeks, 2026-04-06 to Friday 2026-09-25:
+  B ends at M1 (2026-05-08); C, D, E and F run in parallel from 2026-05-11; the M4 pilot
+  (2026-08-07) falls inside G, System & UAT testing; J ends with sprint S10, leaving only the
+  cutover week before GA on 2026-10-03. C (SSO integration, with its interim milestone "SSO
+  working in test" baselined for 2026-07-03), E, F and I each have 1 week of float. The
+  simulation shows why a deterministic path is optimistic: P50 26.94 and P80 28.25 weeks, and
+  only a 27% chance of GA readiness by week 26. Dana Okoro accepts that at baseline: no
+  schedule reserve before GA, the 2-week M6 tolerance (to 2026-10-17) covers about P75, and a
+  crash of H is pre-identified.
 
 **2.6 Do we have the people?** — `resource-management`
 - Artifacts: `.claude/skills/resource-management/assets/resource-allocation-sample.csv`,
@@ -139,9 +149,11 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
   ```bash
   python .claude/skills/resource-management/scripts/capacity_check.py .claude/skills/resource-management/assets/resource-allocation-sample.csv --level
   ```
-- Result: Carla Diaz is OVER in W6-W8 (peak 125% in W7) and Devin Patel in W7-W8; leveling
-  moves 34 hours to Ben Adeyemi and Elena Rossi, leaving 6 hours above Carla's capacity to
-  re-sequence within float. Carla is a key-person risk (only backend engineer).
+- Result: over W6-W9 (2026-05-11 to 06-05, sprints S1-S2, with C, D, E and F all running)
+  Carla Diaz is OVER in W6-W8 (peak 125% in W7) and Devin Patel in W7-W8; leveling moves 34
+  hours to Ben Adeyemi and Elena Rossi, leaving 6 knowledge-base hours above Carla's
+  capacity, which are smoothed into W9-W10, still inside task E's window (E has 1 week of
+  float), so no date moves. Carla is a key-person risk (only backend engineer).
 
 **2.7 Who is accountable?** — `raci-matrix`
 - Artifacts: `.claude/skills/raci-matrix/assets/raci-sample.csv`,
@@ -170,7 +182,9 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
 
 **2.9 What will it cost?** — `cost-management`
 - Artifact: `.claude/skills/cost-management/assets/cost-baseline-template.csv` (time-phased
-  by month). The allocation comes from the `--budget` run in 2.2.
+  by month). Work-package costs are aggregated bottom-up from `estimation` ($460,000) and the
+  $40,000 contingency is distributed by WBS weight; the resulting per-row BACs equal the
+  `--budget 500000` allocation from 2.2, which is used as a cross-check, not as the source.
 - Result: cost baseline (BAC) $500,000 = $460,000 of work + $40,000 contingency inside BAC.
   The contingency is about P50 of a simulation of the residual register (P80 $99,000; the
   $52,300 summed residual EMV is the mean, not the reserve); the sponsor accepted the gap to
@@ -200,7 +214,8 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
   bi-weekly steering and daily stand-up; approval tolerances: the PM decides LOW-band changes
   up to $5,000 and 2 working days, the CCB (chaired by Dana Okoro) decides the rest within the
   remaining contingency, and the sponsor decides HIGH-band changes, any use of management
-  reserve and any move of M6.
+  reserve, any move of M6 and any change that crosses a charter boundary (such as the
+  200-customer pilot), followed by a charter re-issue.
 
 **2.11 Backlog for the iterative part** — `agile-delivery`
 - Artifacts: `.claude/skills/agile-delivery/assets/product-backlog-sample.csv` (the blank is
@@ -219,16 +234,16 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
   `.claude/skills/project-planning/assets/assumptions-log-sample.csv` (e.g. A1: the existing
   identity provider supports customer logins without a licence upgrade, owner Ben Adeyemi).
   No helper; it reconciles the outputs of 2.1-2.11.
-- Gate: Dana Okoro approves scope, schedule and cost baselines at M1. Canvas: stage
-  *delivery*; baseline approved / approved / approved; RAG GREEN at the start.
+- Gate: Dana Okoro approves scope, schedule and cost baselines at M1 (2026-05-08). Canvas:
+  stage *delivery*; baseline approved / approved / approved; RAG GREEN at the start.
 
 ## Stage 3 — Delivery (`project-delivery` runs the control loop)
 
 **3.1 Are the sprints on course?** — `agile-delivery`
 - Artifact: `.claude/skills/agile-delivery/assets/sprint-history-sample.csv` (sprints S1-S6,
   the last ending 2026-07-31, so this reading is a month later than the month-3 snapshot in
-  3.2; at the 2026-07-10 status report, after S4, it was 149 points and 6 sprints left, likely
-  6, pessimistic 7, also AMBER).
+  3.2; at the 2026-07-10 status report, after S4, it was 149 points (137 + CR003's 12) and 6
+  sprints left, likely 6, pessimistic 7, also AMBER).
 - Command:
   ```bash
   python .claude/skills/agile-delivery/scripts/velocity_forecast.py .claude/skills/agile-delivery/assets/sprint-history-sample.csv --backlog .claude/skills/agile-delivery/assets/product-backlog-sample.csv --sprints-left 4
@@ -247,8 +262,9 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
 - Result: PV $255,000, EV $235,500, AC $252,000 → CPI 0.93, SPI 0.92 → **AMBER**; EAC
   ≈ $535,000, VAC ≈ -$35,000; TCPI 1.07 is more than 0.10 above the CPI, so the tool says
   re-plan or re-baseline. 1.3.1 Identity / SSO integration is the RED work package (CPI 0.69,
-  SPI 0.75, the vendor slip); Reporting & analytics is also below the band on a small budget.
-  Run the same command on `evm-history-sample.csv` for the trend: CPI 1.05 → 1.00 → 0.93.
+  SPI 0.75, the vendor slip); 1.3.4 Reporting & analytics is also RED on a small budget (CPI
+  0.71, SPI 0.67). Run the same command on `evm-history-sample.csv` for the trend: CPI
+  1.07 → 1.00 → 0.93 and SPI 1.00 → 0.94 → 0.92.
 
 **3.3 Log the problem** — `project-delivery`
 - Artifact: `.claude/skills/project-delivery/assets/issue-log-sample.csv` (14 issues,
@@ -264,8 +280,10 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
 
 **3.4 The vendor is late** — `procurement-management`
 - Artifact: `.claude/skills/procurement-management/assets/vendor-register-sample.csv`. No helper.
-- Result: "SSO working in test" is two weeks late; the contract's delay credit is claimed and
-  IdentityCo commits to a dated recovery plan.
+- Result: "SSO working in test" is two weeks late (baseline 2026-07-03, forecast 2026-07-17),
+  so task C would finish 2026-07-24, one week past its late finish; with no schedule reserve
+  before GA, M4 and M6 each move a week unless that week is recovered. The contract's delay
+  credit is claimed and IdentityCo commits to a dated recovery plan.
 
 **3.5 Changes are piling up** — `change-request`, governed by `change-management`
 - Artifacts: `.claude/skills/change-request/assets/change-log.csv`,
@@ -277,8 +295,9 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
 - Result (the log as at 2026-07-21; CR004 was raised on 2026-07-14 and CR006 on 2026-07-21):
   CR002 (extend SSO to partner logins) scores 3.40 MEDIUM and goes to the CCB, which asks for
   more information on 2026-07-14; CR003 (WCAG 2.2 AA uplift) is approved for $12,000 from
-  contingency; CR006 (pilot cohort 200 → 50) is LOW and within the PM's tolerance; CR001
-  (live chat) is deferred to phase 2. Committed + pending changes would use 105% of the
+  contingency; CR006 (pilot cohort 200 → 50) is LOW on cost but changes the chartered
+  200-customer pilot, so it goes to Dana Okoro (the script prints PM); CR001 (live chat) is
+  deferred to phase 2. Committed + pending changes would use 105% of the
   $40,000 contingency — on top of a cost forecast that already needs all of it (step 3.2).
 
 **3.6 Report and decide** — `status-report`, then `meeting-management`
@@ -290,13 +309,18 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
   `.claude/skills/meeting-management/assets/action-items-sample.csv` and
   `.claude/skills/meeting-management/assets/decision-log-sample.csv` (the blanks are
   `agenda-template.md`, `action-items.csv` and `decision-log.csv`). No helper.
-- Result: the weekly report is AMBER overall (schedule, cost, scope and quality AMBER;
-  1.3.1 Identity / SSO integration RED; direction worsening). BAC already includes the
-  $40,000 contingency, so an EAC of about $535,000 means the forecast has used all of it;
-  the roughly $35,000 overrun exceeds the $25,000 management reserve by about $10,000, which
-  only the sponsor can decide. The report asks the steering committee for that decision
+- Result: the weekly report is AMBER overall (schedule, cost, scope and quality AMBER; work
+  packages 1.3.1 Identity / SSO integration and 1.3.4 Reporting & analytics RED; direction
+  worsening), with M4 forecast 2026-08-14 and M6 2026-10-10, each one week late and inside
+  the 2-week tolerance. BAC already includes the $40,000 contingency, so an EAC of about
+  $535,000 means the forecast has used all of it; the roughly $35,000 overrun exceeds the
+  $25,000 management reserve by about $10,000, which only the sponsor can decide. The report
+  asks the steering committee for that decision
   (DEC002: approve the SSO recovery plan and how to fund the overrun) and for a priority
-  between protecting M4 and adding partner logins (CR002).
+  between protecting M4 and adding partner logins (CR002). The steering committee approved
+  option 1 (recovery plan, crash declined) on 2026-07-14. SSO worked in test on 2026-07-17,
+  and running the real-provider retest alongside UAT preparation in sprint S6 recovered the
+  remaining week, so M4 held on 2026-08-07.
 
 **3.7 Re-triage** — `senior-pm`
 - Artifact: `.claude/skills/senior-pm/assets/project-state-sample.md` (the canvas as at
@@ -309,11 +333,12 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
   Helios GA runbook; the blank is `cutover-runbook-template.csv`), with the blank
   `.claude/skills/release-and-cutover/assets/go-no-go-checklist.md` and
   `.claude/skills/release-and-cutover/assets/hypercare-plan-template.md`. No helper.
-- Result: a pilot at M4, then GA at M6 by a feature-flag ramp (25% → 50% → 100% from
-  2026-10-03 to 2026-10-12); the GA
-  go/no-go returns CONDITIONAL GO with owned, dated conditions; the rehearsed runbook carries
-  verifications and rollback triggers; hypercare runs to measured exit criteria before the
-  service is handed to Support Operations.
+- Result: a pilot at M4 (2026-08-07), then GA at M6 by a feature-flag ramp (25% → 50% → 100%
+  from 2026-10-03 to 2026-10-12). The GA work starts no later than six weeks (T-6) before the
+  cutover; readiness reviews run on 2026-09-02, 09-16 and 09-23, the dress rehearsal on
+  2026-09-26, and the GA go/no-go on 2026-09-30 returns CONDITIONAL GO with owned, dated
+  conditions; the rehearsed runbook carries verifications and rollback triggers; hypercare
+  runs to measured exit criteria before the service is handed to Support Operations.
 
 ## Stage 4 — Closure (`project-closure`)
 
@@ -323,12 +348,14 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
   none left open); the blanks are `closure-report.md`, `closeout-log-template.csv` and
   `acceptance-record-template.md`. No helper.
 - Result: deliverables D1-D11 accepted against the signed scope statement (final acceptance
-  by Dana Okoro on 2026-10-14); hypercare exited on 2026-10-30 and the service was handed to
-  Priya Nair, who also owns the benefits. Final cost $518,600 against the $500,000 BAC (final
-  CPI 0.96): the whole $40,000 contingency was used, $18,600 of the $25,000 management reserve
-  was drawn through change control and $6,400 returned to Finance — better than the month-3
-  forecast of about $535,000. CR002 and CR004 passed undecided to the phase-2 backlog; CR006
-  was withdrawn. Project closed on 2026-11-20.
+  of the product at GA by Dana Okoro on 2026-10-14, conditional on D11 Operational handover
+  at hypercare exit); hypercare exited on 2026-10-30 and the service was handed to Priya
+  Nair, who also owns the benefits. Final cost $518,600 against the $500,000 BAC (final CPI
+  0.96): the whole $40,000 contingency was used, $18,600 of the $25,000 management reserve
+  was drawn through change control as overrun funding (BAC not re-issued, so the variance
+  stays visible) and $6,400 returned to Finance — better than the month-3 forecast of about
+  $535,000. CR002 and CR004 passed undecided to the phase-2 backlog; CR006 was withdrawn.
+  Project closed on 2026-11-20.
 
 **4.2 Close the contracts** — `procurement-management`
 - Artifacts: `.claude/skills/procurement-management/assets/vendor-register-sample.csv` (shown
@@ -344,10 +371,12 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
   `post-mortem-template.md`). No helper.
 - Result: lessons were captured throughout, not only at the end (sprint retrospectives from
   2026-06-05, the post-project review on 2026-11-04), each with an owner and a date, e.g.
-  LL001 give vendor onboarding a named owner from the day of award; LL002 report AMBER the
-  moment a milestone is threatened.
+  LL001 give vendor onboarding a named owner from the day of award; LL002 tell the sponsor
+  about a RED work package the same day and name the milestone any AMBER line threatens.
 
-**4.4 Track the benefits** — `business-case`
+**4.4 Track the benefits** — `project-closure` (step 5 and
+`.claude/skills/project-closure/references/benefits-realization.md`), against the
+`business-case` register
 - Artifact: `.claude/skills/business-case/assets/benefits-register-sample.csv`.
 - Result: Priya Nair measures the two ticket types monthly against the 3-month pre-launch
   baseline; the 50% target is reviewed 6 months after launch.
@@ -356,7 +385,7 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
 
 All files are under `.claude/skills/<skill>/assets/`. "Filled Helios data" is what the steps
 above read; "Blank to copy" is what you copy for a real project. A few Helios files keep
-their original script-input names (`cashflows.csv`, `evm-snapshot.csv`, `change-log.csv`,
+their original names (`cashflows.csv`, `evm-snapshot.csv`, `change-log.csv`,
 `cost-baseline-template.csv`, `risk-register-template.csv`): they hold Helios data even
 though they are not named `-sample`.
 

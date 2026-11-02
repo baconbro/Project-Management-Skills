@@ -80,7 +80,8 @@ pilot at M4, general availability at M6) — recalibrate them to your own tolera
 | 5 Severe | A new deliverable (level-2 WBS element) added or one removed; an objective affected | Exceeds the contingency: new budget, business-case review or re-baseline [> $40,000] | General availability (M6) or a contractual milestone moves | A compliance, regulatory or safety obligation affected; acceptance re-planned | Threatens a project objective or exceeds the sponsor's risk appetite |
 
 Helios check: CR001 (live chat, $60,000, 20 days) rates 5/5/5/3/3; CR005 (analytics vendor swap,
-$4,000, 5 days on the critical Reporting & analytics task) rates 2/2/4/2/3.
+$4,000, 5 days on Reporting & analytics) rates 2/2/4/2/3 — the 5 days use all of that task's
+1 week of float, so it becomes a critical-path task and any further slip moves the M4 pilot.
 
 ## Scoring and the impact band
 
@@ -104,13 +105,17 @@ are ordered by id (CR2 before CR10) so the ranking never depends on file order.
 Printed when `cost_value` and/or `schedule_days` exist. Defaults follow the Helios tolerances in
 `change-management`: the PM approves LOW-band changes of up to $5,000 and 2 working days
 (inclusive) within contingency; the CCB decides above that; HIGH impact, a draw on management
-reserve or a move of M6 goes to the sponsor.
+reserve, a move of M6 or a change that crosses a charter boundary goes to the sponsor.
 
 | Authority | Rule | Helios example |
 | --- | --- | --- |
-| PM | LOW band **and** cost value within `--pm-limit-cost` (5,000) **and** days within `--pm-limit-days` (2); savings count by size; a blank value is never within tolerance | CR006 (-$3,000, 0 days, LOW) |
+| PM | LOW band **and** cost value within `--pm-limit-cost` (5,000) **and** days within `--pm-limit-days` (2); savings count by size; a blank value is never within tolerance | None after the override below (the script routes CR006 here) |
 | CCB | Everything that is neither PM nor Sponsor | CR002, CR003, CR004, CR005 |
-| Sponsor | HIGH band, or above the optional `--ccb-limit-cost` / `--ccb-limit-days` | CR001 (HIGH, $60,000) |
+| Sponsor | HIGH band, or above the optional `--ccb-limit-cost` / `--ccb-limit-days`; and, applied by the PM, any change that crosses a charter boundary | CR001 (HIGH, $60,000); CR006 (-$3,000, 0 days, LOW: crosses the charter's 200-customer pilot and its cancellation criterion) |
+
+The script routes on cost, days and band only; override its authority when a change crosses a
+charter boundary (an in-scope outcome, a fixed milestone's definition, a cancellation criterion
+or a sponsor-owned constraint), and a charter re-issue follows the decision.
 
 ## Funding source
 
@@ -119,7 +124,9 @@ reserve or a move of M6 goes to the sponsor.
   is an identified risk materialising (Helios R002, undocumented requirements expand scope). Every
   dollar drawn is a dollar less of risk cover: tell the cost and risk owners.
 - **Management reserve** — above the baseline and the sponsor's to release (Helios: $25,000).
-  Using it raises BAC, so the cost baseline is re-issued.
+  Using it for new in-scope work raises BAC, so the cost baseline is re-issued; using it to
+  fund an overrun on baselined work raises the funded budget but not BAC, so the cost
+  variance stays visible.
 - **New budget** — beyond both reserves; revisit the business case and re-baseline.
 - **None** — the change saves money or is absorbed; record where a saving goes.
 

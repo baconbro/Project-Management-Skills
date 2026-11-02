@@ -22,9 +22,11 @@ INPUT COLUMNS / KEYS
     status           Raised, Under assessment, Approved, Rejected, Deferred,
                      Implemented, Closed (alias: state); blank -> Raised             optional
     cost_value       money the change adds (+) or saves (-) in one currency
-                     (cost_delta, cost_change, cost_amount, change_cost); "$" "," ok  optional
+                     (cost_delta, cost_change, cost_amount, change_cost); "$" ok;
+                     "1,000" -> 1000, "2,5" -> 2.5, "1.000,50" is refused             optional
     schedule_days    working days the change adds (+) or saves (-)
                      (days, schedule_delta_days, delay_days)                          optional
+  cost_value and schedule_days beyond +/-1e15 are rejected.
   A rating is the impact MAGNITUDE on that dimension: 1 negligible, 2 minor, 3 moderate,
   4 major, 5 severe. Per-dimension anchors are in
   .claude/skills/change-request/references/change-request-fields.md. Ratings outside 1-5,
@@ -106,6 +108,7 @@ JSON_KEY = "changes"
 DEFAULT_HIGH, DEFAULT_MEDIUM = 4.0, 2.5
 DEFAULT_PM_COST, DEFAULT_PM_DAYS = 5000.0, 2.0
 MAX_WEIGHT = 1000.0
+MAX_VALUE = 1e15  # upper bound for |cost_value| and |schedule_days|: keeps every sum finite
 TITLE_WIDTH, ID_WIDTH, STATUS_WIDTH, FLIPS_WIDTH = 48, 20, 18, 40
 BANDS = ("HIGH", "MEDIUM", "LOW")
 AUTHORITIES = ("PM", "CCB", "Sponsor")
@@ -239,14 +242,28 @@ def require_columns(headers, groups):
                          f"found headers: {[h for h in headers if h]}")
 
 
+# ',' before one or two trailing digits is a decimal comma ('2,5', '37,50'); before groups of three
+# digits it is a thousands separator ('1,000', '12,345.67'); any other comma ('1.000,50') is ambiguous.
+DECIMAL_COMMA_RE = re.compile(r"[-+]?\d+,\d{1,2}")
+THOUSANDS_RE = re.compile(r"[-+]?\d{1,3}(?:,\d{3})+(?:\.\d+)?")
+
+
 def _num(raw, where, minimum=None, maximum=None, integer=False):
-    """Parse a number tolerant of '$', ',', '€', '£', whitespace and a trailing '%' (which is stripped, value unchanged)."""
+    """Parse a number tolerant of '$', '€', '£', whitespace, a trailing '%' (stripped, value unchanged)
+    and commas: '1,000' -> 1000 (thousands), '2,5' -> 2.5 (decimal comma), '1.000,50' -> error."""
     if isinstance(raw, bool):
         raise ValueError(f"{where}: {raw!r} is a boolean, not a number")
     s = str(raw).strip()
     if s.endswith("%"):
         s = s[:-1]
-    s = s.replace(",", "").replace("$", "").replace("€", "").replace("£", "").strip()
+    s = s.replace("$", "").replace("€", "").replace("£", "").strip()
+    if "," in s:
+        if DECIMAL_COMMA_RE.fullmatch(s):
+            s = s.replace(",", ".")
+        elif THOUSANDS_RE.fullmatch(s):
+            s = s.replace(",", "")
+        else:
+            raise ValueError(f"{where}: {raw!r} is ambiguous; use '.' as the decimal point and ',' only for thousands")
     try:
         v = float(s)
     except ValueError:
@@ -478,11 +495,11 @@ def parse_log(rows, headers):
         if ctx["has_cost"]:
             v = _get(nrow, *COST_VALUE_ALIASES)
             if not is_blank(v):
-                cost_value = _num(v, f"row {i} ({cid}), column cost_value")
+                cost_value = _num(v, f"row {i} ({cid}), column cost_value", minimum=-MAX_VALUE, maximum=MAX_VALUE)
         if ctx["has_days"]:
             v = _get(nrow, *DAYS_ALIASES)
             if not is_blank(v):
-                schedule_days = _num(v, f"row {i} ({cid}), column schedule_days")
+                schedule_days = _num(v, f"row {i} ({cid}), column schedule_days", minimum=-MAX_VALUE, maximum=MAX_VALUE)
         records.append({
             "index": i, "id": cid, "title": clean_text(_get(nrow, *TITLE_ALIASES, default="")),
             "status": status_raw or ("Raised" if ctx["has_status"] else ""), "group": group,
@@ -747,7 +764,7 @@ def render_json(shown, ctx, args, summ):
             if h.lower() not in taken:
                 item[h] = r["raw"].get(h)
         items.append(item)
-    return json.dumps({JSON_KEY: items, "summary": summ}, indent=2, ensure_ascii=False)
+    return json.dumps({JSON_KEY: items, "summary": summ}, indent=2, ensure_ascii=False, allow_nan=False)
 
 
 # --------------------------------------------------------------------------- CLI

@@ -22,7 +22,7 @@ as soon as a forecast shows the tolerance will be exceeded, not after it has bee
 | Level | Owner | May decide alone | Escalate up when | Time-box |
 |---|---|---|---|---|
 | 1 | Team: Ben Adeyemi (tech lead) for technical items; Ava Chen (product owner) for backlog and sprint scope | Technical choices, blockers and story trade-offs inside the sprint goal | Not resolved inside the team; a cross-team or vendor dependency; anything that touches cost, a milestone or an acceptance criterion | 1 working day |
-| 2 | Sam Lee (project manager) | Changes up to $5,000 and 2 days; contingency draws for fired risk triggers and approved changes; re-sequencing within float | Any level-3 trigger in the table below | 2 working days |
+| 2 | Sam Lee (project manager) | Changes up to $5,000 and 2 days, including contingency draws up to $5,000 for fired risk triggers and approved changes; re-sequencing within float | Any level-3 trigger in the table below | 2 working days |
 | 3 | Dana Okoro (sponsor, VP Customer Operations) | The $25,000 management reserve, released through change control; milestone moves; scope trade-offs; escalated risks | A re-baseline; a conflict with another project; anything beyond her authority | 2 working days |
 | 4 | Steering committee: Dana Okoro (chair), Priya Nair, Finance, Marcus Webb, Hana Sato, Sam Lee | Re-baselining; cross-project and enterprise issues | — | Next bi-weekly meeting, or an extra session within 2 business days when any dimension turns RED |
 
@@ -85,7 +85,8 @@ instantly. Count from when the item was logged, not from when someone noticed it
 ## The escalation note
 Escalate the **decision needed**, not just the problem, with options and a recommendation. Use
 section 4 of `assets/escalation-ladder-template.md`. Helios example, raised by Sam Lee on
-2026-06-26:
+2026-06-26 and updated on 2026-07-10 (month-3 figures, costed crash option) for the 2026-07-14
+steering pre-read:
 
 - **Item:** DEC002, from issue I001 (the IdentityCo sandbox outage; risk R001 has occurred).
 - **What happened and the impact:** work package 1.3.1 Identity / SSO integration is RED; the
@@ -97,8 +98,8 @@ section 4 of `assets/escalation-ladder-template.md`. Helios example, raised by S
 - **Options:** (1) approve the recovery plan and release management reserve through change
   control; (2) also crash the SSO work with IdentityCo premium support, a $20,000 change request
   (ACT004) that protects M4; (3) trade scope through change control to stay inside BAC.
-- **Recommendation:** approve the recovery plan now and decide the reserve draw once its first
-  milestone shows the true size of the overrun.
+- **Recommendation:** approve the recovery plan now and size the reserve draw once SSO works in
+  test on 2026-07-17.
 - **If no decision by the date:** the M4 pilot slips and the overrun grows unfunded.
 
 ## Good escalation hygiene

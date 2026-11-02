@@ -6,34 +6,46 @@ Read-only checker for the conventions in README.md. Standard library only
 built-in minimal parser).
 
 Checks per skill (.claude/skills/<name>/SKILL.md):
-  1. Frontmatter parses; folder name == `name`; name is kebab-case, <= 64 chars,
+  0. Every folder under the skills directory has a SKILL.md (a case variant such as
+     skill.md is an error: the skill would not load).
+  1. Frontmatter parses (without PyYAML, a plain one-line name/description holding ": " or
+     " #" is rejected, as YAML would reject it); only the keys name, description, license,
+     compatibility, metadata and allowed-tools are allowed; license is MIT; allowed-tools is
+     a string or a list of strings; folder name == `name`; name is kebab-case, <= 64 chars,
      without the reserved words "claude"/"anthropic".
   2. `description` present, <= 1024 chars, no XML angle brackets, third person,
      contains a "use when" cue; warns above 350 chars per skill or 8,000 for the
      whole catalog (Claude Code's skill-listing budget).
   3. `metadata.version` is semver; `category` and `phase` use the allowed values.
-  4. `metadata.related` entries resolve to existing skills AND are reciprocal; the
-     "## Related skills" bullets name exactly the same skills in the same order.
-  5. Body < 500 lines and contains the canonical sections in order.
+  4. `metadata.related` entries resolve to existing skills (never the skill itself) AND are
+     reciprocal; the "## Related skills" bullets name exactly the same skills in the same order.
+  5. Body < 500 lines and contains the canonical sections in order (headings inside code
+     fences do not count); every numbered Workflow step ends with a "*Done: ...*" line.
   6. No placeholder text (TODO/TBD/FIXME/lorem) in SKILL.md.
   7. Every references/ assets/ scripts/ path named in the body exists (own folder, or
      another skill's folder when written as .claude/skills/<other>/...), and every
      file in those folders is mentioned in the body (orphan -> warning).
   8. Every helper script under scripts/ runs with --help (exit 0).
   9. Every Markdown file under references/ and assets/ (and the repo README.md) only
-     points at files that exist: `.claude/skills/<s>/...` paths and folder-relative
-     references/ assets/ scripts/ paths must resolve, and a bare `file.csv`-style
-     name in backticks must exist somewhere in the catalog (catches stale pointers
-     after a file is renamed or removed).
+     points at files that exist: `.claude/skills/<s>/...` and README `$S/<s>/...` paths
+     must resolve in the named skill; an unqualified references/ assets/ scripts/ path in a
+     skill's own Markdown must resolve in THAT skill (README: in any skill); and a bare
+     `file.csv`-style name in backticks must exist somewhere in the catalog (catches stale
+     pointers after a file is renamed or removed).
+ 10. The README catalog matches the frontmatter: the "**N Agent Skills**" count, and one
+     table row per skill whose tier (0 orchestrator, 1 phase, 2 discipline, 3 artifact)
+     and phase agree with metadata.category and metadata.phase.
 
 Usage:
     python tools/lint_skills.py            # lint .claude/skills relative to cwd
     python tools/lint_skills.py PATH       # lint a specific skills directory
     python tools/lint_skills.py --no-exec  # skip running scripts with --help
-Exit code is non-zero if any errors (not warnings) are found.
+Exit code is non-zero if any errors (not warnings) are found; 2 if PATH is not a directory.
+Install PyYAML (python -m pip install pyyaml) for the strict frontmatter parsing CI uses.
 """
 from __future__ import annotations
 
+import argparse
 import os
 import re
 import subprocess
@@ -58,13 +70,32 @@ PLACEHOLDER_RE = re.compile(r"\b(TODO|TBD|FIXME|lorem ipsum)\b", re.I)
 BULLET_SKILL_RE = re.compile(r"^\s*[-*]\s+`([a-z0-9-]+)`")
 FULL_PATH_RE = re.compile(r"\.claude/skills/([a-z0-9-]+)(?:/([A-Za-z0-9_\-./]+))?")
 BARE_FILE_RE = re.compile(r"`([A-Za-z0-9_\-.]+\.(?:md|csv|py|json))`")
-# illustrative names used in examples, not files the catalog ships
-ILLUSTRATIVE = re.compile(r"^(OUT|out|data|my[-_]|your[-_]|new[-_]|fixed[-_]|old[-_]|bad|broken|input|output|report|plan|register|results?)\b|^SKILL\.md$|^README\.md$")
+# illustrative names used in examples, not files the catalog ships: exact generic names
+# (out.csv, data.json, report.md ...) or a my-/your-/new-/fixed-/old-/bad-/broken- prefix
+ILLUSTRATIVE = re.compile(r"^(OUT|out|data|input|output|report|plan|register|results?|bad|broken)\.(csv|md|json)$"
+                          r"|^(my|your|new|fixed|old|bad|broken)[-_]|^SKILL\.md$|^README\.md$")
+ALLOWED_KEYS = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
+LICENSE = "MIT"
+TIER_CATEGORY = {"0": "orchestrator", "1": "phase", "2": "discipline", "3": "artifact"}
+README_ROW_RE = re.compile(r"^\| (\d) · \w+ \| `([a-z0-9-]+)` \| ([a-z-]+) \|", re.M)
+README_COUNT_RE = re.compile(r"\*\*(\d+) Agent Skills\*\*")
+FENCE_RE = re.compile(r"^\s*(```|~~~)")
+TOP_KEY_RE = re.compile(r"^([A-Za-z0-9_][A-Za-z0-9_-]*)\s*:")
 
 try:  # optional strict YAML parsing
     import yaml  # type: ignore
 except Exception:  # pragma: no cover - PyYAML is optional
     yaml = None
+
+
+def read_utf8(path, errors, tag):
+    """File text, or None after recording an error when it is not UTF-8."""
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return fh.read()
+    except UnicodeDecodeError as exc:
+        errors.append(f"{tag} is not UTF-8 (bad byte at offset {exc.start}); re-save it as UTF-8")
+        return None
 
 
 def split_frontmatter(text: str):
@@ -77,14 +108,27 @@ def split_frontmatter(text: str):
     return None, lines
 
 
+def _plain_scalar(value, key):
+    """A one-line YAML value: quoted strings are unquoted; a plain scalar holding ': ' or ' #' is
+    rejected, because YAML (and so Claude Code) would not read it as one string."""
+    if value[:1] in ("'", '"'):
+        return value.strip("\"'")
+    if ": " in value or " #" in value or value.endswith(":"):
+        raise ValueError(f'plain-scalar {key} contains ": " or " #"; use >- or quotes')
+    return value
+
+
 def parse_frontmatter_minimal(fm_lines):
     """Minimal parser for the catalog's frontmatter shape (fallback when PyYAML is absent)."""
-    data = {"name": None, "description": None, "metadata": {}, "license": None}
+    data = {"name": None, "description": None, "metadata": {}, "license": None, "keys": set()}
     i, n = 0, len(fm_lines)
     while i < n:
         line = fm_lines[i]
+        top = TOP_KEY_RE.match(line)
+        if top:
+            data["keys"].add(top.group(1))
         if re.match(r"^name:", line):
-            data["name"] = line.split(":", 1)[1].strip().strip("\"'")
+            data["name"] = _plain_scalar(line.split(":", 1)[1].strip(), "name")
             i += 1
         elif re.match(r"^license:", line):
             data["license"] = line.split(":", 1)[1].strip()
@@ -92,7 +136,7 @@ def parse_frontmatter_minimal(fm_lines):
         elif re.match(r"^description:", line):
             rest = line.split(":", 1)[1].strip()
             if rest and rest[0] not in (">", "|"):
-                data["description"] = rest.strip("\"'")
+                data["description"] = _plain_scalar(rest, "description")
                 i += 1
             else:
                 i += 1
@@ -130,24 +174,52 @@ def parse_frontmatter(fm_lines):
         if isinstance(related, str):
             related = [x.strip() for x in related.strip("[]").split(",") if x.strip()]
         md["related"] = [str(x) for x in related]
+        tools = loaded.get("allowed-tools")
+        if tools is not None and not (isinstance(tools, str)
+                                      or (isinstance(tools, list) and all(isinstance(t, str) for t in tools))):
+            raise ValueError("allowed-tools must be a string or a list of strings")
         return {
             "name": None if loaded.get("name") is None else str(loaded.get("name")),
             "description": None if loaded.get("description") is None else " ".join(str(loaded["description"]).split()),
             "metadata": {k: (str(v) if not isinstance(v, list) else v) for k, v in md.items()},
             "license": loaded.get("license"),
+            "keys": {str(k) for k in loaded},
         }
     data = parse_frontmatter_minimal(fm_lines)
     data["metadata"].setdefault("related", [])
     return data
 
 
+def unfenced(lines):
+    """The lines outside ``` / ~~~ code fences (a heading inside a fence is not a heading)."""
+    out, inside = [], False
+    for ln in lines:
+        if FENCE_RE.match(ln):
+            inside = not inside
+            continue
+        if not inside:
+            out.append(ln)
+    return out
+
+
 def body_sections(body_lines):
-    return [ln[3:].strip() for ln in body_lines if ln.startswith("## ")]
+    return [ln[3:].strip() for ln in unfenced(body_lines) if ln.startswith("## ")]
+
+
+def section_text(body_lines, title):
+    out, inside = [], False
+    for ln in unfenced(body_lines):
+        if ln.startswith("## "):
+            inside = ln[3:].strip() == title
+            continue
+        if inside:
+            out.append(ln)
+    return "\n".join(out)
 
 
 def related_bullets(body_lines):
     names, inside = [], False
-    for ln in body_lines:
+    for ln in unfenced(body_lines):
         if ln.startswith("## "):
             inside = ln[3:].strip() == "Related skills"
             continue
@@ -164,21 +236,34 @@ def lint(skills_dir: str, run_scripts: bool = True):
         print(f"error: skills directory not found: {skills_dir}", file=sys.stderr)
         return 2
     skills = sorted(d for d in os.listdir(skills_dir) if os.path.isfile(os.path.join(skills_dir, d, "SKILL.md")))
+    # 0. folders that would not load as a skill
+    for d in sorted(os.listdir(skills_dir)):
+        full = os.path.join(skills_dir, d)
+        if d in skills or d.startswith((".", "__")) or not os.path.isdir(full):
+            continue
+        variants = [f for f in os.listdir(full) if f.lower() == "skill.md"]
+        if variants:
+            errors.append(f"[{d}] no SKILL.md (found {variants[0]}): the skill will not load; rename it to SKILL.md")
+        else:
+            warnings.append(f"[{d}] folder has no SKILL.md and is not a skill")
     parsed = {}
+    empty_fm = {"name": None, "description": None, "metadata": {"related": []}, "license": LICENSE, "keys": set()}
     for name in skills:
         path = os.path.join(skills_dir, name, "SKILL.md")
-        with open(path, encoding="utf-8") as fh:
-            text = fh.read()
+        text = read_utf8(path, errors, f"[{name}] SKILL.md")
+        if text is None:
+            parsed[name] = (dict(empty_fm), [])
+            continue
         fm_lines, body_lines = split_frontmatter(text)
         if fm_lines is None:
             errors.append(f"[{name}] SKILL.md has no frontmatter block")
-            parsed[name] = ({"name": None, "description": None, "metadata": {"related": []}}, body_lines)
+            parsed[name] = (dict(empty_fm), body_lines)
             continue
         try:
             fm = parse_frontmatter(fm_lines)
         except Exception as exc:  # invalid YAML
             errors.append(f"[{name}] frontmatter does not parse: {exc}")
-            fm = {"name": None, "description": None, "metadata": {"related": []}}
+            fm = dict(empty_fm)
         parsed[name] = (fm, body_lines)
 
     known = set(parsed)
@@ -187,7 +272,13 @@ def lint(skills_dir: str, run_scripts: bool = True):
         folder = os.path.join(skills_dir, name)
         md = fm.get("metadata") or {}
         related = list(md.get("related") or [])
-        # 1. name
+        # 1. top-level keys, license, name
+        unknown = sorted(set(fm.get("keys") or ()) - ALLOWED_KEYS)
+        if unknown:
+            errors.append(f"{tag} frontmatter key(s) {unknown} not allowed (allowed: {sorted(ALLOWED_KEYS)}); "
+                          "claude.ai uploads and the Skills API reject them - put custom fields under metadata")
+        if fm.get("license") != LICENSE:
+            errors.append(f"{tag} license is {fm.get('license')!r}; the catalog convention is {LICENSE!r}")
         if fm["name"] != name:
             errors.append(f"{tag} frontmatter name '{fm['name']}' != folder name '{name}'")
         nm = fm["name"] or ""
@@ -226,7 +317,9 @@ def lint(skills_dir: str, run_scripts: bool = True):
             errors.append(f"{tag} metadata.phase '{md.get('phase')}' not in {sorted(PHASES)}")
         # 4. related reciprocity + bullets
         for rel in related:
-            if rel not in known:
+            if rel == name:
+                errors.append(f"{tag} lists itself in related")
+            elif rel not in known:
                 errors.append(f"{tag} related '{rel}' does not resolve to a skill")
             elif name not in (parsed[rel][0].get("metadata") or {}).get("related", []):
                 errors.append(f"{tag} related '{rel}' is not reciprocal ({rel} does not list {name})")
@@ -245,6 +338,13 @@ def lint(skills_dir: str, run_scripts: bool = True):
             errors.append(f"{tag} missing canonical section(s): {missing}")
         elif order != SECTIONS:
             errors.append(f"{tag} canonical sections out of order: {order}")
+        if "Workflow" in found:
+            steps = [st for st in re.split(r"\n(?=\d+\. )", section_text(body_lines, "Workflow")) if re.match(r"\d+\. ", st)]
+            if not steps:
+                errors.append(f"{tag} Workflow has no numbered steps")
+            for st in steps:
+                if "*Done:" not in st:
+                    errors.append(f"{tag} Workflow step {st.split('.', 1)[0]} does not end with a '*Done: ...*' line")
         # 6. placeholders
         body_text = "\n".join(body_lines)
         for m in PLACEHOLDER_RE.finditer(body_text):
@@ -270,7 +370,7 @@ def lint(skills_dir: str, run_scripts: bool = True):
                     for fname in sorted(filenames):
                         if fname.startswith(".") or fname.endswith((".pyc",)):
                             continue
-                        if fname not in body_text:
+                        if not re.search(r"(?<![\w-])" + re.escape(fname), body_text):
                             relp = os.path.relpath(os.path.join(dirpath, fname), folder)
                             warnings.append(f"{tag} file '{relp}' is never mentioned in SKILL.md")
         if "glossary" not in body_text.lower():
@@ -311,10 +411,13 @@ def lint(skills_dir: str, run_scripts: bool = True):
     if os.path.isfile(readme):
         docs.append((None, readme))
     for owner, doc in docs:
-        with open(doc, encoding="utf-8") as fh:
-            text = fh.read()
         shown = os.path.relpath(doc, os.path.join(skills_dir, owner)) if owner else "README.md"
         tag = f"[{owner}] {shown}" if owner else "[README.md]"
+        text = read_utf8(doc, errors, tag)
+        if text is None:
+            continue
+        if owner is None:  # README commands write $S for .claude/skills
+            text = re.sub(r"\$\{?S\}?/", ".claude/skills/", text)
         seen = set()
         for other, rest in FULL_PATH_RE.findall(text):
             rest = rest.rstrip(".,;:)/")
@@ -330,14 +433,44 @@ def lint(skills_dir: str, run_scripts: bool = True):
             if not rel or "<" in rel or (sub, rel) in seen:
                 continue
             seen.add((sub, rel))
-            own = owner and os.path.exists(os.path.join(skills_dir, owner, sub, rel))
-            anywhere = own or any(os.path.exists(os.path.join(skills_dir, s, sub, rel)) for s in skills)
-            if not anywhere and os.path.basename(rel) not in all_basenames:
+            if owner:  # a skill's own Markdown points into that skill; write .claude/skills/<s>/... otherwise
+                if not os.path.exists(os.path.join(skills_dir, owner, sub, rel)):
+                    elsewhere = [s for s in skills if os.path.exists(os.path.join(skills_dir, s, sub, rel))]
+                    hint = (f" (it exists in {elsewhere[0]}: write .claude/skills/{elsewhere[0]}/{sub}/{rel})"
+                            if elsewhere else "")
+                    errors.append(f"{tag} points at missing '{sub}/{rel}'{hint}")
+            elif not any(os.path.exists(os.path.join(skills_dir, s, sub, rel)) for s in skills):
                 errors.append(f"{tag} points at missing '{sub}/{rel}'")
         for fname in set(BARE_FILE_RE.findall(stripped)):
             if fname in all_basenames or ILLUSTRATIVE.search(fname):
                 continue
             errors.append(f"{tag} names '{fname}', which exists nowhere in the catalog")
+
+    # 10. README catalog vs frontmatter
+    if os.path.isfile(readme):
+        rtext = read_utf8(readme, [], "[README.md]") or ""
+        rows = README_ROW_RE.findall(rtext)
+        count = README_COUNT_RE.search(rtext)
+        if count and int(count.group(1)) != len(skills):
+            errors.append(f"[README.md] says **{count.group(1)} Agent Skills** but the catalog has {len(skills)}")
+        if rows:
+            listed = [r[1] for r in rows]
+            dupes = sorted({n for n in listed if listed.count(n) > 1})
+            if dupes:
+                errors.append(f"[README.md] catalog table lists {dupes} more than once")
+            if set(listed) != set(skills):
+                missing, extra = sorted(set(skills) - set(listed)), sorted(set(listed) - set(skills))
+                errors.append(f"[README.md] catalog table differs from the skill folders: missing {missing}, "
+                              f"unknown {extra}")
+            for tier, sname, phase in rows:
+                if sname not in parsed:
+                    continue
+                md = parsed[sname][0].get("metadata") or {}
+                if TIER_CATEGORY.get(tier) != str(md.get("category")):
+                    errors.append(f"[README.md] row {sname}: tier {tier} ({TIER_CATEGORY.get(tier)}) != "
+                                  f"metadata.category {md.get('category')!r}")
+                if phase != str(md.get("phase")):
+                    errors.append(f"[README.md] row {sname}: phase {phase!r} != metadata.phase {md.get('phase')!r}")
 
     print(f"Linted {len(parsed)} skills in {skills_dir}" + ("" if yaml else " (PyYAML not installed: using minimal frontmatter parser)"))
     for w in warnings:
@@ -348,8 +481,15 @@ def lint(skills_dir: str, run_scripts: bool = True):
     return 1 if errors else 0
 
 
+def main(argv=None):
+    parser = argparse.ArgumentParser(prog="lint_skills.py",
+                                     description="Lint the project-management Agent Skills catalog (read-only).")
+    parser.add_argument("path", nargs="?", default=os.path.join(".claude", "skills"),
+                        help="skills directory (default: .claude/skills relative to the current directory)")
+    parser.add_argument("--no-exec", action="store_true", help="do not run every helper script with --help")
+    args = parser.parse_args(argv)
+    return lint(args.path, run_scripts=not args.no_exec)
+
+
 if __name__ == "__main__":
-    args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    run_scripts = "--no-exec" not in sys.argv
-    target = args[0] if args else os.path.join(".claude", "skills")
-    raise SystemExit(lint(target, run_scripts))
+    raise SystemExit(main())

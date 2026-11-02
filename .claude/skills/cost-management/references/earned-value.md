@@ -92,8 +92,9 @@ has already used all of it: the $35,000 overrun would draw on the $25,000 manage
 still exceed BAC + management reserve ($525,000) by about $10,000 — a sponsor decision through
 change control, not a contingency draw. Per work
 package, Identity / SSO integration is **RED** (CPI 0.69, SPI 0.75: the identity-provider slip,
-risk R001, has materialised) and Reporting & analytics is RED because it waits on the UI;
-Knowledge base is ahead (1.10 / 1.10). The sponsor conversation is about SSO, not the average.
+risk R001, has materialised) and Reporting & analytics is also RED on a small budget (CPI
+0.71, SPI 0.67); Knowledge base is ahead (1.10 / 1.10). The sponsor conversation is about SSO,
+not the average.
 
 ## Reading the indices quickly
 - CPI < 1 and SPI < 1: over budget *and* late (Helios overall, SSO in particular) — the worst quadrant.
@@ -104,5 +105,6 @@ Knowledge base is ahead (1.10 / 1.10). The sponsor conversation is about SSO, no
   is < 0.85; otherwise AMBER. `scripts/health_check.py` applies them per row and to the TOTAL
   (`--green` / `--amber` override them).
 - **Direction of travel** matters as much as the colour: with a `period` column
-  (`assets/evm-history-sample.csv`) the script prints a CPI/SPI trend — Helios CPI 1.05 → 1.00
-  → 0.93 is a worsening AMBER, which reads very differently from a recovering one.
+  (`assets/evm-history-sample.csv`) the script prints a CPI/SPI trend — Helios CPI 1.07 → 1.00
+  → 0.93 (SPI 1.00 → 0.94 → 0.92) is a worsening AMBER, which reads very differently from a
+  recovering one.

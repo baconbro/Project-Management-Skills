@@ -32,7 +32,7 @@ Impact takes the highest column that applies.
 |---|---|---|---|---|
 | 1 | <= 10% | < $5,000 (< 1% of BAC) | < 1 week | Cosmetic |
 | 2 | > 10% to 30% | $5,000 to < $15,000 | 1 to < 2 weeks, absorbed by float | Minor defect, workaround exists |
-| 3 | > 30% to 50% | $15,000 to < $50,000 | 2 to < 4 weeks, uses the schedule reserve | A requirement only partly met |
+| 3 | > 30% to 50% | $15,000 to < $50,000 | 2 to < 4 weeks, recoverable only by fast-tracking or crashing (no schedule reserve) | A requirement only partly met |
 | 4 | > 50% to 70% | $50,000 to < $100,000 | 4 to 6 weeks, threatens the M4 pilot | A Must-have requirement missed at pilot |
 | 5 | > 70% | >= $100,000 (>= 20% of BAC) | > 6 weeks or misses general availability at M6 | Any security or compliance breach |
 
@@ -82,8 +82,8 @@ Scoring command used on every run:
 | Contingency funded (inside BAC) | **$40,000** — covers about 52% of simulated outcomes |
 | Accepted gap and decision path | Funding P80 would lift BAC from $500,000 to $559,000, above the business case and the charter ceiling. The sponsor chose to hold BAC and accept the gap. R001's residual impact ($120,000) alone exceeds the reserve: if its trigger fires, Sam Lee escalates to the steering committee within 2 working days with three options — release management reserve, a scope trade-off through change control, or a re-baseline. |
 | Management reserve (above BAC) | $25,000 (5% of BAC), held by Dana Okoro; released only through change control |
-| Schedule reserve | About 2.4 weeks (P80 20.4 weeks against the 18-week critical path), held once before general availability |
-| Drawdown rule | Sam Lee draws contingency only to fund a contingent plan whose trigger has fired or an approved change; each draw is logged with the risk or change id and reported at the next steering committee |
+| Schedule reserve | None before general availability: the 25-week critical path ends 2026-09-25, leaving only the cutover week before GA on 2026-10-03. P80 is 28.25 weeks and the chance of GA readiness by week 26 is 27%; the sponsor accepted this gap at baseline, with the 2-week M6 tolerance (to 2026-10-17, about P75) and a pre-identified crash of H, Hardening & launch |
+| Drawdown rule | Sam Lee draws contingency only to fund a contingent plan whose trigger has fired or an approved change, through change control: up to $5,000 within his tolerance, larger draws by the CCB from the undrawn contingency; each draw is logged with the risk or change id and reported at the next steering committee |
 
 ## 6. Cadence
 | Event | When | What happens |

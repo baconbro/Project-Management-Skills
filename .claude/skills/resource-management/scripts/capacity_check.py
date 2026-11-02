@@ -25,7 +25,9 @@ INPUT COLUMNS / KEYS  (case-insensitive; extra columns are ignored)
   sprint, percent of a full-time week, or FTE). Rows that mix units are refused: a unit
   column with two values, a '%' on some rows but not others, or a '%' on only one of a
   row's two numbers. A capacity of 0 is a leave period: OFF when nothing is allocated, OVER
-  when work is. '$', ',', EUR/GBP signs and a trailing '%' are stripped ("1,000" -> 1000).
+  when work is. '$', EUR/GBP signs and a trailing '%' are stripped; ',' is a thousands separator
+  before groups of three digits ("1,000" -> 1000) and a decimal comma before one or two digits
+  ("37,5" -> 37.5); any other comma ("1.000,50") is rejected as ambiguous.
   With a period column every row needs a period. Periods keep their input order (W6 before
   W10). CSV delimiter is auto-detected (, ; tab |); a UTF-8 BOM and CRLF line ends are
   tolerated. JSON is a list of objects or {"resources": [...]}; pass --json (a .json file
@@ -194,14 +196,28 @@ def require_columns(headers, groups):
         raise ValueError(f"missing column(s): {missing}; found headers: {[h for h in headers if h]}")
 
 
+# ',' before one or two trailing digits is a decimal comma ('2,5', '37,50'); before groups of three
+# digits it is a thousands separator ('1,000', '12,345.67'); any other comma ('1.000,50') is ambiguous.
+DECIMAL_COMMA_RE = re.compile(r"[-+]?\d+,\d{1,2}")
+THOUSANDS_RE = re.compile(r"[-+]?\d{1,3}(?:,\d{3})+(?:\.\d+)?")
+
+
 def _num(raw, where, minimum=None, maximum=None, integer=False):
-    """Parse a number tolerant of '$', ',', '€', '£', whitespace and a trailing '%' (which is stripped, value unchanged)."""
+    """Parse a number tolerant of '$', '€', '£', whitespace, a trailing '%' (stripped, value unchanged)
+    and commas: '1,000' -> 1000 (thousands), '2,5' -> 2.5 (decimal comma), '1.000,50' -> error."""
     if isinstance(raw, bool):
         raise ValueError(f"{where}: {raw!r} is a boolean, not a number")
     s = str(raw).strip()
     if s.endswith("%"):
         s = s[:-1]
-    s = s.replace(",", "").replace("$", "").replace("€", "").replace("£", "").strip()
+    s = s.replace("$", "").replace("€", "").replace("£", "").strip()
+    if "," in s:
+        if DECIMAL_COMMA_RE.fullmatch(s):
+            s = s.replace(",", ".")
+        elif THOUSANDS_RE.fullmatch(s):
+            s = s.replace(",", "")
+        else:
+            raise ValueError(f"{where}: {raw!r} is ambiguous; use '.' as the decimal point and ',' only for thousands")
     try:
         v = float(s)
     except ValueError:
@@ -732,6 +748,13 @@ def _summary_lines(result, gate):
     return lines
 
 
+def _no_move_text(lv):
+    """Why leveling found no move: roles matter only when receivers are restricted to them."""
+    if lv["restricted_to_roles"]:
+        return "No move possible: nobody with spare capacity holds or covers the roles of the OVER people."
+    return "No move possible: nobody else has spare capacity below the target in the OVER people's periods."
+
+
 def _level_tables(lv, result):
     pl = _places(result)
     unit = _unit_label(result)
@@ -805,7 +828,7 @@ def render_table(result, gate, lv):
             if moves[1]:
                 out += _aligned(*moves)
             else:
-                out.append("No move possible: nobody with spare capacity holds or covers the roles of the OVER people.")
+                out.append(_no_move_text(lv))
             if res[1]:
                 out += ["", "Residual the team cannot absorb in the same period"] + _aligned(*res)
             out += [""] + totals
@@ -837,7 +860,7 @@ def render_md(result, gate, lv):
         else:
             intro, moves, res, totals = _level_tables(lv, result)
             out += [intro, ""]
-            out += _md(*moves) if moves[1] else ["No move possible: nobody with spare capacity holds or covers the roles."]
+            out += _md(*moves) if moves[1] else [_no_move_text(lv)]
             if res[1]:
                 out += ["", "Residual the team cannot absorb in the same period:", ""] + _md(*res)
             out += [""] + [f"- {x}" for x in totals]
@@ -899,7 +922,7 @@ def render_json(result, gate, lv):
     doc = {"people": result["people"], "rows": rows, "periods": result["team"], "summary": summary}
     if lv is not None:
         doc["leveling"] = lv
-    return json.dumps(_rounded(doc), indent=2, ensure_ascii=False)
+    return json.dumps(_rounded(doc), indent=2, ensure_ascii=False, allow_nan=False)
 
 
 RENDERERS = {"table": render_table, "json": render_json, "csv": render_csv, "md": render_md}

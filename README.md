@@ -20,11 +20,13 @@ works in Claude Code, Claude Desktop and Web, Cowork, Codex and other AI agents.
 
 1. Copy the `.claude/skills/` folder into your project. To make the skills available in every
    project, copy it to `~/.claude/skills/` instead. Claude Code discovers skills in
-   `.claude/skills/` in the working directory and in every parent directory.
+   `.claude/skills/` in the directory where you start it and in every parent directory up to
+   the repository root.
 2. Describe what you need in plain language and the right skill triggers on its own. You can
    also start the front door explicitly with `/senior-pm`.
 3. The helper scripts need only **Python 3**, with nothing to install. Every script supports
-   `--help`.
+   `--help`. If your system only has `python3` (stock macOS, Debian/Ubuntu), use `python3`
+   wherever the commands say `python`.
 
 All 27 descriptions together fit in about 7,600 characters, so the whole catalog fits Claude
 Code's skill-listing budget. That budget is about 1% of the context window and is shared
@@ -43,7 +45,7 @@ dropped, raise `skillListingBudgetFraction` in your settings, or set skills you 
 **Try the helpers on the sample data** (from the repo root):
 
 ```bash
-python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --gantt
+python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --gantt
 python .claude/skills/cost-management/scripts/health_check.py .claude/skills/cost-management/assets/evm-snapshot.csv
 python .claude/skills/risk-register/scripts/risk_score.py .claude/skills/risk-register/assets/risk-register-template.csv --bac 500000
 ```
@@ -53,7 +55,7 @@ python .claude/skills/risk-register/scripts/risk_score.py .claude/skills/risk-re
 - **Four tiers.**
   - `senior-pm`, the orchestrator and front door.
   - Four **lifecycle phase** skills: initiation, planning, delivery and closure.
-  - Nine cross-cutting **disciplines**, such as risk, cost, resources and procurement.
+  - Nine **disciplines**, such as risk, cost, resources and procurement.
   - Thirteen focused **artifact** skills, such as charter, WBS, schedule, status report and
     cutover runbook. You can use any of these on its own.
 - **Front door and routing.** `senior-pm` triages the project's lifecycle stage and its health
@@ -67,6 +69,8 @@ python .claude/skills/risk-register/scripts/risk_score.py .claude/skills/risk-re
 - **Templates and samples.** Blank fill-in files are named `*-template.*` or carry
   `<placeholders>`. Filled versions of the Helios example are named `*-sample.*`. When a CSV is
   also a script's sample input, it holds the Helios rows: replace the rows and keep the header.
+  `cost-management/assets/cost-baseline-template.csv` is also pre-filled with the Helios rows
+  in the same way.
 - **Methodology-agnostic.** Every skill has a *Methodology fit* section that shows how it adapts
   to waterfall, agile and hybrid delivery.
 
@@ -107,7 +111,7 @@ python .claude/skills/risk-register/scripts/risk_score.py .claude/skills/risk-re
 | Stage | Start with | Then, as needed |
 |---|---|---|
 | Initiate | `project-initiation` | `business-case` → `project-charter` → `stakeholder-management`, `meeting-management` (kickoff) |
-| Plan | `project-planning` | `scope-and-requirements` → `work-breakdown-structure` → `procurement-management` → `estimation` → `resource-management` → `project-schedule` → `risk-management` / `risk-register` → `quality-management` → `cost-management` → `raci-matrix`, `project-communication`, `change-management` |
+| Plan | `project-planning` | `scope-and-requirements` → `work-breakdown-structure` → `procurement-management` → `estimation` → `raci-matrix` + `resource-management` + `project-schedule` (leveled together) → `risk-management` / `risk-register` → `quality-management` + `release-and-cutover` (transition plan) → `cost-management` → `stakeholder-management` → `project-communication` → `change-management` |
 | Deliver | `project-delivery` | `agile-delivery`, `status-report`, `change-request`, `risk-register`, `cost-management`, `meeting-management`, `release-and-cutover` |
 | Close | `project-closure` | `lessons-learned`, `procurement-management` (contract closure) |
 
@@ -120,8 +124,12 @@ output contract:
 
 - **Input.** A CSV or JSON file (`--json`), or `-` to read stdin. Scripts strip a UTF-8 BOM,
   accept CRLF line endings, and detect `,` `;` tab or `|` as the delimiter. Numbers may contain
-  `$`, `,` and `%`. The scripts reject `nan`, `inf`, booleans and missing columns, and the
-  error message lists the headers they found.
+  `$` and `%`. A `,` followed by groups of three digits is a thousands separator (`1,000`,
+  `12,345.67`); a `,` followed by one or two digits is a decimal comma (`2,5` is 2.5, `37,50`
+  is 37.5). Any other comma, such as `1.000,50`, is rejected as ambiguous. The scripts also
+  reject `nan`, `inf`, booleans, values above each script's upper bound (for example 1e15 for
+  money) and missing columns, and the error message lists the headers they found.
+  `--format json` output never contains `NaN` or `Infinity`.
 - **Output.** `--format table` (the default), `json`, `csv` or `md` (`issue_log_check.py` offers
   table, json and csv). Use `md` to paste into a status report and `json` to feed a pipeline.
 - **Exit codes.** `0` means ok. `1` means a validation failure from a checker (`wbs_validate`,
@@ -133,7 +141,7 @@ output contract:
 |---|---|---|---|
 | `roi_npv.py` | `business-case` | NPV, IRR, ROI, simple and discounted payback, per-option comparison ranked by NPV | `--irr` `--break-even` (switching values) `--sensitivity` `--stress` `--all` |
 | `pert_estimate.py` | `estimation` | PERT mean, standard deviation and variance share per item, P50/P80/P90 commit levels, contingency reserve | `--confidence P80` `--simulate N` `--ids` (one chain) |
-| `critical_path.py` | `project-schedule` | ES/EF/LS/LF, total and free float, every critical path, near-critical tasks, calendar dates, Gantt | `--gantt` `--start-date` `--workdays` `--target` `--simulate N` |
+| `critical_path.py` | `project-schedule` | ES/EF/LS/LF, total and free float, every critical path, near-critical tasks, calendar dates, Gantt | `--unit weeks` `--gantt` `--start-date` `--workdays` `--target` `--simulate N` |
 | `wbs_validate.py` | `work-breakdown-structure` | Hierarchy and 100% rule checks, suggested weights, roll-up to shares of the project and budget | `--suggest` `--fix OUT.csv` `--rollup --budget` `--export-estimation` |
 | `raci_validate.py` | `raci-matrix` | Exactly one A, at least one R (DACI: one D), contradictory cells, ghost and overloaded roles, single points of failure, role workload | `--variant raci\|rasci\|daci` `--fix` `--fix-out` `--transpose` |
 | `capacity_check.py` | `resource-management` | Utilization per person and period, OVER/HIGH/OK/UNDER flags, headroom, key-person risk, leveling plan | `--level` `--target` `--period` `--fail-on over` |
@@ -150,12 +158,12 @@ S=.claude/skills
 python $S/business-case/scripts/roi_npv.py $S/business-case/assets/cashflows.csv --irr --break-even
 python $S/business-case/scripts/roi_npv.py $S/business-case/assets/cashflows-options-sample.csv
 python $S/estimation/scripts/pert_estimate.py $S/estimation/assets/estimation-worksheet-sample.csv --confidence P80
-python $S/project-schedule/scripts/critical_path.py $S/project-schedule/assets/schedule-sample.csv --gantt
+python $S/project-schedule/scripts/critical_path.py $S/project-schedule/assets/schedule-sample.csv --unit weeks --gantt
 python $S/work-breakdown-structure/scripts/wbs_validate.py $S/work-breakdown-structure/assets/wbs-sample.csv --rollup --budget 500000
 python $S/raci-matrix/scripts/raci_validate.py $S/raci-matrix/assets/raci-sample.csv
 python $S/resource-management/scripts/capacity_check.py $S/resource-management/assets/resource-allocation-sample.csv --level
 python $S/risk-register/scripts/risk_score.py $S/risk-register/assets/risk-register-template.csv --bac 500000
-python $S/risk-register/scripts/risk_score.py $S/risk-register/assets/risk-register-template.csv --simulate 10000 --seed 42 --reserve 40000
+python $S/risk-register/scripts/risk_score.py $S/risk-register/assets/risk-register-template.csv --basis residual --simulate 10000 --seed 42 --reserve 40000
 python $S/cost-management/scripts/health_check.py $S/cost-management/assets/evm-snapshot.csv
 python $S/cost-management/scripts/health_check.py $S/cost-management/assets/evm-history-sample.csv
 python $S/change-request/scripts/change_impact.py $S/change-request/assets/change-log.csv --reserve-cost 40000
@@ -173,8 +181,8 @@ password-reset and order-status tickets by 50%. Its key numbers:
 |---|---|
 | Sponsor and PM | Dana Okoro (VP Customer Operations), sponsor; Sam Lee, project manager |
 | Business case | Invest $500,000, NPV $196,174 at 10%, IRR 23.6%, payback 2.85 years |
-| Budget | BAC $500,000, which includes $40,000 of contingency; $25,000 of management reserve sits above BAC |
-| Schedule | 6 months; critical path of 18 weeks (A→B→D→F→G→H→J) |
+| Budget | BAC $500,000, which includes $40,000 of contingency (about P50 of the residual risk simulation); $25,000 of management reserve sits above BAC |
+| Schedule | 6 months. Critical path of 25 weeks (A→B→D→G→H→J), 2026-04-06 to 2026-09-25; pilot (M4) 2026-08-07; GA cutover (M6) 2026-10-03. No schedule reserve before GA: the simulated P80 is 28.25 weeks, and the 2-week M6 tolerance covers about P75 |
 | Risk | Six risks R001-R006, one of them an opportunity. Threat EMV is $94,300, or $52,300 after responses |
 | Month-3 health | CPI 0.93, SPI 0.92, so **AMBER**; EAC about $535,000 |
 | Change | Change requests CR001-CR006; SSO stays in the baseline |
@@ -208,31 +216,48 @@ For a recommendation based on your project, ask **`senior-pm`**. Its
 └── scripts/*.py        # dependency-free helpers, run on demand
 tools/lint_skills.py    # checks the catalog's conventions
 tools/test_scripts.py   # tests every helper script against its sample and the I/O contract
-.github/workflows/validate.yml   # runs both on every push and pull request
+.github/workflows/validate.yml   # runs both on pull requests and on every push to main
 ```
 
 ## Quality checks and CI
 
 ```bash
 python tools/lint_skills.py      # conventions: exits non-zero on any error
-python tools/test_scripts.py     # ~390 checks across the 11 helper scripts
+python tools/test_scripts.py     # 688 checks across the 11 helper scripts
 ```
 
+Install PyYAML (`python -m pip install pyyaml`) for the same strict frontmatter parsing CI
+uses. Without it the linter falls back to a minimal parser and says so.
+
 **The linter** checks the following:
-- Frontmatter: name, description, version, category and phase.
-- Related links are reciprocal and match the *Related skills* bullets in the same order.
-- The canonical sections are present and in order, and the body stays under 500 lines.
-- No placeholder text such as TODO or TBD.
+- Every folder under `.claude/skills/` has a `SKILL.md`; a lowercase or other case variant is
+  an error, because the skill would not load.
+- Frontmatter: name, description, version, category and phase; `license: MIT`; no top-level
+  keys other than `name`, `description`, `license`, `compatibility`, `metadata` and
+  `allowed-tools`, which must be a string or a list of strings.
+- Related links resolve, never point at the skill itself, are reciprocal, and match the
+  *Related skills* bullets in the same order.
+- The canonical sections are present and in order, every Workflow step has a *Done:* line,
+  and the body stays under 500 lines.
+- No placeholder text such as `TODO` or `TBD` in SKILL.md.
 - Every file the skills name exists: references in SKILL.md, pointers inside `references/` and
-  `assets/` Markdown, and paths in this README. Files that SKILL.md never mentions are flagged.
+  `assets/` Markdown, and paths in this README. A `$S/<skill>/…` or `.claude/skills/<skill>/…`
+  path must exist in that skill, and an unqualified path in a skill's own Markdown must exist
+  in that skill. Files that SKILL.md never mentions are flagged.
+- This README's skill count and catalog table match the frontmatter (tier and phase per skill).
 - Every script's `--help` runs.
 
 **The test harness** runs each script in these ways and checks the result:
-- On its sample, and again through stdin, as JSON, with a BOM, with CRLF line endings and with
-  semicolons. All of these must give identical output.
-- On empty, header-only, `nan` and malformed-JSON input, which must give a clean `error:` and
-  exit 2.
-- For the validators, on a deliberately broken input, which must exit 1.
+- On its sample, and again through stdin, as JSON, with a BOM, with CRLF line endings, with
+  semicolons and with semicolons plus decimal commas. All of these must give identical output.
+- The canon Helios numbers the samples must produce, such as NPV $196,173.88, the 25-week
+  critical path A→B→D→G→H→J, CPI 0.93 and SPI 0.92 (AMBER), and threat EMV $94,300.
+- Every `--format` the script offers, with valid JSON from `--format json`.
+- On empty, header-only, `nan`, JSON `true` and `Infinity`, ambiguous-number (`1.000,50`) and
+  malformed-JSON input, which must give a clean `error:` and exit 2.
+- For the validators and gates (`wbs_validate`, `raci_validate`, `issue_log_check`,
+  `risk_score --check`, `capacity_check --fail-on over`), on a deliberately broken input, which
+  must exit 1.
 
 ## Conventions and contributing
 

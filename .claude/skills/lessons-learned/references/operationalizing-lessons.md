@@ -106,7 +106,7 @@ and recurrence, the same root cause showing up in a later project's log.
 | Id | Lesson | Path | Target | Status |
 |---|---|---|---|---|
 | LL001 | Vendor onboarding had no owner; SSO two weeks late | B, then C | PMO standard plan template: vendor onboarding workstream | in-progress; Sam Lee checks on 2027-02-03 |
-| LL002 | Sponsor told of the threat to M4 only at RED | B, then C | Helios reporting rule from 2026-07-03; PMO status-report standard | adopted |
+| LL002 | 1.3.1 RED at the M2 close; sponsor told of the threat to M4 only at the DEC002 escalation | B, then C | Helios reporting rule from 2026-07-03; PMO status-report standard | adopted |
 | LL003 | Reused API design put the knowledge base ahead of plan | C | Engineering standards library | adopted |
 | LL004 | Shared QA environment with stale data | B, then C | Issue I003; PMO test-strategy checklist | in-progress |
 | LL005 | Stand-ups ran over 30 minutes | A | Sprint S3 backlog; team working agreement | verified at the S3 retrospective |

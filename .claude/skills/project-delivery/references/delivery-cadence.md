@@ -64,10 +64,13 @@ the loop does not. Status flows in writing before the meeting; the meeting is fo
 ## Milestones: accept and learn
 - Confirm every deliverable due at the milestone has an acceptance-log entry (accepted,
   accepted with conditions, or rejected with a logged defect).
+- Re-run the business-case appraisal with the current EAC and benefit forecast
+  (`business-case`) and log the sponsor's continue/stop decision against the charter's stop
+  triggers (Helios: at M4 and M6).
 - Hold a short lessons session or use the retrospective; record lessons with `lessons-learned`
   while people still remember why things happened.
-- About four weeks before any go-live, start `release-and-cutover` and add its readiness
-  checkpoints to the weekly agenda.
+- No later than six weeks (T-6) before any go-live, with the release strategy from planning,
+  start `release-and-cutover` and add its readiness checkpoints to the weekly agenda.
 
 ## The Helios calendar
 
@@ -76,7 +79,7 @@ the loop does not. Status flows in writing before the meeting; the meeting is fo
 | Stand-up (per team) | Daily, 15 minutes | The delivery team runs it; Sam Lee (PM) facilitates | Sprint board | Blockers to Sam Lee; new log items |
 | Weekly control review | Thursday | Sam Lee (PM) | Issue log check, EVM, velocity, register, change log | Status report inputs |
 | Status report | Friday, weekly | Sam Lee | Weekly control review | RAG report to the steering members and stakeholders |
-| Sprint review and retrospective | Every second Friday | Ava Chen | Increment, definition of done | Increment accepted or not; lessons |
+| Sprint review (stakeholders invited), then team-only retrospective | Every second Friday | Ava Chen (review); the team, facilitated by Sam Lee (retrospective) | Increment, definition of done | Increment accepted or not; lessons |
 | Steering committee | Bi-weekly Tuesday | Dana Okoro (sponsor) | Status report, "for steering" list, change requests | Decisions logged as closed decision items |
 | Vendor working session | Weekly | Ben Adeyemi (tech lead) with IdentityCo | Vendor register, open vendor items | Vendor actions in the log |
 

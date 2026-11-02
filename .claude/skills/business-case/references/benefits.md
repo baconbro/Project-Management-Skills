@@ -44,14 +44,18 @@ who will experience them; cases that name them usually get a smoother approval.
 ## Worked example (Helios)
 | Benefit                        | Type         | Baseline (today)                                   | Target                              | Leading measure              | Lagging measure                 | Value p.a. | Realised by          | Owner                |
 |--------------------------------|--------------|----------------------------------------------------|-------------------------------------|------------------------------|---------------------------------|------------|----------------------|----------------------|
-| Reduced ticket handling cost   | Cashable     | ~$600k/yr on password-reset and order-status tickets | -50% of those tickets (~$300k/yr)   | Self-service deflection %    | Monthly ticket volume by type   | $300,000   | 6 months after launch | Priya Nair           |
+| Reduced ticket handling cost   | Cashable (cost avoidance) | ~$600k/yr on password-reset and order-status tickets | -50% of those tickets (~$300k/yr)   | Self-service deflection %    | Monthly ticket volume by type   | $300,000   | 6 months after launch | Priya Nair           |
 | Faster issue resolution        | Non-cashable | 26 h mean time-to-resolve for those ticket types   | Instant self-service; 2 h assisted  | Tickets resolved via portal  | Mean time-to-resolve            | hours freed, redeployed | 3 months after launch | Priya Nair     |
 | Higher customer satisfaction   | Intangible   | CSAT 72% on support interactions                   | CSAT 80%                            | Portal NPS pulse             | Quarterly CSAT                  | —          | 12 months after launch | Dana Okoro          |
 
 | Dis-benefit                                  | Who is affected     | Measure                       | Mitigation                                   | Owner       |
 |----------------------------------------------|---------------------|-------------------------------|----------------------------------------------|-------------|
-| 6 FTE of support agents redeployed           | Support agents      | FTE moved, attrition           | Redeployment plan to complex-case queue      | Priya Nair  |
+| 6 FTE of support agents redeployed           | Support agents      | FTE moved, attrition           | Redeployment into funded complex-case vacancies | Priya Nair  |
 | Temporary CSAT dip during cutover            | Customers           | CSAT in cutover month          | Pilot cohort of 200, staged rollout          | Dana Okoro  |
+
+B001 is cashable because the 6 FTE fill funded vacancies in the complex-case queue; Finance
+removes about $300k a year of planned hiring from the support budget (budget line agreed with
+Finance). Without that budget line the freed hours would be non-cashable, like B002.
 
 The cashable benefit less the portal's run cost gives the net cashflows in `assets/cashflows.csv`:
 $150k in year 1 (ramp-up), $180k in year 2, then $200k a year.

@@ -2,8 +2,11 @@ name: Validate skills catalog
 
 on:
   push:
-    branches: ["**"]
+    branches: [main]
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   validate:

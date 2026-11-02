@@ -16,7 +16,7 @@ and up.
 | Stakeholder requirement | What does a group need? | "Agents want customers to stop calling about order status" | Elicitation notes |
 | Solution: functional | What must the product do? | A signed-in customer can see the current status of an order | RTM, type `functional` |
 | Solution: non-functional | How well, under what conditions? | All journeys conform to WCAG 2.2 AA | RTM, type `non-functional` |
-| Transition | What is needed to move from today to the new state? | All support agents trained before the pilot opens | RTM, type `transition` |
+| Transition | What is needed to move from today to the new state? | All support agents trained before general availability | RTM, type `transition` |
 
 - **Constraints** (fixed limits such as budget, a deadline or a data-residency policy) and
   **assumptions** (things believed true but not yet proven) are not requirements. Record

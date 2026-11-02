@@ -22,8 +22,9 @@ effort estimates and the schedule into demand by role and week, sets that agains
 person's real capacity, levels the peaks, agrees how the team will work together, and
 releases people cleanly at the end. Numbers here come from the sample Helios project (a
 fictional customer self-service portal used throughout this catalog): six people over the
-build peak, weeks 6–9, where the team as a whole sits at a comfortable 77.6% while the
-backend engineer peaks at 125%.
+first four build weeks, W6–W9 (W1 is the week of 2026-04-06, so W6 starts 2026-05-11 with
+sprint S1), where the team as a whole sits at a comfortable 77.6% while the backend
+engineer peaks at 125%.
 
 ## When to use this skill
 - The user needs to staff a project: which roles, how many people, from where, from when.
@@ -104,9 +105,10 @@ target (default 80%), and how people are acquired (line managers, vendors, contr
    people below it who hold the role or list it under skills (`--any-role` also allows
    other roles, marked cross-role), and reports what cannot be absorbed. Helios: 34 hours
    move (Carla → Ben, Devin → Elena), Devin is resolved, Carla keeps 6 hours above capacity
-   in W7–W8, so smooth: move that knowledge-base work into W9–W10 within its 3 weeks of
-   float in `project-schedule`. Follow the option order in `references/resource-capacity.md`
-   and re-run after each change. *Done: no OVER remains, or the residual is a decision
+   in W7–W8, so smooth: move that knowledge-base work into W9–W10, still inside task E's
+   window in `project-schedule` (W6–W14, plus 1 week of total float), so no date moves.
+   Follow the option order in `references/resource-capacity.md` and re-run after each
+   change. *Done: no OVER remains, or the residual is a decision
    (scope, capacity or date) taken by the sponsor.*
 8. **Gate the baseline and log the exposure.**
    ```bash

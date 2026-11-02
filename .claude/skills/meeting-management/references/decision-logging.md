@@ -106,8 +106,9 @@ Helios: AI005, raised at the steering committee of 2026-06-30, became ACT004 wit
 python .claude/skills/project-delivery/scripts/issue_log_check.py .claude/skills/project-delivery/assets/issue-log-sample.csv --as-of 2026-07-10
 ```
 
-As of 2026-07-10 it lists DEC002 and I001 for steering and ACT003 as blocked, which is exactly
-what items 1 and 3 of `assets/agenda-sample.md` take.
+As of 2026-07-10 it lists I003 as overdue, ACT003 as blocked, and DEC002 and I001 for steering.
+Items 1 and 3 of `assets/agenda-sample.md` take the last three; I003, a Low team issue, stays
+with the team.
 
 ## Ageing and carrying forward
 - **Age** = the as-of date minus `raised_on`; in a spreadsheet, `=TODAY()-E2` with `raised_on` in

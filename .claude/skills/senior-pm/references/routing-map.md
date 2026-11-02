@@ -51,14 +51,14 @@ Load this to send the user to the right skill. Rules, in order:
 | Idea | "We've been asked to...", no sponsor or budget yet | A justified need and a funding decision | `project-initiation`, then `business-case` |
 | Initiation | Sponsor known, no signed charter | Signed charter, stakeholder register, kickoff held | `project-initiation` (it calls `project-charter`, `stakeholder-management`) |
 | Planning | Charter signed, no approved baseline | Approved scope, schedule and cost baselines | `project-planning` (it calls the planning artifacts) |
-| Delivery | Baseline approved, work running | Accepted deliverables; go-live done | `project-delivery`; `release-and-cutover` from about four weeks before go-live |
+| Delivery | Baseline approved, work running | Accepted deliverables; go-live done | `project-delivery`; `release-and-cutover` no later than six weeks (T-6) before each go-live |
 | Closure | Deliverables accepted, or work stopping early | Handover, lessons, contracts and finances closed | `project-closure`, then `lessons-learned` |
 
 A project running without a baseline is in delivery with "no baseline" as its top gap: route
 to `project-delivery`, whose first step builds a one-day, sponsor-approved interim baseline
-(`assets/rebaseline-template.md` in that skill) to report against at once. Route to
-`project-planning` instead when work has not started, or when the interim baseline must be
-replaced by a full re-plan.
+(`.claude/skills/project-delivery/assets/rebaseline-template.md`) to report against at
+once. Route to `project-planning` instead when work has not started, or when the interim
+baseline must be replaced by a full re-plan.
 
 ## Route by intent
 
@@ -90,6 +90,7 @@ replaced by a full re-plan.
 | Run a meeting: agenda, facilitation, decisions, actions | `meeting-management` |
 | Plan a go-live, go/no-go, cutover runbook, rollback or hypercare | `release-and-cutover` |
 | Close the project or a phase | `project-closure` |
+| Track whether promised benefits arrive after delivery | `project-closure` |
 | Run a retrospective or post-mortem at any stage and turn lessons into owned actions | `lessons-learned` |
 
 ## Route by symptom
@@ -101,7 +102,7 @@ replaced by a full re-plan.
 | "Log this issue" / "who do I escalate this to?" (a problem happening now) | No issue log or escalation route | `project-delivery`, then `project-communication` for the escalation ladder | Log it with one owner, priority and due date; escalate when it exceeds the owner's authority |
 | "We are always late" | No critical path, optimistic estimates, or hidden dependencies | `project-schedule`, then `estimation` | Find the critical path and float; re-estimate the drivers at P80 |
 | "We are over budget" | Cost variance not tracked or reserve not sized | `cost-management` | Run the earned-value check; forecast EAC |
-| "Scope keeps growing" | No baseline or no change threshold | `change-management`, then `scope-and-requirements` | Set the change threshold and CCB; re-baseline the scope statement |
+| "Scope keeps growing" | No baseline or no change threshold | `change-management`, then `scope-and-requirements` | Baseline the scope statement if none exists; otherwise set the CR threshold and CCB and route every unapproved addition through `change-request` (approve, defer or reject); never re-baseline to absorb creep |
 | "Nobody agrees what is in scope" / "is this in scope?" | No scope statement or exclusions | `scope-and-requirements` | Check the signed in/out list and the RTM; if absent, write it and get it signed; a new item goes to `change-request` |
 | "Nobody knows who decides" | Missing or contradictory accountability | `raci-matrix` | One Accountable per deliverable and decision (DACI for decisions) |
 | "The team is overloaded" / "who is overloaded?" / "burned out" | Peaks above capacity, one person on everything | `resource-management` | Run the capacity check; level within float |
@@ -126,14 +127,15 @@ replaced by a full re-plan.
 | Retro, retrospective, post-mortem (any stage) | `lessons-learned` (format, lessons, owners) | `meeting-management` to facilitate the session; `agile-delivery` for where the sprint retrospective sits in the cadence |
 | Kickoff | `project-initiation` (project kickoff purpose and content) | `meeting-management` to run the meeting; `resource-management` for the team's working agreement |
 | Charter | `project-charter` (authorizes the project) | `resource-management` for a *team* charter or working agreement |
-| Contingency reserve, management reserve | `risk-management` sizes contingency from risk exposure | `cost-management` places reserves in or above the baseline and tracks drawdown; `change-request` when a change draws on it |
+| Contingency reserve, management reserve | `risk-management` sizes contingency from risk exposure | `cost-management` places reserves in or above the baseline and tracks drawdown; `change-request` when a change draws on it; `estimation` supplies the estimate range it is sized against |
 | EMV, expected monetary value | `risk-register` computes EMV per risk and totals with `risk_score.py` | `risk-management` for decision trees, Monte Carlo and reserve sizing |
 | Probability x impact score (1-5 grid) | `risk-register` (qualitative ranking) | `risk-management` to set the scales and thresholds |
 | Steering, steering committee | `meeting-management` (agenda, decisions, actions) | `status-report` for the steering update's content; `project-delivery` for governance in execution |
 | Status, project health, on track | `senior-pm` to triage "is it on track?" | `status-report` to write the report; `project-delivery` to run the control loop |
 | Issue, issue log, escalation | `project-delivery` (one log of issues, actions, decisions and dependencies) | `risk-register` while it is still a risk; `project-communication` for the escalation ladder; `meeting-management` for actions captured in a meeting |
 | Baseline (none exists) | `project-delivery` when work is already running (interim baseline) | `project-planning` before work starts or for a full re-plan; `change-request` to change an approved baseline |
-| Change, change control, scope creep | `change-request` for one change | `change-management` for the process, CCB and adoption |
+| Change control, CCB, scope creep | `change-management` (procedure, board, tolerances) | `change-request` to raise and assess each change |
+| Change request, one specific change | `change-request` (form, impact assessment, change log) | `change-management` for the board's decision and adoption |
 | Acceptance criteria, definition of done | `quality-management` | `scope-and-requirements` for acceptance tests per requirement and formal deliverable sign-off; `agile-delivery` for the definition of ready |
 | Story points, planning poker | `estimation` | `agile-delivery` for velocity and sprints left |
 | How long will it take | `project-schedule` (network duration) | `agile-delivery` for sprints left on a backlog; `estimation` for one item's effort |
@@ -152,9 +154,10 @@ Use these when the user needs more than one step; still hand over one or two ski
 - **Idea to authorized project:** `project-initiation` → `business-case` → `project-charter`
   → `stakeholder-management` → kickoff (`project-initiation` with `meeting-management`).
 - **Building the baseline:** `scope-and-requirements` → `work-breakdown-structure` →
-  `estimation` → `project-schedule` → `resource-management` → `raci-matrix` →
-  `risk-register` / `risk-management` (reserves) → `cost-management` → `project-planning`
-  approves.
+  `procurement-management` (make-or-buy) → `estimation` → `resource-management` +
+  `raci-matrix` + `project-schedule` (leveled together) → `risk-management` /
+  `risk-register` (reserves) → `quality-management` → `cost-management` →
+  `project-communication` → `change-management` → `project-planning` approves.
 - **Weekly control loop:** `cost-management` earned value or `agile-delivery` velocity →
   `risk-register` update → `project-delivery` issue log check → `status-report` → steering
   via `meeting-management` → `change-request` when needed.
@@ -165,6 +168,7 @@ Use these when the user needs more than one step; still hand over one or two ski
   `project-closure`.
 - **Going live:** `quality-management` (gates) → `release-and-cutover` (go/no-go, cutover,
   hypercare) → `project-closure`.
-- **Closing:** `project-closure` → `lessons-learned` → benefits tracking from `business-case`.
+- **Closing:** `project-closure` (acceptance, handover, benefits handed to their owners
+  against the `business-case` register) → `lessons-learned`.
 
 `references/helios-walkthrough.md` shows the whole sequence on the sample Helios project.

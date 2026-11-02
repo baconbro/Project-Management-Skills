@@ -120,7 +120,7 @@ If the purpose is only to share information, none of these is needed: send a wri
 | Daily stand-up | Daily, 15 min | The delivery team runs it; Sam Lee facilitates | Blockers to Sam Lee the same day; new issue-log items |
 | Vendor working session | Weekly | Ben Adeyemi with IdentityCo | Vendor actions in the issue log |
 | Weekly control review | Thursday | Sam Lee | The Friday status report; the "for steering" list |
-| Sprint review and retrospective | Every second Friday | Ava Chen | Accepted increment; backlog items; lessons |
+| Sprint review (stakeholders invited), then team-only retrospective | Every second Friday | Ava Chen (review); the team, facilitated by Sam Lee (retrospective) | Accepted increment; backlog items; lessons |
 | Steering committee | Bi-weekly Tuesday, 60 min; extra session within 2 business days if RED | Dana Okoro (chair); Sam Lee facilitates | Decisions and actions merged into the issue log |
 | Change control board | Tuesday 14:00, 30 min, when a request is pending | Dana Okoro | Decisions in the change log |
 

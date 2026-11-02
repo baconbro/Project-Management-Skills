@@ -33,7 +33,7 @@ throughout this catalog) — `assets/wbs-sample.csv` run with `--rollup --budget
 |---|---|---|---|---|---|---|---|---|---|
 | 1.3 | Portal build | summary | 45 | 45.00 | 225,000.00 | Ben Adeyemi | The portal application and its integrations | | |
 | 1.3.1 | Identity / SSO integration | work package | 35 | 15.75 | 78,750.00 | Ben Adeyemi | Single sign-on with the identity provider (vendor sandbox due in week 6) | Pilot users authenticate through SSO in staging and the security review by Marcus Webb is passed | 1.3.1 |
-| 1.3.2 | Self-service UI | work package | 30 | 13.50 | 67,500.00 | Devin Patel | Password reset and order status screens meeting WCAG 2.2 AA | Both journeys complete end to end on desktop and mobile | 1.3.2 |
+| 1.3.2 | Self-service UI | work package | 30 | 13.50 | 67,500.00 | Devin Patel | Password reset and order status screens meeting the accessibility policy (CON-4) | Both journeys complete end to end on desktop and mobile | 1.3.2 |
 
 ## Control accounts
 A control account is the element where cost and schedule performance (earned value in

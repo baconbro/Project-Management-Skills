@@ -20,7 +20,8 @@ ignored, so "WBS id", "wbs_id" and "wbsid" are one column, as are "Weight (%)" a
     outputs (level, parent, type, share %, share of project (%), budget) are ignored on input and recomputed.
   Weights: finite numbers >= 0 in percent. A trailing '%', thousands separators and currency signs are
   stripped ("35%" -> 35, "$100" -> 100, "80,000" -> 80000); a comma followed by one or two digits is a
-  decimal comma ("33,3" -> 33.3); 'nan', 'inf', negatives and booleans are rejected; a blank cell means
+  decimal comma ("33,3" -> 33.3), any other comma ("1.000,50") is refused as ambiguous; 'nan', 'inf',
+  negatives, booleans and values above 1e15 are rejected; a blank cell means
   "not weighted". Ids: every dotted segment must be non-empty ("1.", "1..2" and blank ids are rejected),
   spaces around the dots are removed ("1. 1" -> "1.1"), and a template placeholder such as <1.2> is
   rejected. In JSON, ids MUST be strings: a number loses its trailing zeros (1.10 becomes 1.1).
@@ -121,7 +122,6 @@ ESTIMATION_COLUMNS = ("id", "task", "unit", "technique", "optimistic", "most_lik
                       "pessimistic", "assumptions", "estimators", "actual")
 FORMATS = ("table", "json", "csv", "md")
 PLACEHOLDER_RE = re.compile(r"^<[^<>]*>$")
-DECIMAL_COMMA_RE = re.compile(r"^\s*-?\d+,\d{1,2}\s*%?\s*$")
 CONNECTOR_WORDS = {"&", "and", "-", "/", "+", "of", "for", "the", "a", "an", "to", "with", "–", "—"}
 
 
@@ -229,14 +229,28 @@ def require_columns(headers, groups):
         raise ValueError(f"missing column(s): {missing}; found headers: {found} ({'; '.join(hints)})")
 
 
+# ',' before one or two trailing digits is a decimal comma ('2,5', '37,50'); before groups of three
+# digits it is a thousands separator ('1,000', '12,345.67'); any other comma ('1.000,50') is ambiguous.
+DECIMAL_COMMA_RE = re.compile(r"[-+]?\d+,\d{1,2}")
+THOUSANDS_RE = re.compile(r"[-+]?\d{1,3}(?:,\d{3})+(?:\.\d+)?")
+
+
 def _num(raw, where, minimum=None, maximum=None, integer=False):
-    """Parse a number tolerant of '$', ',', '€', '£', whitespace and a trailing '%' (which is stripped, value unchanged)."""
+    """Parse a number tolerant of '$', '€', '£', whitespace, a trailing '%' (stripped, value unchanged)
+    and commas: '1,000' -> 1000 (thousands), '2,5' -> 2.5 (decimal comma), '1.000,50' -> error."""
     if isinstance(raw, bool):
         raise ValueError(f"{where}: {raw!r} is a boolean, not a number")
     s = str(raw).strip()
     if s.endswith("%"):
         s = s[:-1]
-    s = s.replace(",", "").replace("$", "").replace("€", "").replace("£", "").strip()
+    s = s.replace("$", "").replace("€", "").replace("£", "").strip()
+    if "," in s:
+        if DECIMAL_COMMA_RE.fullmatch(s):
+            s = s.replace(",", ".")
+        elif THOUSANDS_RE.fullmatch(s):
+            s = s.replace(",", "")
+        else:
+            raise ValueError(f"{where}: {raw!r} is ambiguous; use '.' as the decimal point and ',' only for thousands")
     try:
         v = float(s)
     except ValueError:
@@ -257,13 +271,11 @@ def _is_placeholder(value):
 
 
 def _weight(raw, where):
-    """A weight cell: template placeholders rejected with a hint; '33,3' read as a decimal comma."""
+    """A weight cell: template placeholders rejected with a hint; '33,3' read as a decimal comma (by _num)."""
     if _is_placeholder(raw):
         raise ValueError(f"{where}: {raw!r} is still a template placeholder - enter the percent of the parent "
                          f"or leave the cell blank")
-    if isinstance(raw, str) and DECIMAL_COMMA_RE.match(raw):
-        raw = raw.replace(",", ".")
-    return _num(raw, where, minimum=0)
+    return _num(raw, where, minimum=0, maximum=1e15)
 
 
 def _had_bom(path):
@@ -1047,7 +1059,7 @@ def render_json(res, opts, extra_headers):
                                     for ca, n, k, s, b in _control_accounts(res)] if opts.rollup else [],
                "fix": res.get("fix") or None,
                "written": res.get("written", [])}
-    return json.dumps({"rows": element_rows(res, opts, extra_headers), "summary": summary}, indent=2, ensure_ascii=False)
+    return json.dumps({"rows": element_rows(res, opts, extra_headers), "summary": summary}, indent=2, ensure_ascii=False, allow_nan=False)
 
 
 def render_csv(res, opts, extra_headers):

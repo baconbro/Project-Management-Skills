@@ -55,6 +55,9 @@ A single-point NPV hides how fragile it is. Three tests, all available from the 
    or costs rise 39.2% before NPV reaches 0. A switching value inside the range of past
    estimating error is a red flag; one well outside it is the strongest sentence in the case.
 
+Helios's cashflows are net of run cost, so these factors move net benefits and the $500,000
+up-front outlay; to test a run-cost overrun, give gross benefit and cost columns.
+
 Also test a **benefit delay** by hand (shift the benefit rows one period later and re-run): most
 cases are more sensitive to timing than to size.
 

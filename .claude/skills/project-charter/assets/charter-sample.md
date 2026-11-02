@@ -48,7 +48,7 @@ resolve both without an agent.
 | Id | Milestone | Target | What must be true |
 |---|---|---|---|
 | M1 | Discovery complete | End of month 1 | Requirements and UX prototype agreed; scope, schedule and cost baselines approved |
-| M4 | MVP live to pilot | End of month 4 | Password reset, order status, knowledge base and SSO live for the 200 pilot customers |
+| M4 | MVP live to pilot | End of month 4 | Password reset, order status and knowledge base live for the 200 pilot customers; SSO built and tested, switched on at GA (M6) |
 | M6 | General availability | End of month 6 | Portal live to all customers; Support Operations trained |
 
 ## 5. Budget range and funding
@@ -114,11 +114,11 @@ Logged as R001–R003 in the risk register during planning.
 | Baseline (scope, schedule, cost) | Dana Okoro | M1, one dated approval of all three |
 | Each deliverable | The acceptor named per deliverable in the scope statement (e.g. Marcus Webb for SSO, Priya Nair for the self-service journeys) | At the M4 or M6 gate, after QA verification |
 | M4 pilot and M6 general-availability releases | Dana Okoro, on the PM's recommendation | Go/no-go record |
-| Project completion | Dana Okoro | Final acceptance at M6 after hypercare; closure report |
+| Project completion | Dana Okoro | Final acceptance of the product at general availability (M6), conditional on Priya Nair accepting the operational handover at hypercare exit; closure report after hypercare |
 | Business success (OBJ-1) | Priya Nair, reported to Dana Okoro | 6 months after general availability |
 
-**Exit criteria — normal close:** the portal is live to all customers, hypercare exit criteria
-are met, Priya Nair accepts the operational handover, Dana Okoro signs final acceptance and the
+**Exit criteria — normal close:** the portal is live to all customers, Dana Okoro signs final
+acceptance, hypercare exit criteria are met, Priya Nair accepts the operational handover and the
 closure report is issued; OBJ-1 tracking passes to Priya Nair.
 
 **Cancellation criteria (stop triggers)** — any one triggers a continue / re-scope / stop

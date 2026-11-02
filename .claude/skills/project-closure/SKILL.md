@@ -139,7 +139,8 @@ Pick the closure path first and record it in the closure report header:
    the baseline and the benefits so far, then capture and route lessons with
    `lessons-learned`; summarise the top ones in section 8 of `assets/closure-report.md`.
    Helios: the review on 2026-11-04 confirmed LL001-LL007; LL001 (vendor onboarding owner)
-   and LL007 (training a week before launch) went into the PMO's standard plan. *Done:
+   and LL007 (training a week before launch) were routed to the PMO's standard plan template
+   (in progress, due 2026-11-30; checked back on 2027-02-03). *Done:
    lessons have owners and statuses, and each top lesson has a named destination.*
 7. **Release the team and archive.** Release each person on a stated date with feedback to
    their line manager (plan releases with `resource-management`), revoke project access,

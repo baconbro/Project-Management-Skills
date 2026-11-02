@@ -76,8 +76,10 @@ In a hybrid project the sprint events feed the governance rhythm instead of dupl
 The sample Helios project (a fictional customer self-service portal used throughout this
 catalog) runs two-week sprints alongside a **bi-weekly** steering committee and a **weekly**
 status report:
-- Hold steering the day after the sprint review, so the sponsor (Dana Okoro) sees the fresh
-  forecast and burnup.
+- Hold steering once per sprint, in the sprint's second week, and give it the latest review's
+  forecast and burnup, so the sponsor (Dana Okoro) decides on current figures (Helios: steering
+  on the Tuesday of each sprint's second week, e.g. S4 review Friday 2026-07-03 → steering
+  Tuesday 2026-07-14).
 - The weekly status report quotes the last review's figures mid-sprint and does not invent a
   mid-sprint velocity.
 - Milestones (M4 pilot, M6 general availability) are release goals: the sprint review before

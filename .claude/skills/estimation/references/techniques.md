@@ -28,10 +28,10 @@ agile forecast is a velocity range ("8 to 11 sprints at 25–32 points per sprin
 ## Effort vs duration
 A three-point worksheet sums to **total effort** (person-days, currency), or to the
 duration of **one strictly sequential chain**. It is not the project duration whenever
-tasks run in parallel: the expected durations of the ten Helios work packages sum to
-28.92 weeks, but the critical path is 18 weeks (19.17 expected with PERT skew). Estimate durations per
-task, feed them to `project-schedule`, and total only a single path with
-`pert_estimate.py --ids`. Variances add only for independent items; where one cause (a
+tasks run in parallel: the expected durations of the ten scheduled Helios work packages
+sum to 58.42 weeks, but the critical path is 25 weeks (26.42 expected with PERT skew).
+Estimate durations per task, feed them to `project-schedule`, and total only a single path
+with `pert_estimate.py --ids`. Variances add only for independent items; where one cause (a
 vendor, a key engineer) sits behind several items the real range is wider than the sum.
 
 ## Techniques
@@ -91,10 +91,14 @@ internal target), then **reserve = commit level − sum E**:
 
 `pert_estimate.py --confidence P80` prints the level and the reserve; add `--simulate` to
 take them from the simulated distribution instead of the normal approximation. Hold the
-reserve once, visibly, at project level, and hand it to `cost-management` as the
-contingency reserve inside the baseline. Items whose range is wider than twice their
-most-likely value (`wide`) and the top variance drivers are where another Delphi round or a
-spike buys the most certainty.
+reserve once, visibly, at project level, and record it with the basis of estimate. Do not
+hand it to `cost-management` as a second contingency: the project holds ONE contingency
+reserve inside BAC, sized in `risk-management` from the residual-risk simulation (Helios
+holds a single $40,000), and this range and its drivers feed that analysis. Combine the two
+(ideally in one simulation); never add a P80 from each.
+
+Items whose range is wider than twice their most-likely value (`wide`) and the top variance
+drivers are where another Delphi round or a spike buys the most certainty.
 
 ## Choosing a technique
 - Very early / no detail -> **analogous** (then refine).

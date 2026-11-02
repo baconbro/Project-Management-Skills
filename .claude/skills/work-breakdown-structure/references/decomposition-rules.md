@@ -24,15 +24,17 @@ Sibling elements must not overlap. A piece of work belongs to exactly one elemen
 causes double-counting in estimates and confusion over ownership. If two elements seem to
 share work, the boundary is wrong — redraw it.
 
-## The 8/80 rule
+## The 8/80 rule and the reporting-period test
 A work package — a leaf element — should be small enough to estimate, assign, and track,
-but not so small that managing it costs more than doing it. A common heuristic is that a
-work package takes between **8 and 80 hours** of effort (roughly one day to two weeks); for
-a six-month project like Helios, a few person-weeks each. If a package is bigger than that,
-decompose it further; if many are under 8 hours, you have decomposed too far. At project
-level, a single work package above roughly 20% of the project is too large to track as one
-unit (`--max-leaf-share` warns). Decompose branches to comparable depths: one branch at
-level 5 while its sibling stops at level 2 usually means one of them is wrong.
+but not so small that managing it costs more than doing it. 8/80 hours (between **8 and 80
+hours** of effort, roughly one day to two weeks) suits small projects. The general test is
+that a work package has one owner, a verifiable done, and fits within one or two reporting
+periods. Helios work packages are 25–79 person-days and are decomposed further into sprint
+stories, so they pass the reporting-period test rather than 8/80. If a package outlasts two
+reporting periods, decompose it further; if many are under 8 hours, you have decomposed too
+far. At project level, a single work package above roughly 20% of the project is too large to
+track as one unit (`--max-leaf-share` warns). Decompose branches to comparable depths: one
+branch at level 5 while its sibling stops at level 2 usually means one of them is wrong.
 
 ## Deliverable- vs phase-oriented
 - **Deliverable-oriented:** the first level groups the *things produced*. Helios: Discovery

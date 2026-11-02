@@ -9,7 +9,7 @@ metadata:
   version: 1.1.0
   category: artifact
   phase: initiation
-  related: [project-initiation, project-closure, cost-management, project-charter]
+  related: [project-initiation, project-closure, cost-management, project-charter, project-delivery]
 license: MIT
 ---
 
@@ -103,9 +103,10 @@ $200k and $200k over five years, appraised at a 10% discount rate.
    shortfall, cost overrun and discount rate at which NPV reaches 0 — and the stressed case
    (benefits x0.8, costs x1.2 by default; `--benefit-factor`/`--cost-factor` for your own).
    Apply an explicit optimism-bias uplift to costs and haircut to benefits and say where it came
-   from. Helios: benefits can fall 28% or costs rise 39% before NPV turns negative; the combined
-   0.8/1.2 stress takes NPV to -$43,061, so the recommendation must carry a condition. *Done: the
-   recommendation survives the downside cases, or the exposure is stated and a condition set.*
+   from. Helios: benefits can fall 28% or costs rise 39% (net benefits; costs = the up-front
+   build) before NPV turns negative; the combined 0.8/1.2 stress takes NPV to -$43,061, so the
+   recommendation must carry a condition. *Done: the recommendation survives the downside
+   cases, or the exposure is stated and a condition set.*
 7. **Fill `assets/business-case-template.md`** — problem, options table, benefits and
    dis-benefits, costs, financial appraisal (paste the `--format md` table), sensitivity and
    switching values, risks and assumptions, and a clear recommendation with the funding ask.
@@ -124,6 +125,7 @@ $200k and $200k over five years, appraised at a 10% discount rate.
 - [ ] Every benefit has a type, a baseline, a target, a realisation date, a leading and a
       lagging measure, and a named owner; dis-benefits listed with a mitigation.
 - [ ] Costs are whole-life (build + run) over the full appraisal period, netted consistently.
+- [ ] Every cashable benefit names the budget line it removes or avoids.
 - [ ] NPV computed at a stated discount rate; ROI and simple payback labelled undiscounted
       (discounted payback given where the approver expects it); IRR reported.
 - [ ] Sensitivity run; switching values and the optimism-bias adjustment recorded; the case
@@ -175,3 +177,6 @@ $200k and $200k over five years, appraised at a 10% discount rate.
   the cost baseline must fit.
 - `project-charter` — formally authorizes the project this case justifies and carries its budget
   range and objective.
+- `project-delivery` — re-runs this appraisal at each milestone gate (Helios M4, M6) with the
+  current EAC and benefit forecast, and logs the sponsor's continue/stop decision against the
+  charter's switching values.

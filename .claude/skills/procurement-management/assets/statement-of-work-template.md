@@ -21,7 +21,7 @@
 `<Two to four sentences: the business problem, the project, and why this work is bought rather than built (the make-or-buy reason).>`
 
 Objectives the supplier's work must serve:
-1. `<measurable objective with a date, e.g. pilot users authenticate through SSO in staging by week 10>`
+1. `<measurable objective with a date, e.g. pilot users authenticate through SSO in staging by week 14>`
 2. `<measurable objective>`
 
 ## 3. Scope

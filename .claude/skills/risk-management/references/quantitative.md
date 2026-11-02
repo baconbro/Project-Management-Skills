@@ -18,8 +18,9 @@ register in `.claude/skills/risk-register/assets/risk-register-template.csv`.
 | Helios R001 | 3 x 5 = 15 → HIGH | 0.4 x $120,000 = $48,000 → HIGH |
 
 Keep the register in one unit. If it holds 1-5 ratings, `risk_score.py --prob-scale 1-5
---impact-scale 1-5` gives a ranking score; its totals are not a reserve. Quantify the material
-risks in currency before you size anything.
+--impact-scale 1-5` gives a ranking score and bands only: grid scores are ordinal, so never add
+them up or read them as a reserve. Quantify the material risks in currency before you size
+anything.
 
 ## 2. Record impacts as positive magnitudes; let the `type` column carry the direction
 In the register every impact is a **positive magnitude** — the cost if a threat occurs, the
@@ -140,7 +141,7 @@ scope trade-off through change control, or a re-baseline.
 |---|---|---|---|---|---|
 | Contingency | Identified risks ("known-unknowns"), after responses | Residual simulation at the plan's confidence | Inside the cost baseline (BAC) | Project manager (Sam Lee) | $40,000 |
 | Management reserve | Unidentified risks ("unknown-unknowns") | Policy (Helios: 5% of BAC) | Above BAC, in the total budget | Sponsor (Dana Okoro), released through change control | $25,000 |
-| Schedule reserve | Duration uncertainty on the critical path | `project-schedule` simulation | Held once before the milestone it protects | Project manager | About 2.4 weeks (P80 20.4 vs 18 weeks) |
+| Schedule reserve | Duration uncertainty on the critical path | `project-schedule` simulation | Held once before the milestone it protects | Project manager | None before GA: P80 28.25 vs a 25-week plan that leaves only the cutover week; 27% chance of GA readiness by week 26, accepted by the sponsor with the 2-week M6 tolerance (about P75) |
 
 See `cost-management` for how the reserves sit in and above the baseline and how drawdown is
 recorded.
