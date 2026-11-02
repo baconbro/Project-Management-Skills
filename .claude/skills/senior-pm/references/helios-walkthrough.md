@@ -55,15 +55,16 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
 - Result: the recommended option ranks first on NPV ($196,173.88 at 10%) against the
   alternative ($79,709.22), do minimum ($35,815.74) and do nothing; IRR 23.61%, payback 2.85
   periods (3.47 discounted); benefits can fall 28.18% before NPV reaches zero. Dana Okoro
-  approves funding in the $450k-$550k range.
+  approves funding in the $450k-$550k range on 2026-03-20.
 
 **1.2 Authorize the project** — `project-charter`
 - Artifact: `.claude/skills/project-charter/assets/charter-sample.md` (charter v1.0, signed
   by Dana Okoro on 2026-04-02; the blank is `charter-template.md`). No helper.
 - Result: sponsor Dana Okoro and PM Sam Lee named; the SMART objective above; in scope
   password reset, order status, knowledge base and single sign-on through the existing
-  identity provider; live chat out of scope (phase 2 candidate), as are partner-login SSO and
-  non-English knowledge base; milestones M1, M4, M6; budget $450k-$550k.
+  identity provider; live chat out of scope (phase 2 candidate), as are partner-login SSO
+  and a non-English knowledge base (later raised as CR002 and CR004); milestones M1, M4, M6;
+  budget $450k-$550k.
 
 **1.3 Who is affected?** — `stakeholder-management`
 - Artifacts: `.claude/skills/stakeholder-management/assets/stakeholder-register-sample.csv`

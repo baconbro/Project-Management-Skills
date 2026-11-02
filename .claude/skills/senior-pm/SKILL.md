@@ -89,7 +89,8 @@ desired outcome at all, start at `project-initiation`.
 2. **Diagnose the stage.** No approved business case or charter → initiation; charter but no
    approved baseline → planning; baseline approved and work executing → delivery;
    deliverables accepted, go-live done or work stopping → closure. A project that is running
-   without a baseline is in delivery with "no baseline" as its top gap. Tick the stage's
+   without a baseline is in delivery with "no baseline" as its top gap (`project-delivery`
+   builds a one-day interim baseline for it). Tick the stage's
    artifacts in the template's checklist; each missing one is a gap. *Done: one stage named,
    with the evidence that placed it and the missing artifacts listed.*
 3. **Read health against the baseline.** Rate scope, schedule, cost and risk separately with
@@ -114,14 +115,18 @@ desired outcome at all, start at `project-initiation`.
 
    | The user says... | Route to | First action |
    |---|---|---|
-   | "Is my project on track?" (no baseline) | `project-planning` | Baseline the remaining scope, schedule and cost |
+   | "Is my project on track?" (running, no baseline) | `project-delivery` | Build the one-day interim baseline; sponsor approves it |
+   | "Is my project on track?" (not started, no baseline) | `project-planning` | Baseline scope, schedule and cost |
+   | "Log or escalate this problem" (happening now) | `project-delivery` | Log it with one owner and due date; escalate past the owner's authority |
    | "We are always late" | `project-schedule`, then `cost-management` | Find the critical path; read SPI and the forecast |
    | "We are over budget" | `cost-management` | Run the earned-value check; size the EAC |
    | "Scope keeps growing" | `change-management`, then `scope-and-requirements` | Set the change threshold; re-baseline scope |
+   | "Is this in scope?" | `scope-and-requirements` | Check the signed in/out list; route a new item to `change-request` |
    | "My vendor is late" | `procurement-management` | Apply the contract remedies; log the issue |
+   | "Should we build or buy?" / "write an RFP or SOW" | `procurement-management` | Decide make-or-buy per work package; write the SOW |
    | "We go live next week" | `release-and-cutover` | Run the go/no-go against readiness criteria |
-   | "Plan the next sprint" / "how many sprints left?" | `agile-delivery` | Forecast from velocity; plan to capacity |
-   | "The team is overloaded" | `resource-management` | Run the capacity check; level the peaks |
+   | "Plan the next sprint" / "how many sprints left?" / "write user stories" | `agile-delivery` | Forecast from velocity; plan to capacity |
+   | "Who is overloaded?" | `resource-management` | Run the capacity check; level the peaks |
    | "Nobody knows who decides" | `raci-matrix` | One Accountable per deliverable and decision |
    | "The sponsor has gone quiet" | `stakeholder-management` | Re-map power/interest; plan a 1:1 |
    | "Something big might go wrong" | `risk-management` | Score it; choose a response; check the reserve |
@@ -145,7 +150,8 @@ desired outcome at all, start at `project-initiation`.
 - Calling a project green because artifacts exist (a plan, a register) while it is 30% over
   budget — existence is not health; read the variance.
 - Answering "is my project on track" without a baseline; say there is nothing to measure
-  against and route to `project-planning`.
+  against and route to `project-delivery` for an interim baseline if work is running, or to
+  `project-planning` if it has not started.
 - Routing before diagnosing the stage — the wrong skill wastes the user's time.
 - Recommending a methodology by default (always "agile") instead of from the signals.
 - Dumping the catalog on the user; route to one or two skills, not ten.
@@ -160,13 +166,13 @@ desired outcome at all, start at `project-initiation`.
 - `references/pm-glossary.md` — concise definitions of the PM terms used across the catalog, each pointing to the skill that owns it.
 - `references/helios-walkthrough.md` — the catalog's worked example: the sample Helios project from idea to closure, naming the skill, artifact and helper command at each step.
 - `assets/project-state-template.md` — fill-in project-state canvas with the per-dimension health read and the artifact checklist by stage.
-- `assets/project-state-sample.md` — sample canvas for Helios at the end of month 3 (AMBER).
+- `assets/project-state-sample.md` — sample canvas for Helios as at 2026-07-10, the week after the month-3 close (AMBER).
 - Unfamiliar term? See the PM glossary in the `senior-pm` skill.
 
 ## Related skills
 - `project-initiation` — route here at the idea or initiation stage; it returns the business case, signed charter and stakeholder register that move the canvas to planning.
-- `project-planning` — route here once the project is authorized or when "baseline exists?" is no; it returns the approved scope, schedule and cost baselines the health read measures against.
-- `project-delivery` — route here when the project is baselined and executing; its issue, action and decision log, change log and weekly RAG keep the canvas current.
+- `project-planning` — route here once the project is authorized and before work starts, or for a full re-plan; it returns the approved scope, schedule and cost baselines the health read measures against.
+- `project-delivery` — route here when the project is executing, including one already running without a baseline (its first step builds a one-day interim baseline); its issue log of issues, actions, decisions and dependencies and its weekly RAG keep the canvas current.
 - `project-closure` — route here when deliverables are accepted or work is stopping; it closes the canvas with acceptance, handover, benefits tracking and lessons.
 - `risk-management` — route here when the canvas's top-risk cell dominates (a HIGH risk without a response, or exposure beyond the contingency reserve); it returns responses and reserve sizing.
 - `agile-delivery` — route here when the approach is agile or hybrid; its velocity forecast gives the schedule reading for the health read when there is no earned value.

@@ -39,9 +39,10 @@ Sections: [Lifecycle and governance](#lifecycle-and-governance) ·
   regulation, technology.
 - **Dependency** — a link between two pieces of work (or to something outside the project)
   that dictates order. See `project-schedule`.
-- **Issue / action / decision** — a problem happening now that needs resolving / a committed
-  task with one owner and a due date / a recorded choice with who decided, when and why.
-  All three live in the issue, action and decision log. See `project-delivery`.
+- **Issue / action / decision / dependency** — a problem happening now that needs resolving /
+  a committed task with one owner and a due date / a recorded choice with who decided, when
+  and why / something the project needs from outside the team by a date. All four item types
+  live in one issue log, checked by `issue_log_check.py`. See `project-delivery`.
 - **Risk vs issue** — a risk is an uncertain future event; an issue is already happening. A
   risk that occurs becomes an issue. See `risk-management`, `project-delivery`.
 - **RAG** — Red/Amber/Green rating per dimension (scope, schedule, cost, quality, risk); the
@@ -52,19 +53,25 @@ Sections: [Lifecycle and governance](#lifecycle-and-governance) ·
   someone's authority. See `project-communication`.
 - **MVP (Minimum Viable Product)** — the smallest releasable increment that delivers value and
   produces learning (Helios: MVP live to pilot at M4).
+- **Interim baseline** — a one-day, sponsor-approved baseline (scope list, remaining
+  milestones, budget to date and to complete, open risks) for a project already running
+  without one, so progress can be measured at once. See `project-delivery`.
 
 ## Scope and requirements
 - **Requirement types** — functional (what the product does), non-functional (how well:
   performance, security, accessibility), transition (what is needed to move to the new state:
   data migration, training). See `scope-and-requirements`.
-- **MoSCoW** — prioritization into Must, Should, Could and Won't (this time).
+- **MoSCoW** — prioritization into Must, Should, Could and Won't (this time); Won't items are
+  recorded with where they go (Helios: live chat to phase 2). See `scope-and-requirements`,
+  `agile-delivery`.
 - **Scope statement** — deliverables, acceptance criteria, exclusions, assumptions and
   constraints, signed by the sponsor. See `scope-and-requirements`.
-- **Traceability (RTM)** — linking each requirement backward to its objective and source and
-  forward to its WBS work package and acceptance test, in a requirements traceability
-  matrix; it proves coverage and shows what a change touches. See `scope-and-requirements`.
+- **Requirements traceability matrix (RTM)** — the table linking each requirement backward to
+  its objective and source and forward to its WBS work package and acceptance test; it proves
+  coverage and shows what a change touches. See `scope-and-requirements`.
 - **Scope validation vs quality control** — formal acceptance of finished deliverables by the
-  customer or sponsor / checking that the work meets the quality requirements before that.
+  named acceptor (customer or sponsor) / checking that the work meets the quality requirements
+  before that. See `scope-and-requirements`, `quality-management`.
 - **WBS (Work Breakdown Structure)** — a deliverable-oriented hierarchy of the whole scope.
   See `work-breakdown-structure`.
 - **Work package** — the lowest WBS element, estimated, scheduled, costed and assigned to one owner.
@@ -85,16 +92,21 @@ Sections: [Lifecycle and governance](#lifecycle-and-governance) ·
   it into a sprint (clear acceptance criteria, sized, dependencies cleared). See `agile-delivery`.
 - **DoD (Definition of Done)** — the criteria every item or increment must meet to count as
   complete (tested, reviewed, documented, deployable). See `quality-management`.
-- **Sprint / increment** — a fixed timebox (Helios: two weeks) / the usable, done output of it.
+- **Sprint (iteration) / increment** — a fixed timebox (Helios: two weeks) / the usable, done
+  output of it, shown at the sprint review. See `agile-delivery`.
 - **Story points** — a relative size of effort, complexity and uncertainty; only comparable
   within one team. See `estimation`.
 - **Velocity** — story points of items meeting the definition of done completed per sprint;
   forecast with its spread, never as a single number (Helios: mean 27.33, range 22-31). See
   `agile-delivery`.
 - **Burndown / burnup** — work remaining over time / work completed against total scope; a
-  burnup shows scope growth separately from progress.
+  burnup shows scope growth separately from progress. See `agile-delivery`.
 - **Cut line** — the point in the ordered backlog below which items do not fit the dates at a
-  given velocity.
+  given velocity (Helios: after HEL-170 at the pessimistic velocity). See `agile-delivery`.
+- **Cycle time** — elapsed time from starting an item to done; report a percentile ("85% of
+  stories finish within 6 working days"), not the mean. See `agile-delivery`.
+- **WIP limit** — a cap on the items in progress at once, per person or workflow stage (Kanban);
+  cutting work in progress is the cheapest way to cut cycle time. See `agile-delivery`.
 
 ## Schedule
 - **Critical path** — the longest chain of dependent activities; it sets the shortest possible
@@ -147,7 +159,9 @@ Sections: [Lifecycle and governance](#lifecycle-and-governance) ·
   performance is measured.
 - **Contingency reserve vs management reserve** — contingency is held *inside* the cost
   baseline (in BAC) for identified risks and its drawdown is managed by the PM (Helios:
-  $40,000); management reserve is held *above* the baseline (not in BAC) by the sponsor for
+  $40,000, about P50 of a simulation of the residual register; P80 $99,000; the $52,300
+  summed residual EMV is the mean, not the reserve; the sponsor accepted the gap to P80). A
+  forecast EAC above BAC has already used the whole contingency. Management reserve is held *above* the baseline (not in BAC) by the sponsor for
   unidentified risks, and using it needs a baseline change (Helios: $25,000). Cost baseline +
   management reserve = total budget (Helios: $525,000). See `cost-management`, `risk-management`.
 
@@ -212,27 +226,36 @@ Sections: [Lifecycle and governance](#lifecycle-and-governance) ·
 - **Make-or-buy** — deciding per work package whether to do the work in-house or buy it from a
   supplier, on capability, cost, risk and control. See `procurement-management`.
 - **SOW (Statement of Work)** — what the supplier must deliver, to what acceptance criteria and
-  service levels, by when.
+  service levels, by when. See `procurement-management`.
 - **RFI / RFQ / RFP** — request for information (market scan) / for quotation (price for a
-  defined item) / for proposal (solution and price, scored).
-- **Contract types** — firm fixed price (supplier carries the cost risk), time and materials
-  (buyer carries it, rates fixed), cost-plus (buyer reimburses cost plus a fee and carries most
-  of the risk).
+  defined item) / for proposal (solution and price, scored). See `procurement-management`.
+- **Contract types** — firm fixed price (supplier carries the cost risk; Helios: IdentityCo),
+  time and materials (buyer carries it, rates fixed), cost-plus (buyer reimburses cost plus a
+  fee and carries most of the risk). See `procurement-management`.
 - **Vendor scorecard** — weighted scoring of bids after pass/fail gates, with due diligence.
 - **Retention** — a share of payment held back until acceptance or a warranty period ends.
 
 ## Release and cutover
 - **Release strategy** — big-bang, phased, pilot, parallel run or feature-flag ramp. See
   `release-and-cutover`.
-- **Go/no-go** — the decision, by a named approver, that a release is ready: GO, CONDITIONAL GO
+- **Go/no-go decision** — the decision, by a named approver, that a release is ready: GO, CONDITIONAL GO
   or NO-GO, judged against readiness criteria.
 - **Cutover** — the timed, owned sequence of steps that switches from the old way to the new
   at go-live, written in a cutover runbook and rehearsed.
-- **Rollback** — the planned reversal to the last good state, with triggers and a last safe
-  start time.
+- **Rollback / rollback trigger** — the planned reversal to the last good state / the
+  quantified, time-boxed condition (Helios: SSO sign-in success below 95% over 15 minutes)
+  that lets the cutover lead call it without escalating. A rollback also has a last safe start time.
 - **Change freeze** — a window in which no other changes may be made to the affected systems.
+- **Dress rehearsal** — a full run of the cutover runbook with the real people, bridge and
+  communications, including the rollback, used to replace planned step times with rehearsed
+  ones. See `release-and-cutover`.
+- **Feature flag** — a switch that releases deployed code to a list or a share of users without
+  a new deployment (Helios: GA ramped 25% → 50% → 100%). See `release-and-cutover`.
 - **Hypercare** — a period of heightened support straight after go-live, with measured exit
   criteria, before the service is handed to business-as-usual (BAU) operations.
+- **Point of no return (PONR)** — the cutover step after which rollback would lose data or break
+  a commitment; push it late and hold a go-live checkpoint just before it. See
+  `release-and-cutover`.
 
 ## Quality
 - **Acceptance criteria** — the conditions a deliverable or story must meet to be accepted,
@@ -242,12 +265,23 @@ Sections: [Lifecycle and governance](#lifecycle-and-governance) ·
   product meets their needs before acceptance.
 - **Quality vs grade** — meeting requirements (low quality is always a problem) / the category
   or feature level (low grade may be fine).
+- **Cost of quality (COQ)** — the cost of achieving quality (prevention and appraisal: reviews,
+  tests, audits) plus the cost of failing to (internal and external failure); used to decide
+  what is good enough. See `quality-management`.
+- **Defect removal efficiency (DRE)** — defects found before release ÷ (found before release +
+  found in the first 30 days after) × 100; Helios targets ≥ 90%. See `quality-management`.
+- **Escaped defect** — a defect found after release (pilot or production); a severity-1/2
+  escape triggers a process audit. See `quality-management`.
+- **Quality assurance (QA) vs quality control (QC)** — process-focused prevention (audits that
+  the agreed way of working is followed) / product-focused detection (inspecting and testing
+  deliverables, logging defects, enforcing gate exit criteria). See `quality-management`.
 
 ## Change and closure
 - **Change request** — a formal proposal to change the baseline, assessed for impact and
   decided by the right authority. See `change-request`.
-- **CCB (Change Control Board)** — the forum that approves, rejects or defers changes to the
-  baseline beyond the PM's tolerance. See `change-management`.
+- **CCB (Change Control Board)** — the forum that approves, rejects, defers or requests more
+  information on changes to the baseline beyond the PM's tolerance (Helios: CR002 sent back
+  for more information on 2026-07-14). See `change-management`.
 - **Integrated change control** — assessing a change's effect on scope, schedule, cost, quality
   and risk together before deciding.
 - **Scope creep** — uncontrolled growth of scope without matching time, cost or approval.
