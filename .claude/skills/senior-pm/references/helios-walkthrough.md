@@ -5,8 +5,9 @@ customer self-service portal used throughout this catalog) through initiation, p
 delivery and closure, and at each step names the user's ask, the skill that answers it, the
 artifact it leaves behind and the helper command that produced the numbers. Every person,
 vendor and figure is fictional. Run the commands from the repository root: they read the
-bundled Helios samples and print the results quoted here. For a real project, copy the
-matching template and point the same command at your own file.
+bundled Helios samples and print the results quoted here. Files named `*-sample.*` hold the
+filled Helios data; `*-template.*` files and the other blanks named below are what you copy.
+For a real project, copy the matching template and point the same command at your own file.
 
 How to use it: read it once end to end to see how the 27 skills fit together, or jump to the
 stage the user is in. Hand the user one or two skills at a time, not this whole page.
@@ -41,10 +42,11 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
 ## Stage 1 — Initiation
 
 **1.1 Is it worth it?** — `business-case`
-- Artifacts: `.claude/skills/business-case/assets/business-case-template.md` (filled),
-  `.claude/skills/business-case/assets/cashflows.csv`,
-  `.claude/skills/business-case/assets/cashflows-options-sample.csv`,
-  `.claude/skills/business-case/assets/benefits-register-sample.csv`.
+- Artifacts: the Helios figures are in `.claude/skills/business-case/assets/cashflows.csv`
+  (the recommended option), `.claude/skills/business-case/assets/cashflows-options-sample.csv`
+  (all four options) and `.claude/skills/business-case/assets/benefits-register-sample.csv`;
+  the document is written in the blank
+  `.claude/skills/business-case/assets/business-case-template.md`.
 - Commands:
   ```bash
   python .claude/skills/business-case/scripts/roi_npv.py .claude/skills/business-case/assets/cashflows-options-sample.csv

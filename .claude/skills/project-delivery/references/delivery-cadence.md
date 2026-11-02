@@ -73,7 +73,7 @@ the loop does not. Status flows in writing before the meeting; the meeting is fo
 
 | Event | When | Owner | Inputs | Outputs |
 |---|---|---|---|---|
-| Stand-up (per team) | Daily, 15 minutes | Ava Chen (product owner) with the team | Sprint board | Blockers to Sam Lee; new log items |
+| Stand-up (per team) | Daily, 15 minutes | The delivery team runs it; Sam Lee (PM) facilitates | Sprint board | Blockers to Sam Lee; new log items |
 | Weekly control review | Thursday | Sam Lee (PM) | Issue log check, EVM, velocity, register, change log | Status report inputs |
 | Status report | Friday, weekly | Sam Lee | Weekly control review | RAG report to the steering members and stakeholders |
 | Sprint review and retrospective | Every second Friday | Ava Chen | Increment, definition of done | Increment accepted or not; lessons |

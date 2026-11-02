@@ -33,8 +33,9 @@ log (`project-planning`), it makes up a full RAID log; nothing is lost between t
   IdentityCo's account manager and claim the sandbox delay credit."_
 - **Decision**: a choice that is needed (open, with a decide-by date) or has been made
   (closed, with what was decided, by whom and why), recorded so it is not relitigated.
-  _Helios DEC001: "Keep sprint S4 on its goal by testing against a stubbed identity provider
-  until the sandbox returns." Decided by Ben Adeyemi with Ava Chen, 2026-06-16._
+  _Helios DEC001: "Plan sprint S4 (from 2026-06-22) around testing against a stubbed identity
+  provider until the sandbox returns." Decided by Ben Adeyemi with Ava Chen, 2026-06-16, during
+  sprint S3._
 - **Dependency**: something another party owes the project by a date: a vendor deliverable,
   another team's release, a sign-off. Name the provider in the description and an owner on
   our side who chases it; `due` is the needed-by date. _Helios DEP001: "Support Operations

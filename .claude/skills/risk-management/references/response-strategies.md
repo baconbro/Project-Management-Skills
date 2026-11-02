@@ -13,7 +13,7 @@ project (a fictional customer self-service portal used throughout this catalog).
 | Strategy | What it means | Helios example |
 |---|---|---|
 | **Avoid** | Remove the threat by changing the plan, scope or approach, so it cannot occur. | No in-house customer credential store: customer sign-in is bought on the existing identity provider, which removes the threat of a home-built store failing a security review. |
-| **Transfer** | Shift the financial impact (not the risk itself) to a third party through a contract, warranty or insurance. | R001: firm fixed price for IdentityCo's services, a dated sandbox, delay credits of 5% a week capped at 15%, payment on acceptance (`procurement-management`). The schedule impact stays with Helios. |
+| **Transfer** | Shift the financial impact (not the risk itself) to a third party through a contract, warranty or insurance. | R001: firm fixed price for IdentityCo's services, a dated sandbox, delay credits of 5% a week capped at 15%, payment on acceptance. `procurement-management` chooses the contract type and its risk allocation and tracks the dated sandbox in `.claude/skills/procurement-management/assets/vendor-onboarding-checklist.md`. The schedule impact stays with Helios. |
 | **Mitigate** | Reduce probability and/or impact to an acceptable level. | R001: an integration spike in week 1 of the integration work, probability 0.4 → 0.2. R002: scope baselined at M1 with change control, 0.6 → 0.3. R003: pairing and documented designs, impact $80,000 → $40,000. |
 | **Accept — active** | Take no action now, but set aside contingency and a contingent plan with a trigger. | R004: monthly invoice review; draw contingency if hosting runs above 110% of forecast. R005: one sprint of polish buffer if usability round 1 finds more than 5 medium issues. |
 | **Accept — passive** | Document and review only; deal with it if it happens. | A LOW threat below the MEDIUM threshold whose response would cost more than its exposure. |
@@ -36,14 +36,15 @@ a contingent plan.
 ## Elements of a complete response
 For every material risk, record:
 - **Strategy and actions** — proactive actions done now, each with an action owner and a due date.
-- **Trigger** — the observable early-warning sign that the risk is about to occur (R001: vendor
-  sandbox not available by the end of week 2 of the integration work).
+- **Trigger** — the observable early-warning sign that the risk is about to occur (R001: "Vendor
+  sandbox not available by end of week 2 of the integration work").
 - **Contingent plan** — what happens when the trigger fires, and who funds it (R001: build an
   identity-provider stub so sprint work continues, claim the delay credits, escalate).
 - **Fallback plan** — what to do if the contingent plan fails too (R001: the escalation path in
   the risk management plan — management reserve, scope trade-off or re-baseline).
 - **Cost and schedule effect** — the effort and money the response needs, and where it is funded:
-  a work-package estimate, a contract, or the contingency.
+  a work-package estimate, a contract (terms set with `procurement-management`), or the
+  contingency.
 - **Residual risk** — the probability and impact left after the response; accept it consciously
   and keep it in the register (`residual_probability`, `residual_impact`).
 - **Secondary risk** — any *new* risk the response creates. Transferring R001 to IdentityCo

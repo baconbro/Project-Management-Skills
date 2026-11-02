@@ -1,5 +1,5 @@
 id,description,type,category,probability,impact,owner,response,trigger,residual_probability,residual_impact,status,raised,review_date
-R001,Identity-provider integration slips past the agreed date,threat,Technical,0.4,120000,Sam Lee,Mitigate: run an integration spike in week 1 and agree a vendor SLA,Vendor sandbox not available by end of week 2,0.2,120000,Open,2026-05-12,2026-06-09
+R001,Identity-provider integration slips past the agreed date,threat,Technical,0.4,120000,Sam Lee,Mitigate: run an integration spike in week 1 and agree a vendor SLA,Vendor sandbox not available by end of week 2 of the integration work,0.2,120000,Open,2026-05-12,2026-06-09
 R002,Undocumented requirements expand portal scope,threat,Scope,0.6,40000,Dana Okoro,Mitigate: lock the scope baseline and route additions through change control,More than 3 new requirements raised after baseline sign-off,0.3,40000,Open,2026-05-12,2026-06-09
 R003,Lead engineer leaves mid-project,threat,Resource,0.15,80000,Sam Lee,Mitigate: pair programming and documented designs so knowledge is shared,Resignation notice or absence longer than 2 weeks,0.15,40000,Open,2026-05-12,2026-06-09
 R004,Cloud hosting costs exceed the budget,threat,Cost,0.5,15000,Finance,Accept (active): monitor the monthly invoice and re-forecast,Monthly hosting invoice above 110% of forecast,0.5,15000,Open,2026-05-12,2026-06-09

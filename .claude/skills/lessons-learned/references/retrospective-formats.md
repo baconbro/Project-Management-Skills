@@ -127,7 +127,7 @@ facts the next project needs.
 | Week 5 | IdentityCo contract signed; sandbox requested only now; no onboarding owner | Vendor register V01 | No decision was made: a gap |
 | Week 6 (2026-05-11) | 1.3.1 starts with sprint S1; no sandbox access yet | Sprint history; schedule | Start against documentation only |
 | 2026-06-12 | Sandbox goes down; R001 occurs; issue I001 opened | Issue log | Report AMBER only (see LL002) |
-| 2026-06-16 | Keep sprint S4 on its goal by testing against a stub | DEC001 | Sound given the information |
+| 2026-06-16 | Plan sprint S4 around testing against a stub (decided during S3) | DEC001 | Sound given the information |
 | 2026-06-22 | Identity-provider stub live in test | ACT002 | — |
 | 2026-06-25 | Recovery plan agreed; $880 delay credit claimed | ACT001 | — |
 | 2026-06-26 | 1.3.1 turns RED; escalated as DEC002 | Communication review log | Sponsor first told now |

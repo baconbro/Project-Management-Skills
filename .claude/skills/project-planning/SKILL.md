@@ -130,8 +130,9 @@ before step 12. `references/planning-sequence.md` maps each step's inputs, outpu
    for what they touch. Size the contingency from the residual exposure at a confidence the
    sponsor accepts, set the management reserve by policy, and hold one schedule reserve from
    the `project-schedule` simulation. Helios: R001 (identity-provider integration slips, EMV
-   $48,000) is the top threat; contingency $40,000, management reserve $25,000, schedule
-   reserve about 2.4 weeks (P80 20.4 against 18). *Done: every HIGH or MEDIUM threat has an
+   $48,000) is the top threat; contingency $40,000 (about P50 of the residual simulation; the
+   sponsor accepted the gap to the $99,000 P80), management reserve $25,000, schedule reserve
+   about 2.4 weeks (P80 20.4 against 18). *Done: every HIGH or MEDIUM threat has an
    owner, a response and a trigger, and each reserve is justified by a stated confidence.*
 8. **Plan quality.** Run `quality-management`: acceptance criteria from the scope statement,
    the definition of done, quality gates with entry and exit criteria (Helios: the M4 pilot

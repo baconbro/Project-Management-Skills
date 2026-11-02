@@ -72,7 +72,8 @@ short): release outlook AMBER.
 - IdentityCo's sandbox restored on 2026-07-06, the first date in the recovery plan (ACT001).
 - Sprint S4 increment accepted by Ava Chen on 2026-07-03 (29 of 32 points): pilot-ready reset
   and order journeys against the identity-provider stub, with two colour-contrast conditions
-  (ACT005).
+  (ACT005); process audit QA-03 (2026-07-10) logged that as a lapse, since the two stories should
+  have been returned as not done.
 - CR003 accessibility uplift approved by the CCB on 2026-06-30 and planned into sprint S5; CR005
   rejected by the CCB on 2026-07-07.
 - Costed $20,000 crash change request (ACT004) delivered in this pre-read, as the 2026-06-30

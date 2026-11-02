@@ -41,8 +41,8 @@ at completion of about $535,000.
 - The user needs a cost RAG status or a CPI/SPI trend for a steering update.
 - Do NOT use this to produce the underlying effort or cost estimates — use `estimation`; its
   per-work-package figures are the input here.
-- Do NOT use this to size the contingency from the risks — use `risk-management` (EMV or a
-  simulation of the register) and bring the figure here.
+- Do NOT use this to size the contingency from the risks — use `risk-management` (a simulation of
+  the residual register at an agreed confidence) and bring the figure here.
 - Do NOT use this to write the periodic status narrative — feed CPI/SPI/EAC into
   `status-report`.
 - Do NOT use this to justify the investment — `business-case` sets the envelope the baseline
@@ -72,10 +72,11 @@ earning rule agreed for that package.
    accounts and a project total, covering labour (effort x rate), licences, vendor fees and
    hosting. Helios: ten work packages, $460,000. See `references/cost-baselining.md`. *Done: a
    bottom-up total per control account and for the project.*
-2. **Size the reserves.** Take the contingency from `risk-management` (post-response EMV or a
-   simulation of the register — Helios $40,000) and set the management reserve by policy, held
-   by the sponsor above the baseline (Helios $25,000). *Done: both reserves sized and recorded
-   separately, not padded into the estimates.*
+2. **Size the reserves.** Take the contingency from `risk-management` (a simulation of the
+   residual register read at the confidence the sponsor accepts — Helios $40,000, about P50;
+   the sponsor accepted the gap to the $99,000 P80) and set the management reserve by policy,
+   held by the sponsor above the baseline (Helios $25,000). *Done: both reserves sized and
+   recorded separately, not padded into the estimates.*
 3. **Build the baseline.** Cost baseline = work-package costs + contingency = **BAC** (Helios
    $500,000; management reserve stays outside). Time-phase it per period in
    `assets/cost-baseline-template.csv` (`wbs_id, work_package, period, planned_cost`) and plot
@@ -147,7 +148,7 @@ earning rule agreed for that package.
 - Unfamiliar term? See the PM glossary in the `senior-pm` skill.
 
 ## Related skills
-- `project-planning` — the planning phase that sets this cost baseline (its step 4) alongside scope and schedule.
+- `project-planning` — the planning phase that sets this cost baseline (its step 9, after risk analysis and leveling) alongside scope and schedule.
 - `project-delivery` — where the baseline is tracked each period and variances are acted on.
 - `risk-management` — sizes the contingency reserve that goes inside the baseline and sets the management reserve policy.
 - `estimation` — produces the per-work-package estimates this skill aggregates into the baseline.

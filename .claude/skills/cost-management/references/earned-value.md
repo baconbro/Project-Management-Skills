@@ -86,8 +86,11 @@ Plan said $255,000 of work should be done (PV). The team completed work budgeted
 | TCPI(BAC) | (BAC - EV) / (BAC - AC) = 264,500 / 248,000 | **1.07** | the remaining work must run 7% more efficiently than plan — and 13 points above the 0.93 achieved: re-plan |
 | TCPI(EAC) | (BAC - EV) / (EAC - AC) = 264,500 / 283,032 | **0.93** | the CPI-based EAC only needs today's efficiency to hold |
 
-Verdict: CPI 0.93 and SPI 0.92 both sit in the 0.85–0.95 band — Helios is **AMBER** overall,
-with the contingency reserve ($40,000) about to be consumed by the forecast overrun. Per work
+Verdict: CPI 0.93 and SPI 0.92 both sit in the 0.85–0.95 band — Helios is **AMBER** overall.
+BAC already contains the $40,000 contingency reserve, so an EAC above BAC means the forecast
+has already used all of it: the $35,000 overrun would draw on the $25,000 management reserve and
+still exceed BAC + management reserve ($525,000) by about $10,000 — a sponsor decision through
+change control, not a contingency draw. Per work
 package, Identity / SSO integration is **RED** (CPI 0.69, SPI 0.75: the identity-provider slip,
 risk R001, has materialised) and Reporting & analytics is RED because it waits on the UI;
 Knowledge base is ahead (1.10 / 1.10). The sponsor conversation is about SSO, not the average.

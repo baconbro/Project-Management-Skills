@@ -49,7 +49,11 @@ threats land.
 ## 3. Decision trees — the one place signs are applied
 When a decision branches into uncertain outcomes, draw a tree and fold back the EMV of each
 branch. Here costs are written as negative and benefits as positive so that one tree can mix
-them; the sign belongs to the tree, never to the register. Helios had to decide how to deliver
+them; the sign belongs to the tree, never to the register. As in `risk-register`, the register
+stores every impact as a positive magnitude with `type` = threat or opportunity, and a negative
+sign is used only for EMV arithmetic in decision trees like this one; `risk_score.py` prints
+magnitudes and adds a `signed_emv` field (negative for threats) to its JSON and CSV output.
+Helios had to decide how to deliver
 the identity / SSO integration (work package 1.3.1):
 
 ```
@@ -146,6 +150,7 @@ At each review compare the contingency still unspent with the residual threat ex
 open. Retire risks whose window has passed and re-run the simulation on what remains. When the
 remaining reserve falls below the exposure at the agreed confidence, escalate before it runs out,
 not after. Helios at the end of month 3: R001 has occurred (issue I001 in the `project-delivery`
-issue log), the forecast at completion is about $535,000 (VAC about -$35,000) and the overrun is
-about to consume the $40,000 contingency, so the escalation path in the plan has been used and
-the decision sits with the steering committee.
+issue log) and the forecast at completion is about $535,000 (VAC about -$35,000). Because BAC
+already contains the $40,000 contingency, a forecast above BAC has already used all of it and
+runs past the $25,000 management reserve by about $10,000, so the escalation path in the plan has been used
+and the decision sits with the steering committee.

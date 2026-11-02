@@ -175,8 +175,9 @@ which `cost-management` will measure performance (control accounts).
 - Unfamiliar term? See the PM glossary in the `senior-pm` skill.
 
 ## Related skills
-- `project-planning` — the planning phase that commissions the WBS as its first step and
-  baselines it together with the schedule and budget.
+- `project-planning` — the planning phase that commissions the WBS at its step 3, after the
+  assumptions log and the scope statement from `scope-and-requirements`, and baselines it
+  together with the schedule and budget.
 - `quality-management` — supplies the acceptance criteria recorded per work package in the
   dictionary, making each "done" verifiable.
 - `project-schedule` — sequences the work packages by their WBS ids into the network and

@@ -107,7 +107,9 @@ $500,000, six months, run hybrid.
    baseline, in the scope list of `assets/rebaseline-template.md`). Log each failed
    criterion as an issue, each condition as a dated action, each new need as a change request.
    A passed test is not acceptance; silence is not acceptance. Helios: Ava Chen accepted the
-   sprint S4 increment on condition of two contrast fixes, logged as ACT005. *Done: every
+   sprint S4 increment on condition of two contrast fixes, logged as ACT005; audit QA-03 in
+   `quality-management` then recorded that as a lapse, since stories failing the definition of
+   done are returned as not done, not accepted with conditions. *Done: every
    finished deliverable has an acceptance-log entry and its conditions and defects are owned
    log items, the evidence `project-closure` relies on for final acceptance.*
 5. **Run the issue log.** Triage new items daily; review the whole log weekly. Each item has a

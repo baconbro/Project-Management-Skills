@@ -23,7 +23,7 @@ for the auth service. The ten Helios work packages sum to **$460,000**. Aggregat
 ## 2. Size the reserves — then add only one of them to the baseline
 | Reserve | Covers | Sits | Controlled by | Sized from | Helios |
 |---------|--------|------|---------------|------------|--------|
-| **Contingency** | Identified ("known-unknown") risks | *Inside* the cost baseline — inside BAC | Project manager (Sam Lee) | Summed post-response EMV or a simulation of the register (`risk-management`, `risk-register`) | $40,000 |
+| **Contingency** | Identified ("known-unknown") risks | *Inside* the cost baseline — inside BAC | Project manager (Sam Lee) | A simulation of the residual (post-response) register, read at the confidence the sponsor accepts (`risk-management`, `risk-register`) | $40,000 — about P50; the sponsor accepted the gap to P80 ($99,000), and summed residual threat EMV ($52,300) is the mean, not the reserve |
 | **Management** | Unidentified ("unknown-unknown") risks | *Above* the baseline, in the total budget — **not** in BAC | Sponsor (Dana Okoro) | Policy % of the baseline | $25,000 |
 
 ```

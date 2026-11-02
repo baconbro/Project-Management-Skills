@@ -90,6 +90,10 @@ See `procurement-management`. The vendor's sandbox is an external dependency of 
   bi-weekly steering committee and team risks at sprint planning — see `risk-management`.
 - Register R001–R006: five threats and one opportunity; threat EMV $94,300 inherent, $52,300
   after planned responses — see `risk-register`.
+- Contingency $40,000: about P50 of a 10,000-trial simulation of the residual register (P80
+  $99,000; the $52,300 residual EMV is the mean). Funding P80 would have lifted BAC above the
+  charter ceiling, so Dana Okoro accepted the gap; if R001's trigger fires, Sam Lee escalates to
+  the steering committee within 2 working days — see `risk-management`.
 - Top risks: R001 identity-provider integration slips (0.4 × $120,000, Sam Lee); R002
   undocumented requirements expand scope (0.6 × $40,000, Dana Okoro); R006 opportunity:
   knowledge base deflects tickets earlier than planned (0.3 × $60,000, Priya Nair).

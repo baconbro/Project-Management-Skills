@@ -81,7 +81,9 @@ If the purpose is only to share information, none of these is needed: send a wri
   the backlog; show done items only, on working software.
 - **This skill adds:** inviting the right stakeholders, holding the timebox, and capturing
   feedback as backlog items and actions. Helios: at the sprint S4 review on 2026-07-03, Ava Chen
-  accepted the increment with conditions, which became action AI006 (issue-log ACT005).
+  accepted the increment with conditions, which became action AI006 (issue-log ACT005); process
+  audit QA-03 (`quality-management`) later logged that as a lapse, because two stories failing
+  the definition of done should have been returned as not done.
 
 ## Change control board
 - **Purpose:** decide change requests above the PM's tolerance within the remaining contingency;
@@ -115,7 +117,7 @@ If the purpose is only to share information, none of these is needed: send a wri
 ## The Helios meeting calendar
 | Meeting | When | Owner or chair | Feeds |
 | --- | --- | --- | --- |
-| Daily stand-up | Daily, 15 min | Ava Chen with the team | Blockers to Sam Lee the same day; new issue-log items |
+| Daily stand-up | Daily, 15 min | The delivery team runs it; Sam Lee facilitates | Blockers to Sam Lee the same day; new issue-log items |
 | Vendor working session | Weekly | Ben Adeyemi with IdentityCo | Vendor actions in the issue log |
 | Weekly control review | Thursday | Sam Lee | The Friday status report; the "for steering" list |
 | Sprint review and retrospective | Every second Friday | Ava Chen | Accepted increment; backlog items; lessons |

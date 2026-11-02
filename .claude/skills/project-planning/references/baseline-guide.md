@@ -15,7 +15,7 @@ portal used throughout this catalog).
 ## The three baselines and the reserves
 | Baseline | Contents | Produced by |
 |---|---|---|
-| Scope | Scope statement, WBS and WBS dictionary | `scope-and-requirements`, `work-breakdown-structure` |
+| Scope | Scope statement, WBS and WBS dictionary | `scope-and-requirements` (scope statement and requirements traceability matrix); `work-breakdown-structure` (WBS and WBS dictionary) |
 | Schedule | The resource-leveled schedule: dates, critical path, milestones | `project-schedule`, `resource-management` |
 | Cost | Time-phased work-package costs + contingency reserve = BAC | `cost-management` |
 

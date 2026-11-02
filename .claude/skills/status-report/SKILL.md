@@ -61,8 +61,8 @@ $500,000 BAC (`assets/status-report-sample.md`).
   report is the highlight report between gates, and a tolerance forecast to be breached is
   escalated at once through `project-communication`'s ladder, not held for the next report.
 - **Agile:** report after each sprint review: sprint goal met or not, increment accepted or not,
-  velocity as a range, and the release forecast against the sprints left and the cut line from
-  `agile-delivery`; cost as spend to date plus cost per sprint times the sprints still needed;
+  the velocity range, the burnup, and the release outlook against the sprints left and the cut
+  line from `agile-delivery`; cost as spend to date plus cost per sprint times the sprints still needed;
   scope from backlog changes and the cut line; quality from the definition of done.
 - **Hybrid (Helios):** the governance layer carries the RAG, milestones M1, M4 and M6, and EVM on
   the baselined work packages; sprint metrics sit underneath as evidence for the schedule and
