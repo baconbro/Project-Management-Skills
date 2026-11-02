@@ -1,0 +1,4 @@
+id,story,acceptance_criteria,points,priority,status,sprint,wbs_id
+<ID-001>,"As a <type of user>, I want <capability> so that <benefit>","Given <context>, when <action>, then <observable result>",<1|2|3|5|8|13>,<Must|Should|Could|Won't>,<new|refined|ready|in progress|done>,<sprint name once planned>,<WBS work package id>
+<ID-002>,"As a <type of user>, I want <capability> so that <benefit>","Given <context>, when <action>, then <observable result>. Given <unhappy-path context>, when <action>, then <error handling>",<points>,<priority>,<status>,<sprint>,<WBS id>
+<ID-003>,"Spike: <question the team must answer before it can size or build a story>","<what the spike must produce, e.g. a decision or a prototype>, timeboxed to <n> days",<points or blank>,<priority>,<status>,<sprint>,<WBS id>

@@ -1,0 +1,2 @@
+id,task,unit,technique,optimistic,most_likely,pessimistic,assumptions,estimators,actual
+<WBS id e.g. 1.3.1>,<work package name>,<one unit for the whole file e.g. person-days or weeks or USD>,<three-point or planning poker or wideband Delphi or analogous or parametric>,<O best case>,<M most likely>,<P worst case>,<key assumptions and exclusions behind O M P>,<who estimated e.g. tech lead + engineer>,<actual once known for calibration>

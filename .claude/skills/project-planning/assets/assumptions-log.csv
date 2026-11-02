@@ -1,0 +1,4 @@
+id,type,statement,owner,validated_by,status
+<A1>,assumption,<what the plan takes as true without proof yet - one testable statement>,<person who confirms it>,<date or milestone by which it is confirmed>,open
+<A2>,assumption,<next assumption from the charter or an estimate>,<person who confirms it>,<date or milestone by which it is confirmed>,open
+<CON-1>,constraint,<fixed limit the plan must honour - time or cost or resources or technology or compliance>,<person who owns the limit>,<date or milestone by which the plan is checked against it>,open

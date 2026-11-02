@@ -1,0 +1,12 @@
+id,item_type,source_ref,description,current_owner,disposition,receiving_owner,receiver_agreed,due,status,evidence
+<C01>,deliverable-condition,<deliverable id or acceptance-record condition id>,<condition attached to an acceptance decision>,<name>,<closed / transferred / accepted-residual / cancelled>,"<name, or blank when closed>","<YYYY-MM-DD the receiver agreed, or blank>",<YYYY-MM-DD>,<open / done>,<evidence or link>
+<C02>,defect,<defect id or list>,<open defect and severity>,<name>,<disposition>,<backlog owner>,<YYYY-MM-DD>,<YYYY-MM-DD>,<open / done>,<evidence>
+<C03>,issue,<issue id>,<open issue>,<name>,<disposition>,<name>,<YYYY-MM-DD>,<YYYY-MM-DD>,<open / done>,<evidence>
+<C04>,action,<action id>,<open action>,<name>,<disposition>,<name>,<YYYY-MM-DD>,<YYYY-MM-DD>,<open / done>,<evidence>
+<C05>,risk,<risk id>,<risk still open in the register>,<name>,<closed / transferred / accepted-residual>,<name>,<YYYY-MM-DD>,<YYYY-MM-DD>,<open / done>,<evidence>
+<C06>,change-request,<CR id>,<change request not yet decided or not yet implemented>,<name>,<transferred / cancelled>,<named decider or backlog owner>,<YYYY-MM-DD>,<YYYY-MM-DD>,<open / done>,<change log reference>
+<C07>,requirement,<requirement id>,<requirement not built>,<name>,<transferred / cancelled>,<product owner>,<YYYY-MM-DD>,<YYYY-MM-DD>,<open / done>,<traceability row set to deferred>
+<C08>,contract,<vendor or contract id>,<contract and its value>,<contract owner>,<closed / transferred>,<operational owner if it continues>,<YYYY-MM-DD>,<YYYY-MM-DD>,<open / done>,<closure result from procurement-management>
+<C09>,access,<system or account group>,<project access to revoke or transfer>,<name>,<closed / transferred>,<name>,<YYYY-MM-DD>,<YYYY-MM-DD>,<open / done>,<access review reference>
+<C10>,finance,<cost code or purchase order>,"<commitment, accrual or cost code to close>",<name>,<closed>,,,<YYYY-MM-DD>,<open / done>,<Finance confirmation>
+<C11>,document,<record set>,<records to archive>,<name>,<transferred>,<archive owner>,<YYYY-MM-DD>,<YYYY-MM-DD>,<open / done>,<archive location and retention period>

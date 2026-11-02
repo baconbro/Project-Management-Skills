@@ -1,0 +1,2 @@
+id,action,owner,source_meeting,raised_on,due,status,notes,log_ref
+<AI001>,<verb-first action that makes sense to someone who was not in the room>,<one named person - not a team>,<meeting name YYYY-MM-DD>,<YYYY-MM-DD captured>,<YYYY-MM-DD do by>,<Open / In progress / Blocked / Closed>,<what blocks it and its id - or how it closed: done or cancelled and why>,<issue-log id once merged - e.g. ACT007 - blank until then - local if the project keeps no issue log>

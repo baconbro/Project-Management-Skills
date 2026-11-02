@@ -1,0 +1,11 @@
+task,pv,ev,ac,bac
+Project management,25000,25000,24000,50000
+Discovery & design,75000,75000,70000,75000
+Identity / SSO integration,60000,45000,65000,78750
+Self-service UI,50000,47500,49000,67500
+Knowledge base,30000,33000,30000,45000
+Reporting & analytics,15000,10000,14000,33750
+System & UAT testing,0,0,0,70000
+Hardening & launch,0,0,0,30000
+Training & communications,0,0,0,25000
+Operational handover,0,0,0,25000

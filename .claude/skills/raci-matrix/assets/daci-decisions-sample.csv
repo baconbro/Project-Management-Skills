@@ -1,0 +1,5 @@
+Decision,Sponsor,Project manager,Product owner,Tech lead,Security lead,Head of Support Ops
+Go/no-go: MVP live to pilot (M4),A,D,C,C,C,I
+Go/no-go: general availability (M6),A,D,C,C,C,C
+SSO session-timeout policy,,I,C,D,A,
+Knowledge-base articles for launch,,I,D,C,,A
