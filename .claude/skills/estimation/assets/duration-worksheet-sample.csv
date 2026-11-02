@@ -1,7 +1,7 @@
 id,task,unit,technique,optimistic,most_likely,pessimistic,assumptions,estimators,actual
 A,Requirements & user research,weeks,three-point,2,3,5,Sample Helios project: durations in elapsed weeks for the project-schedule network; most-likely equals the baseline duration,Sam Lee + Ava Chen,
 B,UX design & prototype,weeks,three-point,1.5,2,3.5,Two usability rounds; starts after A; ends at M1 Discovery complete (2026-05-08),Elena Rossi,
-C,Identity / SSO integration,weeks,three-point,7,9,14,Vendor sandbox by week 6 (risk R001); SSO working in test after 8 weeks (2026-07-03) then a week of pilot readiness; 1 week of float in the baseline,Ben Adeyemi + Carla Diaz,
+C,Identity / SSO integration,weeks,three-point,7,9,14,Vendor sandbox by week 6 (risk R001); SSO working in test after 8 weeks (2026-07-03) then a week of SSO release readiness (built and tested but flagged off for the pilot); 1 week of float in the baseline,Ben Adeyemi + Carla Diaz,
 D,Self-service UI,weeks,three-point,8,10,14,On the critical path; built in sprints S1 to S5 by two engineers,Devin Patel,
 E,Knowledge base,weeks,three-point,7,9,12,1 week of float in the baseline; 150 articles migrated by Support Operations,Carla Diaz,
 F,Reporting & analytics,weeks,three-point,7,9,12,Built alongside D from the design (deflection dashboard in S5); 1 week of float,Carla Diaz,

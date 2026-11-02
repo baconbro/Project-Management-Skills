@@ -84,8 +84,8 @@ acceptance nobody will define cannot be given, and the project cannot close clea
 - **Criteria source:** the scope statement (order 1), with acceptors named per deliverable;
   UAT and test thresholds from the definition of done.
 - **During delivery:** Ava Chen accepted increments at each sprint review. The named
-  acceptors signed most deliverables in the scope statement's acceptance log at the M4 pilot
-  go/no-go; D7 Reporting & analytics was accepted by Priya Nair at M5 once a closed month of
+  acceptors signed D2 and D3 at M1 and D5, D6 and D8 at the M4 pilot go/no-go (the scope
+  statement's acceptance log); D7 Reporting & analytics was accepted by Priya Nair at M5 once a closed month of
   pilot data reconciled, D10 Training & communications by Priya Nair at the M6 go/no-go, D9
   Hardening & launch by Marcus Webb after the GA readiness reviews and the cutover, and D4
   Identity / SSO integration by Marcus Webb after the first production SSO sign-ins at GA on

@@ -121,10 +121,10 @@ budget at completion (BAC) that holds a $40,000 contingency reserve.
    impact exceeds it, and never reduce it by opportunity EMV. Proactive response costs belong
    in the work-package estimates; contingent-plan costs come out of contingency. Set the
    management reserve by policy. If the sponsor funds less than the analysis supports, record
-   the gap and a pre-agreed decision path in the plan. Helios: residual mean $52,300, P50
-   $40,000, P80 $99,000; funding P80 would have lifted BAC above the $500,000 the business case
-   appraised, so Dana Okoro approved $40,000 (about 52% coverage) with an escalation path
-   for R001, plus a $25,000 management reserve. *Done: the contingency, its confidence level
+   the gap and a pre-agreed decision path in the plan. Helios: summed residual EMV $52,300
+   (simulated mean $52,030), P50 $40,000, P80 $99,000; funding P80 would have lifted BAC above
+   the $500,000 the business case appraised, so Dana Okoro approved $40,000 (about 52%
+   coverage) with an escalation path for R001, plus a $25,000 management reserve. *Done: the contingency, its confidence level
    and any accepted gap are signed by the sponsor in the risk management plan.*
 7. **Implement responses: build them into the plan, schedule and budget.** Turn every
    proactive action into a scheduled activity with an owner, effort and cost (re-run the

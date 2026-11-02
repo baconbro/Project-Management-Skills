@@ -80,9 +80,10 @@ earning rule agreed for that package.
    **S-curve**. *Done: BAC and an S-curve that ends at it, every package inside its window.*
 4. **Fix the earning rule per work package.** Agree how EV is measured before tracking starts:
    0/100 for short packages, 50/50 for ones that straddle a period end, weighted milestones or
-   physical percent complete for long ones, apportioned effort or level of effort only where
-   unavoidable. See the table in `references/earned-value.md`. *Done: an earning rule recorded
-   per work package so EV is a measurement, not a judgement call.*
+   physical percent complete for long ones, accepted story points for packages built in sprints
+   (Helios 1.3.1–1.3.4), apportioned effort or level of effort only where unavoidable. See the
+   table in `references/earned-value.md`. *Done: an earning rule recorded per work package so
+   EV is a measurement, not a judgement call.*
 5. **Baseline and commit.** Get the sponsor to approve the baseline and the earning rules; it is
    now the line you measure against. *Done: baseline approved and frozen — changes only via
    `change-management`.*

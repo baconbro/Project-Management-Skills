@@ -111,7 +111,7 @@ and recurrence, the same root cause showing up in a later project's log.
 | LL004 | Shared QA environment with stale data | B, then C | Issue I003; PMO test-strategy checklist | in-progress |
 | LL005 | Stand-ups ran over 30 minutes | A | Sprint S3 backlog; team working agreement | verified at the S3 retrospective |
 | LL006 | Out-of-scope list settled late requests | C | Charter template (required element) | verified: already required |
-| LL007 | Agent training planned to finish on launch day | C | PMO standard plan template | in-progress |
+| LL007 | Agent training had no catch-up session for absentees | C | PMO standard plan template | in-progress |
 
 At closure the log went to `project-closure`: the post-project review on 2026-11-04 confirmed
 LL001-LL007 and the top five went into section 8 of the closure report. Every lesson not yet

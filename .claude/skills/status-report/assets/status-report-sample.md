@@ -38,7 +38,7 @@ partner logins (CR002).
 ## RAG by dimension
 | Dimension | RAG (prev → now, trend) | Evidence: measure vs threshold | Forecast | Owner | Action / decision (due) |
 | --- | --- | --- | --- | --- | --- |
-| Schedule | AMBER → AMBER, → steady | SPI 0.92 (0.85–0.95 band); SPI(t) 0.93, SV(t) −0.9 weeks; M4 and M6 slips inside the 2-week tolerance | M4 2026-08-14 and M6 2026-10-10 (+1 week each: task C slips 1 week past its float, and the plan holds no schedule reserve before GA); the pessimistic release forecast also ends 2026-10-09 | Sam Lee | DEC002 at steering (2026-07-14); SSO working in test (2026-07-17) |
+| Schedule | AMBER → AMBER, → steady | SPI 0.92 (0.85–0.95 band); SPI(t) 0.93, SV(t) −0.8 weeks; M4 and M6 slips inside the 2-week tolerance | M4 2026-08-14 and M6 2026-10-10 (+1 week each: task C slips 1 week past its float, and the plan holds no schedule reserve before GA); the pessimistic release forecast also ends 2026-10-09 | Sam Lee | DEC002 at steering (2026-07-14); SSO working in test (2026-07-17) |
 | Cost | AMBER → AMBER, → steady | CPI 0.93 (0.85–0.95 band); EAC above BAC ($500,000) and above BAC + management reserve ($525,000), inside the $550,000 tolerance; TCPI(BAC) 1.07 vs CPI 0.93: landing on BAC is not credible | EAC $535,032 (BAC / CPI); range $516,500 (one-off) to $558,468 (composite) | Sam Lee | Funding of the overrun decided in DEC002 (2026-07-14); Finance flagged on 2026-06-30 |
 | Scope | AMBER → AMBER, ↓ worsening | Pending CRs: 1 (CR002), $18,000, 10 days, MEDIUM, decided by the CCB on 2026-07-14; plus the $20,000 crash option for steering; $38,000 asked against $28,000 contingency undrawn | Release cut line holds on the likely forecast; 17 points fall below it on the pessimistic one | Ava Chen | Priority set at steering, then CR002 at the CCB (2026-07-14) |
 | Quality | GREEN → AMBER, ↓ worsening | Something the M4 gate depends on is overdue: stale QA data (I003, due 2026-07-08) makes test results unreliable; real-provider journey tests (ACT003) still blocked until SSO works in test. I002 (order-status page 3 s vs 2 s criterion) and ACT005 (two colour-contrast conditions of the S4 acceptance) due 2026-07-17. No gate failed | M4 go/no-go evidence complete only if SSO works in test by 2026-07-17 | Frank Müller | QA data refreshed (new date 2026-07-14); ACT003 run within 2 working days of SSO working in test (2026-07-21) |
@@ -47,8 +47,9 @@ partner logins (CR002).
 - 1.3.1 Identity / SSO integration — CPI 0.69, SPI 0.75 (EV $45,000, PV $60,000, AC $65,000) —
   owner Ben Adeyemi — IdentityCo recovery plan: sandbox restored 2026-07-06 (met), SSO working in
   test 2026-07-17; $880 delay credit claimed; milestone payment held until acceptance.
-- 1.3.4 Reporting & analytics — CPI 0.71, SPI 0.67, waiting on self-service UI data — owner
-  Carla Diaz — the deflection dashboard v1 is the sprint S5 goal (review 2026-07-17).
+- 1.3.4 Reporting & analytics — CPI 0.71, SPI 0.67 on a small budget (8 of the 12 points
+  planned by sprint S4 accepted) — owner Carla Diaz — the deflection dashboard v1 is the sprint
+  S5 goal (review 2026-07-17).
 
 **Budget:** BAC $500,000 · AC to date $252,000 (50.4% of BAC) · EV $235,500 (47.1% complete) ·
 EAC $535,032 (BAC / CPI) · VAC −$35,032 (−7.0%) · TCPI(BAC) 1.07 vs CPI 0.93 · contingency

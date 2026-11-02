@@ -104,10 +104,10 @@ catalog): six risks — five threats and one opportunity — scored against its 
    It reports mean, P50/P80/P90/P95, a histogram and P(total > reserve); add
    `impact_min`/`impact_max` columns to any threat whose impact is a range (triangular draw).
    Hand the P80 — or the confidence level the sponsor accepts — to `cost-management` as the
-   contingency reserve. For Helios: residual mean $52,300, P50 $40,000, P80 $99,000; the
-   sponsor funded $40,000 (about P50, covering 52% of trials) and accepted the gap, recorded
-   in the `risk-management` plan. *Done: the reserve is justified by a confidence level, not by
-   summed EMV.*
+   contingency reserve. For Helios: summed residual EMV $52,300 (simulated mean $52,030), P50
+   $40,000, P80 $99,000; the sponsor funded $40,000 (about P50, covering 52% of trials) and
+   accepted the gap, recorded in the `risk-management` plan. *Done: the reserve is justified by
+   a confidence level, not by summed EMV.*
 7. **Check the register before each review** with `scripts/risk_score.py --check`: it exits 1
    and lists every HIGH/MEDIUM risk with no owner, response or trigger, duplicate ids,
    probabilities of 0 or 100%, and threats whose residual exposure exceeds the inherent one.

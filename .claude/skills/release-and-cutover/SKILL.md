@@ -9,7 +9,7 @@ metadata:
   version: 1.0.0
   category: artifact
   phase: delivery
-  related: [project-delivery, project-closure, quality-management, project-communication, change-management, risk-register]
+  related: [project-delivery, project-closure, quality-management, project-communication, change-management, risk-register, project-planning]
 license: MIT
 ---
 
@@ -177,7 +177,7 @@ without one there is nobody to hand over to, and hypercare never ends.
 - Debating a rollback on the bridge at 03:00 because the triggers were never quantified.
 - Runbook steps such as "deploy the app — IT" with no named owner, duration or verification.
 - Big-bang by default on a change with a large blast radius when a reversible option existed.
-- Leaving training and service-desk readiness to the last week (lesson LL007 in `lessons-learned`).
+- Training in one wave with no catch-up for absentees before the go/no-go (lesson LL007 in `lessons-learned`).
 - A Friday-evening go-live with nobody on hand on Monday morning.
 - Hypercare that ends on a date regardless of incidents, or never ends because nobody owns exit.
 - Switching off the old process irreversibly before hypercare exit, or before a week of stable
@@ -217,3 +217,5 @@ without one there is nobody to hand over to, and hypercare never ends.
   runs adoption and reinforcement alongside hypercare, including retiring the old way.
 - `risk-register` — holds the cutover and waiver risks; its open HIGH risks and `--check` result
   are reviewed at every go/no-go.
+- `project-planning` — plans the release strategy, rehearsals and hypercare into the baseline;
+  this skill runs them.

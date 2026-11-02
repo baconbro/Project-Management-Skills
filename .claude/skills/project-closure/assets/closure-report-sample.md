@@ -115,7 +115,7 @@ review; full log: the lessons log in `lessons-learned` (LL001-LL007).
 |---|---|---|---|
 | LL001 | Give vendor onboarding a named owner from the day of award; the late sandbox request delayed SSO | PMO Lead | PMO standard plan template: vendor onboarding workstream |
 | LL002 | Tell the sponsor about a RED work package the same day, and name the milestone any amber line threatens | Sam Lee | PMO status-report standard |
-| LL007 | Finish support-agent training one week before launch | Priya Nair | PMO standard plan template |
+| LL007 | Plan a catch-up training session for absentees before the go/no-go | Priya Nair | PMO standard plan template |
 | LL006 | Repeat: an explicit out-of-scope list prevented late scope disputes | Sam Lee | Charter template (required element) |
 | LL003 | Repeat: the reusable API design cut build time | Ben Adeyemi | Engineering standards library |
 

@@ -41,9 +41,9 @@ can support a strong one but never replace it.
   - an approved change touches an audience, or a proposed one would (a smaller pilot cohort
     changes who is invited and what they are told);
   - a measure misses its target twice in a row;
-  - a release approaches (about four weeks before go-live, add the release rows and hand the
-    timed cutover-day steps to `release-and-cutover`) or closure approaches (add the closure
-    notice).
+  - a release approaches (no later than six weeks (T-6) before go-live, add the release rows
+    and hand the timed cutover-day steps to `release-and-cutover`) or closure approaches (add
+    the closure notice).
 
 ## Diagnosing a message that is not landing
 
@@ -82,9 +82,11 @@ can support a strong one but never replace it.
   steering.
 - **Monthly sample (2026-07-03):** agents' pulse up to 58% (partly landing); six pilot customers
   joined the usability test.
-- **M4 review (2026-08-11):** pilot problems arrived as support tickets rather than through the feedback
-  button, so pilot-tagged tickets joined the feedback channel; Marketing's GA row started.
-- **Trigger (2026-09-04):** four weeks before the 2026-10-03 cutover, the GA release row (C18) was
-  added with Priya Nair as owner, and its timed steps went into the `release-and-cutover` runbook.
+- **M4 review (2026-08-11):** pilot problems arrived as support tickets rather than through the
+  feedback button, so pilot-tagged tickets joined the feedback channel; Marketing's GA row
+  started.
+- **Trigger (2026-08-21):** six weeks (T-6) before the 2026-10-03 cutover, the GA release row
+  (C18) was added with Priya Nair as owner, and its timed steps went into the
+  `release-and-cutover` runbook.
 
 `assets/communication-plan-sample.csv` shows the plan at version 1.5, after these changes.

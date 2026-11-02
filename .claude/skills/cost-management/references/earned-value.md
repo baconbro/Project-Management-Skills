@@ -17,8 +17,9 @@ portal used throughout this catalog) at the end of month 3: the rows of
 
 **BAC** (budget at completion) is the total of the cost baseline — work-package costs plus the
 contingency reserve — and the top of the S-curve. Management reserve sits above the baseline and
-is **not** in BAC; releasing it moves money into the baseline through change control and re-sets
-BAC. Record PV, EV and AC cumulative-to-date, not as this period's increment: the indices and
+is **not** in BAC. The sponsor releases it through change control: a release for unplanned
+in-scope work raises BAC; funding an overrun from it does not, so CV and CPI stay measured
+against the original BAC. Record PV, EV and AC cumulative-to-date, not as this period's increment: the indices and
 every forecast formula below only hold for cumulative figures.
 
 ## Earning rules (agree one per work package before tracking starts)
@@ -26,14 +27,17 @@ every forecast formula below only hold for cumulative figures.
 |------|-------------------|---------|
 | **0/100** | 100% only when the package is complete | short packages (one or two periods) — Helios 1.5.2 Operational handover |
 | **50/50** (or 25/75) | half at start, the rest at completion | short packages that straddle a period end — Helios 1.5.1 Training & communications |
-| **Weighted milestones** | a fixed % at each verifiable milestone | long packages with interim deliverables — Helios 1.3.1 Identity / SSO integration: sandbox connected 30%, SSO working in test 70%, production cut-over 100% |
+| **Weighted milestones** | a fixed % at each verifiable milestone | long packages with interim deliverables that are not built in sprints, e.g. a fixed-scope vendor installation |
+| **Accepted story points** | accepted points ÷ points planned for the package × package BAC | agile build packages — Helios 1.3.1–1.3.4, sprint by sprint (`agile-delivery`) |
 | **Physical % complete** | objectively counted output (screens built, test cases passed) | packages with countable units — Helios 1.4.1 System & UAT testing by test cases passed |
 | **Apportioned effort** | in proportion to a related discrete package | QA or review effort tied to a build package |
 | **Level of effort (LOE)** | EV = PV every period | management and support work only — Helios 1.1 Project management; never for deliverables (LOE can never show a schedule variance) |
 
 Pick the rule when the baseline is set and record it next to the work package. A subjective
 "percent complete" is the most common way EVM is gamed; the rule makes EV a measurement, not an
-opinion.
+opinion. A supplier's payment schedule is a contract term, not the earning rule: IdentityCo is
+paid at sandbox connected, SSO working in test and production cut-over (`procurement-management`),
+but 1.3.1 earns by accepted story points like the other build packages.
 
 ## Variances (zero = on plan; negative = bad)
 ```

@@ -111,6 +111,7 @@ liability terms for loss that matters.
 
 **Helios contract.** Firm fixed price $22,000 for IdentityCo's services, paid 30% when the
 sandbox is connected, 40% when SSO works in test and 30% at production cut-over, of which 10%
-is retained until the 4-week warranty ends. These mirror the weighted-milestone earning rule
-for 1.3.1 in `cost-management`. Add a $6,000 customer-login subscription for M2-M6 at the
-existing tier ($1,200 a month), giving $28,000 committed within the 1.3.1 budget.
+is retained until the 4-week warranty ends. These are payment terms, not the earning rule:
+`cost-management` earns 1.3.1 by accepted story points like the other build packages. Add a
+$6,000 customer-login subscription for M2-M6 at the existing tier ($1,200 a month), giving
+$28,000 committed within the 1.3.1 budget.

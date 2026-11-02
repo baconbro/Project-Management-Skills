@@ -62,11 +62,13 @@ Use the row when your governance asks for a risk colour.
 - **Helios, end of month 3** (`.claude/skills/cost-management/assets/evm-history-sample.csv`):
   cumulative PV is $161,666 at M2 and $255,000 at M3; EV is $235,500. ES = 2 + (235,500 −
   161,666) / (255,000 − 161,666) = **2.79 months**, SPI(t) = 2.79 / 3 = **0.93**, SV(t) =
-  **−0.9 weeks** (−0.21 months). That agrees with the schedule logic: "SSO working in test", an
-  interim milestone inside Identity / SSO integration (task C, baseline 2026-07-03), is forecast
-  2 weeks late, so C finishes 2026-07-24, one week past its late finish of 2026-07-17 (1 week of
-  float). M4 is therefore forecast 1 week late, and so is M6, because the plan holds no schedule
-  reserve before GA. Helios is 47% complete, so SPI still carries information.
+  −0.21 months, or **−0.8 weeks** on the period calendar (month 3 is weeks 10–13, so ES = 9 +
+  0.791 × 4 = 12.16 weeks against 13 elapsed). That agrees with the schedule logic: "SSO working
+  in test", an interim milestone inside Identity / SSO integration (task C, baseline
+  2026-07-03), is forecast 2 weeks late, so C finishes 2026-07-24, one week past its late finish
+  of 2026-07-17 (1 week of float). M4 is therefore forecast 1 week late, and so is M6, because
+  the plan holds no schedule reserve before GA. Helios is 47% complete, so SPI still carries
+  information.
 
 ## 5. Cost: rate the forecast, not just the index
 - **Pick the EAC formula that matches the cause** (`.claude/skills/cost-management/references/earned-value.md`):

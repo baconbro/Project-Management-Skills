@@ -122,12 +122,12 @@ assigned (for the capacity check in `resource-management`).
    python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --unit weeks --simulate 10000 --seed 42 --target 26
    ```
    Each trial draws every task from its PERT-Beta (`--dist triangular` for a triangular)
-   distribution and recomputes the critical path. Helios: P50 ≈ 26.9, P80 ≈ 28.2, P90 ≈ 29.0
+   distribution and recomputes the critical path. Helios: P50 ≈ 26.9, P80 ≈ 28.25, P90 ≈ 29.0
    weeks; only 10% of futures finish within the deterministic 25 and 27% by week 26, the
    cutover week. The criticality index (CI%) shows A, B, G and J critical in every trial, H
    in 90%, D in 52%, C in 25%, E 12%, F 11% and I 10%: four parallel build tasks of similar
    length take turns driving the finish (merge bias), so the deterministic date is
-   optimistic. Reserve at P80 ≈ 28.2 − 25 ≈ 3.2 weeks, held once and visibly, not spread
+   optimistic. Reserve at P80 ≈ 28.25 − 25 ≈ 3.25 weeks, held once and visibly, not spread
    into tasks. Helios has no room for it before GA: the sponsor accepted the 27% at baseline,
    with the 2-week M6 tolerance (to 2026-10-17) covering about P75 and a crash of H ready.
    *Done: commit level, reserve or accepted risk, and watch-list are written down.*

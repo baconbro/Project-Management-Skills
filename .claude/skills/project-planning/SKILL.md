@@ -9,7 +9,7 @@ metadata:
   version: 1.1.0
   category: phase
   phase: planning
-  related: [senior-pm, project-initiation, project-charter, work-breakdown-structure, project-schedule, estimation, cost-management, risk-management, quality-management, raci-matrix, project-delivery, project-communication, stakeholder-management, change-management, risk-register, agile-delivery, scope-and-requirements, procurement-management, resource-management]
+  related: [senior-pm, project-initiation, project-charter, work-breakdown-structure, project-schedule, estimation, cost-management, risk-management, quality-management, raci-matrix, project-delivery, project-communication, stakeholder-management, change-management, risk-register, agile-delivery, scope-and-requirements, procurement-management, resource-management, release-and-cutover]
 license: MIT
 ---
 
@@ -233,3 +233,4 @@ before step 12. `references/planning-sequence.md` maps each step's inputs, outpu
 - `scope-and-requirements` — the scope statement and traceability matrix the WBS is built from (step 2).
 - `procurement-management` — make-or-buy decisions, vendor prices, contract types and lead times (step 4).
 - `resource-management` — capacity per person and week, leveling, and the capacity gate (step 6).
+- `release-and-cutover` — the release strategy, rehearsals, cutover and hypercare that step 8 puts into the WBS, schedule and cost baseline.

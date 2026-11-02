@@ -245,6 +245,10 @@ uses. Without it the linter falls back to a minimal parser and says so.
   path must exist in that skill, and an unqualified path in a skill's own Markdown must exist
   in that skill. Files that SKILL.md never mentions are flagged.
 - This README's skill count and catalog table match the frontmatter (tier and phase per skill).
+- Every CSV under `assets/` is UTF-8 and has as many cells on every row as its header, which
+  catches an unquoted comma inside a cell.
+- The skill descriptions stay inside Claude Code's skill-listing budget (a warning above 350
+  characters per skill or 8,000 for the catalog).
 - Every script's `--help` runs.
 
 **The test harness** runs each script in these ways and checks the result:

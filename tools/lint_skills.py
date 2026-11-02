@@ -35,6 +35,8 @@ Checks per skill (.claude/skills/<name>/SKILL.md):
  10. The README catalog matches the frontmatter: the "**N Agent Skills**" count, and one
      table row per skill whose tier (0 orchestrator, 1 phase, 2 discipline, 3 artifact)
      and phase agree with metadata.category and metadata.phase.
+ 11. Every CSV under assets/ is UTF-8 and has the same number of cells on every row as its
+     header (catches an unquoted comma inside a cell).
 
 Usage:
     python tools/lint_skills.py            # lint .claude/skills relative to cwd
@@ -46,6 +48,7 @@ Install PyYAML (python -m pip install pyyaml) for the strict frontmatter parsing
 from __future__ import annotations
 
 import argparse
+import csv
 import os
 import re
 import subprocess
@@ -392,6 +395,32 @@ def lint(skills_dir: str, run_scripts: bool = True):
     if total_desc > CATALOG_DESC_BUDGET:
         warnings.append(f"[catalog] descriptions total {total_desc} chars (> {CATALOG_DESC_BUDGET}); Claude Code "
                         "may drop some from the skill listing")
+
+    # 11. every CSV under assets/ parses with the same number of cells on every row (an
+    # unquoted comma inside a cell silently shifts every later column)
+    for name in skills:
+        assets_dir = os.path.join(skills_dir, name, "assets")
+        if not os.path.isdir(assets_dir):
+            continue
+        for fname in sorted(os.listdir(assets_dir)):
+            if not fname.endswith(".csv"):
+                continue
+            path = os.path.join(assets_dir, fname)
+            try:
+                with open(path, encoding="utf-8-sig", newline="") as fh:
+                    rows = [r for r in csv.reader(fh) if r]
+            except (UnicodeDecodeError, csv.Error) as exc:
+                errors.append(f"[{name}] assets/{fname} does not parse as UTF-8 CSV: {exc}")
+                continue
+            if not rows:
+                errors.append(f"[{name}] assets/{fname} is empty")
+                continue
+            width = len(rows[0])
+            for n, row in enumerate(rows[1:], start=2):
+                if len(row) != width:
+                    errors.append(f"[{name}] assets/{fname} row {n} has {len(row)} cells, the header has {width} "
+                                  "(quote any cell that contains a comma)")
+                    break
 
     # 9. pointers inside supporting Markdown files and the repo README
     all_basenames = set()

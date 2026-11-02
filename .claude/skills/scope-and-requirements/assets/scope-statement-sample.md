@@ -47,7 +47,7 @@ or the back-office CRM.
 | D5 | Self-service UI | 1.3.2 | Password-reset and order-status journeys on desktop and mobile | Both journeys complete end to end and pass the WCAG 2.2 AA audit | Priya Nair | REQ-001, REQ-002, REQ-006, REQ-011 |
 | D6 | Knowledge base | 1.3.3 | Searchable knowledge base with 150 migrated articles | The top-50 support questions are answered and searchable | Priya Nair | REQ-004, REQ-006, REQ-010 |
 | D7 | Reporting & analytics | 1.3.4 | Ticket-deflection report evidencing OBJ-1 | Report reconciles with the ticketing system for a closed month | Priya Nair | REQ-005 |
-| D8 | System & UAT testing | 1.4.1 | System, regression and UAT with 20 Support Operations agents | Zero open severity-1 or severity-2 defects and UAT signed off | Priya Nair | product Musts |
+| D8 | System & UAT testing | 1.4.1 | System, regression and UAT with 20 Support Operations agents, then the pilot launch (M4) and its stabilisation | Zero open severity-1 or severity-2 defects and UAT signed off | Priya Nair | product Musts |
 | D9 | Hardening & launch | 1.4.2 | Performance and security hardening and the production cutover | Security review passed, data-residency review signed by Hana Sato, GA readiness reviews passed and the portal live to all customers at the cutover | Marcus Webb | REQ-007 |
 | D10 | Training & communications | 1.5.1 | Train-the-trainer for Support Operations and customer launch communications | All agents trained and launch communications sent | Priya Nair | REQ-008 |
 | D11 | Operational handover | 1.5.2 | Runbooks, alerting and on-call rota handed to Support Operations | Runbooks accepted and the on-call rota live for the 4-week warranty period | Priya Nair | REQ-009 |

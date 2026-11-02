@@ -99,8 +99,8 @@ two-week sprints inside fixed milestones, run hybrid.
    categories (planning, scope, communication, technical, process, people, quality, vendor,
    chosen by where the root cause sits) and an impact on the High/Medium/Low scale; act on every
    High, on a Medium that recurs or is cheap, and on a Low only when it recurs. Helios: LL005
-   (stand-ups ran over 30 minutes) is process/Low; LL007 (agent training planned to finish on
-   launch day, which became a go-live condition) is planning/High. *Done: every lesson has a
+   (stand-ups ran over 30 minutes) is process/Low; LL007 (agent training with no catch-up
+   for absentees, which became a go-live condition) is planning/High. *Done: every lesson has a
    kind, category and impact, and the ones to act on are marked.*
 6. **Operationalize: write the action and route it.** For each lesson to act on, write a
    verb-first recommendation, the target it changes (`applies_to`), one owner, a due date, who

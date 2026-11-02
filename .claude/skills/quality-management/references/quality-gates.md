@@ -67,7 +67,7 @@ Helios runs one item gate and four stage or milestone gates. The full criteria a
 | | Criteria | Evidence |
 |---|---|---|
 | **Entry** | Every pilot-scope story meets DoD v1.2; system and regression tests executed; 20 Support Operations agents booked for UAT (assumption A3) | Sprint review records; test summary; UAT schedule |
-| **Exit** | Zero open severity-1/2 defects; every pilot Must's system test passed against the real identity provider, not a stub; independent WCAG 2.2 AA audit (ACC-01) reports no failures outside the CR003 uplift, which is scheduled for sprint S7 and retested before G4; data-flow review (SEC-02) signed by Hana Sato | Defect log; test summary; audit report; signed review |
+| **Exit** | Zero open severity-1/2 defects; every pilot Must's system test passed against the real identity provider, not a stub; independent accessibility audit (ACC-01) reports no failures against the baseline WCAG 2.1 AA criteria (the 2.2 AA criteria added by CR003 land in sprint S7 and are audited before G4); data-flow review (SEC-02) signed by Hana Sato | Defect log; test summary; audit report; signed review |
 
 ## Gate reviews and outcomes
 A gate review is the meeting or asynchronous check where the evidence is compared with the exit

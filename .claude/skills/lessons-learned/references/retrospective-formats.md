@@ -181,8 +181,8 @@ sessions and projects, and so it is clear which lessons to act on.
 | vendor | Supplier selection, contracts, vendor onboarding, third-party dependencies |
 
 Helios: LL005 (stand-ups ran over 30 minutes) is `process`, a meeting routine, not `people`;
-LL007 (support-agent training planned to finish on launch day) is `planning`, a missing buffer
-in the plan, not `quality`; LL004 (shared QA environment with stale data) is `quality`, a test
+LL007 (support-agent training had no catch-up session for absentees) is `planning`, a gap in
+the plan, not `quality`; LL004 (shared QA environment with stale data) is `quality`, a test
 environment.
 
 **Impact scale:** rate the effect the event had, or for a `repeat` lesson the gain or protection

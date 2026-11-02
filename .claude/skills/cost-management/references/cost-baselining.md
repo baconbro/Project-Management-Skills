@@ -41,7 +41,10 @@ Helios:  $460,000 + $40,000 = BAC $500,000;  + $25,000 MR = total budget $525,00
 
 Never blend reserves into the estimates: if the buffer is invisible you cannot tell a good
 estimate that consumed contingency from a bad one that blew through it. Releasing management
-reserve into the baseline is a change (`change-management`) that re-sets BAC.
+reserve is a change (`change-management`): a release for unplanned in-scope work raises BAC; a
+release that funds an overrun on baselined work raises the funded budget but not BAC, so CV and
+CPI stay measured against the original BAC (Helios funded its $18,600 overrun this way on
+2026-09-08).
 
 **Where the contingency is held.** Helios distributed its $40,000 to the work packages in
 proportion to WBS weight when the baseline was approved, so each row's BAC in
@@ -66,9 +69,10 @@ protects. The Helios split (work = weight x $460,000, contingency = weight x $40
 | **Total** | **100%** | **460,000** | **40,000** | **500,000** |
 
 PV and EV include each share, so the contingency balance is kept in the contingency log, and
-every draw is a logged budget transfer between packages (CR003 $12,000 into 1.3.2; R001 $21,000
-into 1.3.1). Spreading by weight rather than by risk leaves 1.3.1, which carries R001, only
-$6,300 of its own; the log, not the row, shows what is left to draw.
+every draw is a logged budget transfer between packages (CR003 $12,000 into 1.3.2; R001 $25,000
+into 1.3.1; R004 $3,000 for hosting above forecast). Spreading by weight rather than by risk
+leaves 1.3.1, which carries R001, only $6,300 of its own; the log, not the row, shows what is
+left to draw.
 
 ## 3. Time-phase the baseline into the S-curve
 Spread each work package's budget over the periods it is scheduled in (`project-schedule`) to
@@ -127,9 +131,10 @@ curve to BAC is the cumulative sum of `assets/cost-baseline-template.csv` by per
 
 ## 4. Fix the earning rules
 Before approval, agree how earned value will be measured for each work package — 0/100, 50/50,
-weighted milestones, physical percent complete, apportioned effort, or level of effort — and
-record the rule with the work package (see the table in `earned-value.md`). The rules are part
-of the baseline: freezing PV but leaving EV to judgement makes every later index arguable.
+weighted milestones, physical percent complete, accepted story points, apportioned effort, or
+level of effort — and record the rule with the work package (see the table in
+`earned-value.md`). The rules are part of the baseline: freezing PV but leaving EV to judgement
+makes every later index arguable.
 
 ## 5. Freeze and control
 Once the sponsor approves it, the baseline is frozen. Real costs will diverge — that divergence
