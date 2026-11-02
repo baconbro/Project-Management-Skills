@@ -45,7 +45,7 @@ contingency, so none is a separate risk.
 - Scope statement v1.0 approved by Dana Okoro at M1 — 11 deliverables (D1–D11), each with
   acceptance criteria and one acceptor — see `scope-and-requirements`.
 - Exclusions: native mobile apps, back-office CRM changes, replacing the ticketing system.
-- WBS: 5 level-1 elements, 10 work packages, validator PASS — see `work-breakdown-structure`.
+- WBS: 5 level-1 elements, 11 work packages, validator PASS — see `work-breakdown-structure`.
 
 ## 4. Procurement and external dependencies
 | Work package | Make or buy | Supplier / route | Need-by | Risk id |
@@ -112,7 +112,7 @@ Total project budget            $525,000   held by Dana Okoro
 │                                          through change control
 └─ Cost baseline = BAC          $500,000   time-phased M1–M6; EVM measured against it
    ├─ Contingency reserve       $ 40,000   identified risks; Sam Lee draws it down
-   └─ Work-package costs        $460,000   ten work packages, bottom-up
+   └─ Work-package costs        $460,000   eleven work packages, bottom-up
 ```
 
 | Line | Amount | Inside BAC? | Controlled by |

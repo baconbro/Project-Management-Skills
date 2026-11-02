@@ -32,8 +32,9 @@ is the longest chain of dependent tasks, its tasks have zero float, and its leng
 shortest possible project duration. This skill builds that network, turns it into dated
 milestones, checks it against the people available, compresses it when the finish date is
 too late, and quantifies schedule risk. The worked numbers come from the sample Helios project
-(a fictional customer self-service portal used throughout this catalog): ten work packages,
-finish-to-start links, an 18-week critical path.
+(a fictional customer self-service portal used throughout this catalog): ten tasks (every WBS
+work package except level-of-effort project management), finish-to-start links, an 18-week
+critical path.
 
 ## When to use this skill
 - The user wants to build a schedule or timeline, or sequence tasks and milestones.

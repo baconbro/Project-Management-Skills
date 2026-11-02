@@ -150,7 +150,8 @@ history. See `references/techniques.md` to pick a technique.
 - `assets/estimation-worksheet-template.csv` — fill-in worksheet (`<placeholders>`): id,
   task, unit, technique, O/M/P, assumptions, estimators, actual.
 - `assets/estimation-worksheet-sample.csv` — sample worksheet for the Helios project: the
-  ten WBS work packages in person-days; the default script input.
+  ten WBS work packages estimated bottom-up, in person-days (1.1 Project management is
+  level-of-effort and sized parametrically); the default script input.
 - `assets/duration-worksheet-sample.csv` — sample duration worksheet for the Helios
   schedule network (ids A–J, weeks) for `--ids` chains.
 - `scripts/pert_estimate.py` — per-item E, std, and variance share; totals, two-sided

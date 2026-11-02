@@ -70,7 +70,8 @@ earning rule agreed for that package.
 ## Workflow
 1. **Aggregate work-package costs — no reserves yet.** Roll the estimates up the WBS to control
    accounts and a project total, covering labour (effort x rate), licences, vendor fees and
-   hosting. Helios: ten work packages, $460,000. See `references/cost-baselining.md`. *Done: a
+   hosting. Helios: eleven work packages on ten cost lines (Discovery & design is costed at its control
+   account), $460,000. See `references/cost-baselining.md`. *Done: a
    bottom-up total per control account and for the project.*
 2. **Size the reserves.** Take the contingency from `risk-management` (a simulation of the
    residual register read at the confidence the sponsor accepts — Helios $40,000, about P50;

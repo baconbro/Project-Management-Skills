@@ -34,7 +34,7 @@ reserves before the cost baseline), keeps the assumptions and constraints log, r
 parts and takes the whole baseline to the sponsor for one approval. The techniques live in the
 specialist skills; this skill owns the sequence, the consistency checks and the integrated
 plan. The examples use the sample Helios project (a fictional customer self-service portal used
-throughout this catalog): ten work packages, an 18-week critical path, a cost baseline (BAC) of
+throughout this catalog): eleven work packages, an 18-week critical path, a cost baseline (BAC) of
 $500,000 ($460,000 of work-package costs plus $40,000 contingency) with a $25,000 management
 reserve held above it, all approved by the sponsor Dana Okoro in one decision at M1
 (Discovery complete).
@@ -99,7 +99,8 @@ before step 12. `references/planning-sequence.md` maps each step's inputs, outpu
 3. **Decompose the work.** Run `work-breakdown-structure` on those deliverables: a
    deliverable-oriented WBS and dictionary (owner, acceptance criterion, control account per
    work package), weights summing to 100, checked by its validator; trace the requirements to
-   the WBS ids. Helios: five level-1 elements, ten work packages. *Done: the validator passes
+   the WBS ids. Helios: five level-1 elements, eleven work packages (ten scheduled tasks plus
+   level-of-effort project management). *Done: the validator passes
    and every deliverable maps to work packages.*
 4. **Decide make-or-buy.** For each work package that could be bought (services, licences,
    hosting, contractors) run `procurement-management`: decision, sourcing route, contract type,
