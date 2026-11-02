@@ -93,7 +93,8 @@ keeps the change log, and 60 support agents must move their customers to self-se
    2026-05-08) record each baseline's version in section 1 of the change control plan and tell
    the team and stakeholders how to raise a change. *Done: versions recorded; everyone knows that change control is the only
    way a baseline moves.*
-4. **Decide each change.** Each request is raised, logged and scored with `change-request`;
+4. **Decide each change.** Each request is raised, logged and scored with `change-request`,
+   which owns the change log artifact (`.claude/skills/change-request/assets/change-log.csv`);
    give its scorer the plan's limits so the routing matches (Helios after CR003: $28,000 of
    contingency undrawn):
    ```bash
@@ -190,8 +191,8 @@ keeps the change log, and 60 support agents must move their customers to self-se
   step 11) and hands over the baselines it protects; re-plans when a change is a re-baseline.
 - `project-delivery` — where changes and resistance surface during execution; its step 7 routes
   baseline changes here, and it runs the adoption work as planned deliverables.
-- `change-request` — owns the CR form, the change log artifact and `change_impact.py`; this
-  process decides, communicates and verifies what it records.
+- `change-request` — owns the CR form, the change log and the impact/authority scorer
+  (`change_impact.py`); this process decides, communicates and verifies what it records.
 - `scope-and-requirements` — owns the scope statement and traceability matrix updated after an
   approved scope change, and the transition requirements the adoption plan delivers.
 - `release-and-cutover` — receives the change freezes, the emergency route and the adoption

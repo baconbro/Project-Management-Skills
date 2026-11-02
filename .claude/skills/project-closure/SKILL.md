@@ -70,8 +70,9 @@ Dana Okoro (VP Customer Operations), on 2026-11-20.
 - Deliverables with acceptance criteria and acceptors: ideally the scope statement and
   acceptance log from `scope-and-requirements`, or the definition of done and gate criteria
   from `quality-management`. If none were ever written, step 1 agrees them now.
-- If there was a go-live: the hypercare exit record and the operations owner's signed
-  acceptance from `release-and-cutover`.
+- If there was a go-live: hypercare exited and operations acceptance signed, that is the
+  hypercare exit record and the operations owner's signed acceptance from
+  `release-and-cutover`.
 - The acceptance log, issue log, risk register, change log and open defects from
   `project-delivery`; the
   cost baseline, actuals and reserve drawdown from `cost-management`; the contract register
@@ -135,9 +136,12 @@ Pick the closure path first and record it in the closure report header:
 5. **Hand over benefits tracking.** Copy each benefit and dis-benefit from the
    `business-case` register into section 7 of `assets/closure-report.md` with measure,
    baseline, target, owner, review dates and the forum that will receive the reviews, plus
-   the first leading-measure readings (`references/benefits-realization.md`). With no
-   business case, derive benefits from the charter objectives; record any you cannot
-   quantify qualitatively, with an observable sign and a first review date. Helios: Priya
+   the first leading-measure readings (`references/benefits-realization.md`). Each owner was
+   named in the business case and confirmed at the initiation gate (G0 in
+   `project-initiation`): confirm here that they accept accountability in writing, and name
+   an owner only for a benefit the case left without one. With no business case, derive
+   benefits from the charter objectives; record any you cannot quantify qualitatively, with
+   an observable sign and a first review date. Helios: Priya
    Nair owns the 50% cut in the two ticket types (October: −22% against 5,000 a month),
    reviewed in January and April 2027. *Done: every benefit has an owner who accepted it in
    writing, a measure, a baseline or a stated absence, a target and review dates.*

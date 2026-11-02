@@ -42,7 +42,9 @@ anyone  change  5 impact  PM / CCB /  requester +    baseline      PM checks eve
 
 1. **Raise.** Anyone may request a change. Capture it on the CR form from `change-request`:
    what, why, who, and the date a decision is needed by. Nothing is "informal".
-2. **Log.** Give it the next free id in the change log, status `Raised`. The PM keeps the log.
+2. **Log.** Give it the next free id in the change log, status `Raised`. The log artifact is
+   owned by `change-request` (`.claude/skills/change-request/assets/change-log.csv`); the PM
+   keeps the project's copy current.
 3. **Assess.** Rate scope, cost, schedule, quality and risk 1-5 with real units, lay out at
    least two options (one is "do nothing") and a recommendation, then score and route it with
    `change_impact.py`. Do not skip this for "small" changes; a small change still gets a LOW

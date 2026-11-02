@@ -46,7 +46,9 @@ accept decimals (3.5 when a change sits between two anchors); blanks, values out
 | Implemented | Work done; baseline updates not yet verified | committed |
 | Closed | Implemented **and** verified, all affected baselines updated | committed |
 
-A rejected or deferred CR is never set to Closed; Closed always means "done and verified".
+A rejected or deferred CR is never set to Closed; Closed always means "done and verified". A
+"request more information" decision is not a status: it returns the CR to `Under assessment`
+with the questions, who answers each and a return date.
 
 ## Form fields (`assets/change-request-template.md`)
 
@@ -100,8 +102,9 @@ are ordered by id (CR2 before CR10) so the ranking never depends on file order.
 ## Approval authority
 
 Printed when `cost_value` and/or `schedule_days` exist. Defaults follow the Helios tolerances in
-`change-management` ("PM approves changes under $5k and 2 days within reserve; larger goes to the
-CCB").
+`change-management`: the PM approves LOW-band changes of up to $5,000 and 2 working days
+(inclusive) within contingency; the CCB decides above that; HIGH impact, a draw on management
+reserve or a move of M6 goes to the sponsor.
 
 | Authority | Rule | Helios example |
 | --- | --- | --- |

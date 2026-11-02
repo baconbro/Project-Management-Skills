@@ -65,7 +65,7 @@ Could) to Ava Chen's product backlog.
 | Reserve | Held | Used | Approved by | Returned |
 |---|---|---|---|---|
 | Contingency (inside BAC) | $40,000 | $40,000: CR003 $12,000; SSO recovery (R001) $21,000; UI rework (R005) $4,000; hosting above forecast (R004) $3,000 | CCB and Sam Lee within tolerance | $0 |
-| Management reserve (above BAC) | $25,000 | $18,600 for the overrun | Dana Okoro, through change control at the 2026-09-09 steering committee | $6,400 to Finance |
+| Management reserve (above BAC) | $25,000 | $18,600 for the overrun | Dana Okoro, through change control at the 2026-09-08 steering committee | $6,400 to Finance |
 
 ## 4. Handover
 | Item | Receiving owner | Signed on | Evidence |

@@ -36,8 +36,11 @@ owner here.
 2. **Check the baseline.** A target without a "before" number cannot be proven. If no
    baseline was taken, take one now from the earliest data available and say so; a late
    baseline is better than none.
-3. **Name one benefits owner per benefit**, usually in operations or the business, never the
-   project team (it disbands at closure). The owner accepts in writing.
+3. **Confirm one benefits owner per benefit.** The owner is named in the `business-case`
+   benefits register and confirmed at the initiation gate (G0 in `project-initiation`); here
+   the owner accepts accountability in writing. Name an owner now only for a benefit the case
+   left without one: usually in operations or the business, never the project team (it
+   disbands at closure).
 4. **Agree the review dates and the forum.** Typical points are +3, +6 and +12 months after
    go-live, until the benefit is realised or formally written off. The steering committee
    disbands at closure, so name the meeting that will receive the reviews (an operations

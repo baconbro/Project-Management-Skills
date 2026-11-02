@@ -19,6 +19,8 @@ self-service portal used throughout this catalog).
   writing before the evidence was judged (`references/acceptance-at-closure.md`).
 - [ ] Every in-scope deliverable is accepted, accepted with conditions, or rejected with
   the failed criterion named; requirements not built are formally deferred, not forgotten.
+- [ ] Every in-scope row of the requirements traceability matrix (`scope-and-requirements`)
+  has status `accepted` or is formally `deferred` through a decided change request.
 - [ ] Each deliverable's evidence (tests, UAT, audits, the hypercare exit record) is attached.
 - [ ] Every condition and known exception is in the closeout log with an owner and a date.
 - [ ] The sponsor has signed final acceptance (scope statement acceptance log, or Part D of
@@ -64,7 +66,9 @@ self-service portal used throughout this catalog).
 ## Benefits (step 5)
 - [ ] Every benefit and dis-benefit is listed with measure, baseline, target, owner, review
   dates and the forum that will receive the reviews (`references/benefits-realization.md`).
-- [ ] Each benefit owner has accepted ownership in writing.
+- [ ] Each benefit owner, named in the business case and confirmed at the initiation gate
+  (G0 in `project-initiation`), has accepted accountability in writing; an owner is named
+  here only for a benefit the case left without one.
 - [ ] Where there was no business case, benefits were derived from the charter objectives,
   and unquantified ones are recorded qualitatively with a first review date.
 
