@@ -1,105 +1,196 @@
 # Project Management Skills
 
-A methodology-agnostic catalog of **22 Agent Skills** that turn Claude into a **senior
-project manager** — able to help anyone **initiate, plan, deliver, and close** a project,
-whether it runs as waterfall, agile, or hybrid.
+A methodology-agnostic catalog of **27 Agent Skills** that turn Claude into a **senior
+project manager**. It helps anyone **initiate, plan, deliver and close** a project, whether
+the project runs as waterfall, agile or hybrid.
 
-Built in the [Agent Skills](https://code.claude.com/docs/en/skills) format for Claude Code,
-Claude Desktop/Web, Cowork, Codex, and other AI agents.
+The skills use the [Agent Skills](https://code.claude.com/docs/en/skills) format, which
+works in Claude Code, Claude Desktop and Web, Cowork, Codex and other AI agents.
 
-## What this is
-
-Each skill is a self-contained folder under `.claude/skills/` with a `SKILL.md` (the
-instructions Claude follows), plus optional ready-to-fill **templates**, deeper **reference
-guides**, and dependency-free **Python helper scripts**. The skills cross-link into one
-coherent system and are designed to be installed together. **`senior-pm` is the front door**:
-ask it where to start and it routes you to the right skill.
+**What's inside**
+- **27 skills** that link to each other.
+- **11 helper scripts**: dependency-free Python that does the arithmetic (NPV, PERT,
+  critical path, earned value, Monte Carlo and more).
+- **100+ templates and filled samples** that you can copy.
+- **60+ reference guides**.
+- **One worked example**, "Helios", that runs through every skill.
+- **Tooling**: a linter, a script test harness and CI that keep the catalog consistent.
 
 ## Quick start
 
-1. Copy the `.claude/skills/` folder into your project (or into `~/.claude/skills/` to make
-   the skills available everywhere). Claude Code auto-discovers skills from `.claude/skills/`
-   in the working directory and every parent directory.
-2. Just describe what you need in plain language — skills trigger automatically. Or start the
-   orchestrator explicitly with `/senior-pm`.
-3. Helper scripts need only **Python 3** (standard library, nothing to install). Every script
-   supports `--help`.
+1. Copy the `.claude/skills/` folder into your project. To make the skills available in every
+   project, copy it to `~/.claude/skills/` instead. Claude Code discovers skills in
+   `.claude/skills/` in the working directory and in every parent directory.
+2. Describe what you need in plain language and the right skill triggers on its own. You can
+   also start the front door explicitly with `/senior-pm`.
+3. The helper scripts need only **Python 3**, with nothing to install. Every script supports
+   `--help`.
 
 **Example conversation**
 
 > **You:** "I've been asked to launch a customer self-service portal. Where do I start?"
-> **Claude (`senior-pm`):** asks a few triage questions, recommends a hybrid approach, then
-> routes you to `project-initiation` → `project-charter` to authorize the work, and on to
-> `project-planning` to build the plan.
+> **Claude (`senior-pm`):** asks a few triage questions, records the answers in a one-table
+> project-state canvas and recommends a hybrid approach. It then sends you to
+> `project-initiation`, which takes you through `business-case` and `project-charter` to
+> authorize the work, and on to `project-planning` to build the baseline.
+
+**Try the helpers on the sample data** (from the repo root):
+
+```bash
+python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-sample.csv --gantt
+python .claude/skills/cost-management/scripts/health_check.py .claude/skills/cost-management/assets/evm-snapshot.csv
+python .claude/skills/risk-register/scripts/risk_score.py .claude/skills/risk-register/assets/risk-register-template.csv --bac 500000
+```
 
 ## How it works
 
-- **Four tiers.** `senior-pm` (orchestrator) → four **lifecycle phase** skills (initiation,
-  planning, delivery, closure) → six cross-cutting **disciplines** (stakeholders, risk, cost,
-  quality, communication, change) → eleven focused **artifact** skills (charter, WBS, schedule,
-  status report, …) you can invoke on their own.
-- **Progressive disclosure.** A `SKILL.md` stays short; depth lives in `references/*.md` that
-  Claude reads only when needed, fill-in templates in `assets/`, and runnable tools in
-  `scripts/` that execute without loading their code into context.
-- **Methodology-agnostic.** Every skill has a *Methodology fit* section showing how it adapts
-  for waterfall, agile, and hybrid. Ask `senior-pm` for a recommendation.
+- **Four tiers.**
+  - `senior-pm`, the orchestrator and front door.
+  - Four **lifecycle phase** skills: initiation, planning, delivery and closure.
+  - Nine cross-cutting **disciplines**, such as risk, cost, resources and procurement.
+  - Thirteen focused **artifact** skills, such as charter, WBS, schedule, status report and
+    cutover runbook. You can use any of these on its own.
+- **Front door and routing.** `senior-pm` triages the project's lifecycle stage and its health
+  against the baseline. It then routes you to at most two specialist skills, each with a first
+  action. Its `references/routing-map.md` maps every request and symptom to a skill.
+- **Progressive disclosure.** A `SKILL.md` stays short. Deeper guidance lives in
+  `references/*.md`, which Claude reads only when needed. `assets/` holds the files you fill
+  in, and `scripts/` holds tools that run without loading their code into context.
+- **Done criteria.** Every workflow step ends with *Done:*, the evidence that the step is
+  complete. Every skill also has a quality checklist and a list of anti-patterns.
+- **Templates and samples.** Blank fill-in files are named `*-template.*` or carry
+  `<placeholders>`. Filled versions of the Helios example are named `*-sample.*`. When a CSV is
+  also a script's sample input, it holds the Helios rows: replace the rows and keep the header.
+- **Methodology-agnostic.** Every skill has a *Methodology fit* section that shows how it adapts
+  to waterfall, agile and hybrid delivery.
 
 ## Skill catalog
 
 | Tier | Skill | Phase | What it does | Helper script | Triggers when you say… |
 |---|---|---|---|---|---|
-| 0 · Orchestrator | `senior-pm` | cross-cutting | Diagnose stage & health, recommend methodology, route to the right skill | — | "help me run my project", "where do I start", "what's the next PM step" |
-| 1 · Lifecycle | `project-initiation` | initiation | Stand up a project: business case, charter, stakeholders, kickoff | — | "start a project", "kick off", "new initiative" |
-| 1 · Lifecycle | `project-planning` | planning | Build the integrated plan & baseline (scope, schedule, cost, resources, risk, quality, comms) | `capacity_check.py` | "plan the project", "build a project plan", "are we over-allocated" |
-| 1 · Lifecycle | `project-delivery` | delivery | Execute and monitor/control: progress, issues, changes, status, steering | — | "we're in delivery", "track progress", "manage execution" |
-| 1 · Lifecycle | `project-closure` | closure | Close out: acceptance, handover, benefits, lessons, admin/financial closure | — | "close the project", "wrap up", "project closure" |
-| 2 · Discipline | `stakeholder-management` | cross-cutting | Identify, analyze, and engage stakeholders (power/interest, engagement) | — | "stakeholder analysis", "power/interest grid", "engagement plan" |
-| 2 · Discipline | `risk-management` | cross-cutting | End-to-end risk process: identify, analyze, respond, govern | — | "manage risk", "risk response", "risk strategy" |
-| 2 · Discipline | `cost-management` | cross-cutting | Estimate, baseline, and control budget; earned value & forecasting | `health_check.py` | "budget", "earned value", "is the project on budget" |
-| 2 · Discipline | `quality-management` | cross-cutting | Acceptance criteria, definition of done, quality gates, reviews | — | "definition of done", "quality plan", "acceptance criteria" |
-| 2 · Discipline | `project-communication` | cross-cutting | Communication plan: audiences, channels, cadence, escalation | — | "communication plan", "comms plan", "who do we update" |
-| 2 · Discipline | `change-management` | cross-cutting | Govern change: change-control process and organizational adoption | — | "change control", "manage change", "adoption" |
-| 3 · Artifact | `project-charter` | initiation | Produce a charter that authorizes the project | — | "project charter", "project brief", "mandate" |
-| 3 · Artifact | `business-case` | initiation | Justify the investment: options, benefits, NPV/ROI/payback | `roi_npv.py` | "business case", "ROI", "is it worth it" |
-| 3 · Artifact | `work-breakdown-structure` | planning | Decompose scope into verifiable work packages (100% rule) | `wbs_validate.py` | "WBS", "break down the scope", "work packages" |
-| 3 · Artifact | `project-schedule` | planning | Build/analyze the schedule; critical path, slack, duration | `critical_path.py` | "schedule", "critical path", "timeline", "Gantt" |
-| 3 · Artifact | `estimation` | planning | Estimate effort/duration/cost (analogous, parametric, PERT, story points) | `pert_estimate.py` | "estimate", "PERT", "three-point", "story points" |
-| 3 · Artifact | `raci-matrix` | planning | Build and validate a responsibility assignment matrix | `raci_validate.py` | "RACI", "who's responsible", "responsibility matrix" |
-| 3 · Artifact | `risk-register` | cross-cutting | Produce/maintain the risk register; score by exposure/EMV | `risk_score.py` | "risk register", "risk log", "prioritize risks" |
-| 3 · Artifact | `status-report` | delivery | Produce concise RAG status reports | — | "status report", "weekly update", "RAG status" |
-| 3 · Artifact | `change-request` | delivery | Capture and assess a single change through to a decision | `change_impact.py` | "change request", "raise a change", "change impact" |
-| 3 · Artifact | `meeting-management` | cross-cutting | Agendas, facilitation, decisions, and action items | — | "meeting agenda", "run a standup", "steering committee" |
-| 3 · Artifact | `lessons-learned` | closure | Capture, categorize, and operationalize lessons | — | "lessons learned", "retrospective", "post-mortem" |
+| 0 · Orchestrator | `senior-pm` | cross-cutting | Triages the project's stage and health, keeps a project-state canvas, recommends waterfall, agile or hybrid, routes to the right skill, and holds the PM glossary and the Helios walkthrough | — | "where do I start", "is my project on track", "waterfall or agile" |
+| 1 · Lifecycle | `project-initiation` | initiation | Takes an idea to a planning-ready project: business case, delivery approach, signed charter, stakeholders, an initiation gate with a recorded verdict, and the kickoff | — | "start a new project", "initiation gate", "what should the kickoff cover" |
+| 1 · Lifecycle | `project-planning` | planning | Builds the integrated plan and baseline in one ordered pass (scope, WBS, make-or-buy, estimates, staffing, schedule, risk, quality, cost, communications, change control) and reconciles the parts for one approval | — | "project management plan", "set the baseline", "reconcile the plan" |
+| 1 · Lifecycle | `project-delivery` | delivery | Runs a baselined project day to day: tracks progress, accepts deliverables, keeps one issue/action/decision/dependency log, escalates, and sets an interim baseline for a running project that has none | `issue_log_check.py` | "track progress against the baseline", "log an issue", "project already running with no baseline" |
+| 1 · Lifecycle | `project-closure` | closure | Gets formal acceptance, hands over to operations, disposes of open items and contracts, reconciles final cost, and runs the post-project review and closure report, including for a cancelled project | — | "close the project", "handover to operations", "cancel the project" |
+| 2 · Discipline | `stakeholder-management` | cross-cutting | Builds the stakeholder register, places each stakeholder on the power/interest grid by an explicit rule, compares current with desired engagement, and assigns engagement actions | — | "stakeholder analysis", "the sponsor has gone quiet", "a stakeholder is blocking us" |
+| 2 · Discipline | `risk-management` | cross-cutting | Runs the risk process: a risk plan with appetite and thresholds, identification, quantification, responses, a contingency reserve sized at a confidence level, and governance | — | "risk workshop", "pre-mortem", "how much contingency" |
+| 2 · Discipline | `cost-management` | cross-cutting | Sets the cost baseline and reserves, then controls cost with earned value (CPI/SPI, EAC, TCPI) and a RAG verdict | `health_check.py` | "earned value", "CPI", "forecast at completion", "over budget" |
+| 2 · Discipline | `resource-management` | cross-cutting | Plans the team: roles, capacity versus allocation, leveling and smoothing, the team charter, onboarding and release | `capacity_check.py` | "who is over-allocated", "resource leveling", "team charter" |
+| 2 · Discipline | `quality-management` | cross-cutting | Plans quality, separates assurance from control, sets the cost of quality, definition of done, quality gates, process audits and the defect log | — | "definition of done", "quality gate", "QA vs QC" |
+| 2 · Discipline | `project-communication` | cross-cutting | Builds the communication plan: who needs what, in which mode, channel and cadence, plus the escalation ladder and checks that messages land | — | "communication plan", "who needs to know", "escalation path" |
+| 2 · Discipline | `change-management` | cross-cutting | Governs change control (CCB, tolerances, emergency route, freezes) and change adoption (ADKAR, readiness, resistance) | — | "change control board", "scope creep", "user adoption" |
+| 2 · Discipline | `agile-delivery` | delivery | Runs the backlog, stories, sprints, velocity and burnup, forecasts a release as a range with a cut line, and maps story points onto hybrid baselines | `velocity_forecast.py` | "plan the next sprint", "how many sprints are left", "user stories" |
+| 2 · Discipline | `procurement-management` | cross-cutting | Covers make-or-buy, statements of work, RFI/RFQ/RFP, weighted vendor scoring, contract type and risk allocation, then vendor performance, acceptance and closure | — | "make or buy", "statement of work", "my vendor is late" |
+| 3 · Artifact | `project-charter` | initiation | Writes the charter that authorizes the project, with SMART objectives, PM authority, boundaries and cancellation criteria, and checks the sponsor's sign-off | — | "project charter", "project brief", "cancellation criteria" |
+| 3 · Artifact | `business-case` | initiation | Builds the investment case: options against do-nothing, benefits with owners, whole-life cost, NPV/IRR/ROI/payback, sensitivity and the funding decision | `roi_npv.py` | "business case", "NPV", "IRR", "do-nothing option" |
+| 3 · Artifact | `scope-and-requirements` | planning | Elicits requirements with MoSCoW priorities and acceptance tests, writes the scope statement, builds the traceability matrix, and runs scope validation | — | "requirements gathering", "scope statement", "is this in scope" |
+| 3 · Artifact | `work-breakdown-structure` | planning | Decomposes scope into work packages (100% rule) with a WBS dictionary, validates and rolls up weights, and exports the packages for estimation | `wbs_validate.py` | "WBS", "work packages", "100% rule" |
+| 3 · Artifact | `estimation` | planning | Estimates with analogous, parametric, PERT, story-point and Delphi techniques, gives P50/P80/P90 commit levels, and runs a PERT-Beta simulation | `pert_estimate.py` | "estimate", "three-point", "P80", "planning poker" |
+| 3 · Artifact | `project-schedule` | planning | Finds the critical path and float, maps tasks to calendar dates, draws a text Gantt, runs a Monte Carlo schedule risk, and supports compression | `critical_path.py` | "critical path", "Gantt chart", "how long will the project take" |
+| 3 · Artifact | `raci-matrix` | planning | Builds and validates a RACI, RASCI or DACI with one Accountable per row, suggests fixes, and summarises each role's workload | `raci_validate.py` | "RACI", "who is accountable for", "decision rights" |
+| 3 · Artifact | `risk-register` | cross-cutting | Keeps the register of threats and opportunities and scores it by EMV into bands, with residual exposure, a Monte Carlo reserve and pre-review checks | `risk_score.py` | "risk register", "rank the risks", "risk exposure" |
+| 3 · Artifact | `status-report` | delivery | Writes the evidence-first status report: RAG ratings against tolerances on the forecast, trend, owners for amber and red items, and decisions requested | — | "status report", "RAG status", "why is my project amber" |
+| 3 · Artifact | `change-request` | delivery | Takes one change request from description to recorded decision, keeps the change log, and scores impact, approval route and change burden | `change_impact.py` | "change request", "assess a change", "who approves this change" |
+| 3 · Artifact | `release-and-cutover` | delivery | Covers release strategy, go-live readiness, the go/no-go verdict, a rehearsed cutover runbook with rollback triggers, and hypercare through to handover | — | "go/no-go decision", "cutover runbook", "we go live next week" |
+| 3 · Artifact | `meeting-management` | cross-cutting | Runs kickoffs, steering committees, stand-ups and workshops with a purpose, a timeboxed agenda, a decision method, and live decisions and actions | — | "meeting agenda", "steering committee meeting", "our meetings go nowhere" |
+| 3 · Artifact | `lessons-learned` | cross-cutting | Runs retrospectives and blameless post-mortems, finds root causes, and turns lessons into owned, dated actions that are later checked | — | "retrospective", "post-mortem", "5 whys" |
+
+### The lifecycle at a glance
+
+| Stage | Start with | Then, as needed |
+|---|---|---|
+| Initiate | `project-initiation` | `business-case` → `project-charter` → `stakeholder-management`, `meeting-management` (kickoff) |
+| Plan | `project-planning` | `scope-and-requirements` → `work-breakdown-structure` → `procurement-management` → `estimation` → `resource-management` → `project-schedule` → `risk-management` / `risk-register` → `quality-management` → `cost-management` → `raci-matrix`, `project-communication`, `change-management` |
+| Deliver | `project-delivery` | `agile-delivery`, `status-report`, `change-request`, `risk-register`, `cost-management`, `meeting-management`, `release-and-cutover` |
+| Close | `project-closure` | `lessons-learned`, `procurement-management` (contract closure) |
+
+Not sure where you are? Ask `senior-pm`.
 
 ## Helper scripts
 
-All scripts are Python 3, **standard library only** (no install), accept **CSV or JSON**
-(`--json`) plus `-` for stdin, and print an aligned table. Run any with `--help`.
+Every script is Python 3 and uses the **standard library only**. They all follow one input and
+output contract:
 
-| Script | Skill | Computes | Example |
+- **Input.** A CSV or JSON file (`--json`), or `-` to read stdin. Scripts strip a UTF-8 BOM,
+  accept CRLF line endings, and detect `,` `;` tab or `|` as the delimiter. Numbers may contain
+  `$`, `,` and `%`. The scripts reject `nan`, `inf`, booleans and missing columns, and the
+  error message lists the headers they found.
+- **Output.** `--format table` (the default), `json`, `csv` or `md` (`issue_log_check.py` offers
+  table, json and csv). Use `md` to paste into a status report and `json` to feed a pipeline.
+- **Exit codes.** `0` means ok. `1` means a validation failure from a checker (`wbs_validate`,
+  `raci_validate`, `issue_log_check`, `risk_score --check`, `capacity_check --fail-on`). `2`
+  means bad input, reported as `error: …` on stderr and never as a traceback.
+- **Help.** `--help` documents the columns, formulas and exit codes, with examples.
+
+| Script | Skill | Computes | Notable options |
 |---|---|---|---|
-| `risk_score.py` | `risk-register` | Exposure (prob × impact), EMV, HIGH/MEDIUM/LOW bands | `python .claude/skills/risk-register/scripts/risk_score.py .claude/skills/risk-register/assets/risk-register-template.csv` |
-| `pert_estimate.py` | `estimation` | Three-point PERT mean/std + confidence ranges | `python .claude/skills/estimation/scripts/pert_estimate.py .claude/skills/estimation/assets/estimation-worksheet.csv` |
-| `critical_path.py` | `project-schedule` | Critical path, slack, project duration (CPM) | `python .claude/skills/project-schedule/scripts/critical_path.py .claude/skills/project-schedule/assets/schedule-template.csv` |
-| `health_check.py` | `cost-management` | Earned value: CV/SV/CPI/SPI/EAC + RAG | `python .claude/skills/cost-management/scripts/health_check.py .claude/skills/cost-management/assets/cost-baseline.csv` |
-| `roi_npv.py` | `business-case` | NPV, ROI, payback period | `python .claude/skills/business-case/scripts/roi_npv.py .claude/skills/business-case/assets/cashflows.csv` |
-| `wbs_validate.py` | `work-breakdown-structure` | 100% rule, orphans, duplicate IDs | `python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py .claude/skills/work-breakdown-structure/assets/wbs.csv` |
-| `raci_validate.py` | `raci-matrix` | Exactly one A, at least one R, overload checks | `python .claude/skills/raci-matrix/scripts/raci_validate.py .claude/skills/raci-matrix/assets/raci-template.csv` |
-| `change_impact.py` | `change-request` | Weighted scope/cost/schedule impact score | `python .claude/skills/change-request/scripts/change_impact.py .claude/skills/change-request/assets/change-log.csv` |
-| `capacity_check.py` | `project-planning` | Utilization, over/under-allocation flags | `python .claude/skills/project-planning/scripts/capacity_check.py .claude/skills/project-planning/assets/resource-allocation.csv` |
+| `roi_npv.py` | `business-case` | NPV, IRR, ROI, simple and discounted payback, per-option comparison ranked by NPV | `--irr` `--break-even` (switching values) `--sensitivity` `--stress` `--all` |
+| `pert_estimate.py` | `estimation` | PERT mean, standard deviation and variance share per item, P50/P80/P90 commit levels, contingency reserve | `--confidence P80` `--simulate N` `--ids` (one chain) |
+| `critical_path.py` | `project-schedule` | ES/EF/LS/LF, total and free float, every critical path, near-critical tasks, calendar dates, Gantt | `--gantt` `--start-date` `--workdays` `--target` `--simulate N` |
+| `wbs_validate.py` | `work-breakdown-structure` | Hierarchy and 100% rule checks, suggested weights, roll-up to shares of the project and budget | `--suggest` `--fix OUT.csv` `--rollup --budget` `--export-estimation` |
+| `raci_validate.py` | `raci-matrix` | Exactly one A, at least one R (DACI: one D), contradictory cells, ghost and overloaded roles, single points of failure, role workload | `--variant raci\|rasci\|daci` `--fix` `--fix-out` `--transpose` |
+| `capacity_check.py` | `resource-management` | Utilization per person and period, OVER/HIGH/OK/UNDER flags, headroom, key-person risk, leveling plan | `--level` `--target` `--period` `--fail-on over` |
+| `risk_score.py` | `risk-register` | Exposure and EMV bands, residual exposure, net EMV, Monte Carlo of total threat exposure, governance checks | `--bac` `--basis residual` `--simulate N --reserve X` `--check` `--top N` |
+| `health_check.py` | `cost-management` | CV/SV, CPI/SPI, EAC/ETC/VAC, TCPI, percent complete, RAG verdict, trend and text S-curve over periods | `--eac-method all` `--bac` `--incremental` `--sort worst` |
+| `change_impact.py` | `change-request` | Weighted five-dimension impact band, routing to PM, CCB or sponsor, change burden against reserve, sensitivity to the weights | `--reserve-cost` `--pm-limit-cost` `--sensitivity` `--explain` |
+| `velocity_forecast.py` | `agile-delivery` | Velocity and predictability, burnup, sprints left as optimistic, likely and pessimistic, scope-growth warning | `--backlog` `--remaining` `--sprints-left` (cut line) `--window` |
+| `issue_log_check.py` | `project-delivery` | Issue-log hygiene, plus items overdue, due soon, blocked or awaiting steering, and each owner's open load | `--as-of` `--days` `--risks` (cross-check the register) `--strict` |
+
+Each command below runs on the bundled Helios sample, from the repo root:
+
+```bash
+S=.claude/skills
+python $S/business-case/scripts/roi_npv.py $S/business-case/assets/cashflows.csv --irr --break-even
+python $S/business-case/scripts/roi_npv.py $S/business-case/assets/cashflows-options-sample.csv
+python $S/estimation/scripts/pert_estimate.py $S/estimation/assets/estimation-worksheet-sample.csv --confidence P80
+python $S/project-schedule/scripts/critical_path.py $S/project-schedule/assets/schedule-sample.csv --gantt
+python $S/work-breakdown-structure/scripts/wbs_validate.py $S/work-breakdown-structure/assets/wbs-sample.csv --rollup --budget 500000
+python $S/raci-matrix/scripts/raci_validate.py $S/raci-matrix/assets/raci-sample.csv
+python $S/resource-management/scripts/capacity_check.py $S/resource-management/assets/resource-allocation-sample.csv --level
+python $S/risk-register/scripts/risk_score.py $S/risk-register/assets/risk-register-template.csv --bac 500000
+python $S/risk-register/scripts/risk_score.py $S/risk-register/assets/risk-register-template.csv --simulate 10000 --seed 42 --reserve 40000
+python $S/cost-management/scripts/health_check.py $S/cost-management/assets/evm-snapshot.csv
+python $S/cost-management/scripts/health_check.py $S/cost-management/assets/evm-history-sample.csv
+python $S/change-request/scripts/change_impact.py $S/change-request/assets/change-log.csv --reserve-cost 40000
+python $S/agile-delivery/scripts/velocity_forecast.py $S/agile-delivery/assets/sprint-history-sample.csv --backlog $S/agile-delivery/assets/product-backlog-sample.csv
+python $S/project-delivery/scripts/issue_log_check.py $S/project-delivery/assets/issue-log-sample.csv --as-of 2026-07-10
+```
+
+## The worked example: Helios
+
+Every skill uses the same **fictional** project, so the artifacts agree with each other and you
+can follow one story from idea to closure. Helios is a customer self-service portal that cuts
+password-reset and order-status tickets by 50%. Its key numbers:
+
+| | |
+|---|---|
+| Sponsor and PM | Dana Okoro (VP Customer Operations), sponsor; Sam Lee, project manager |
+| Business case | Invest $500,000, NPV $196,174 at 10%, IRR 23.6%, payback 2.85 years |
+| Budget | BAC $500,000, which includes $40,000 of contingency; $25,000 of management reserve sits above BAC |
+| Schedule | 6 months; critical path of 18 weeks (A→B→D→F→G→H→J) |
+| Risk | Six risks R001-R006, one of them an opportunity. Threat EMV is $94,300, or $52,300 after responses |
+| Month-3 health | CPI 0.93, SPI 0.92, so **AMBER**; EAC about $535,000 |
+| Change | Change requests CR001-CR006; SSO stays in the baseline |
+
+For the end-to-end story, with each stage's artifacts and commands, see
+[`senior-pm/references/helios-walkthrough.md`](.claude/skills/senior-pm/references/helios-walkthrough.md).
 
 ## Methodology guidance
 
 | Need | Waterfall | Agile | Hybrid |
 |---|---|---|---|
-| Authorize | Formal `project-charter`, signed off before planning | Lightweight charter / project brief | Charter fixes outcomes; approach stays flexible |
-| Plan | Full `project-planning` baseline up front | Rolling-wave; backlog + `estimation` (story points) | Baseline the fixed parts, iterate the rest |
-| Schedule | `project-schedule` critical path, Gantt | Iteration/sprint cadence | Milestones + iterations |
-| Track | `cost-management` earned value, `status-report` | Burndown + `status-report` | Both |
-| Change | `change-management` formal change control | Re-prioritize the backlog | Control baselined scope, flex the rest |
-| Close | `project-closure` + `lessons-learned` | Iteration retro + final `lessons-learned` | Both |
+| Authorize | Formal `project-charter`, signed before planning starts | Lightweight charter or project brief | The charter fixes outcomes and constraints; the approach stays flexible |
+| Define scope | Scope statement and traceability matrix (`scope-and-requirements`), then the full WBS | Product backlog of INVEST stories (`agile-delivery`), MoSCoW priorities | Baseline the scope statement and grow the detail through the backlog |
+| Plan and estimate | `project-planning` baseline, PERT (`estimation`), critical path (`project-schedule`) | Rolling wave, story points and planning poker, velocity forecast | Baseline milestones and budget, and run sprints inside them |
+| Staff | `resource-management` capacity and leveling | A stable team with sprint capacity | Both |
+| Track | Earned value (`cost-management`) and `status-report` | Velocity range and burnup (`agile-delivery`) with `status-report` | Map points to earned value and keep one status report |
+| Change | CCB and tolerances (`change-management`), `change-request` | Re-order the backlog; the product owner decides within the sprint goal | Control the baseline and flex the backlog below the cut line |
+| Release | Big-bang or phased cutover (`release-and-cutover`) | Incremental releases and feature flags | A pilot, then general availability |
+| Close | `project-closure` and `lessons-learned` | Sprint retrospectives, then a final review | Both |
 
-Not sure which applies? Ask **`senior-pm`** for a recommendation based on your project.
+For a recommendation based on your project, ask **`senior-pm`**. Its
+`references/methodology-selection.md` explains how it chooses.
 
 ## Repository layout
 
@@ -107,32 +198,60 @@ Not sure which applies? Ask **`senior-pm`** for a recommendation based on your p
 .claude/skills/<skill-name>/
 ├── SKILL.md            # the instructions Claude follows (< 500 lines)
 ├── references/*.md     # deeper guides, loaded only when needed
-├── assets/*            # fill-in templates (.md) and sample data (.csv)
+├── assets/*            # fill-in templates and filled Helios samples (.md, .csv)
 └── scripts/*.py        # dependency-free helpers, run on demand
-tools/lint_skills.py    # validates the catalog's conventions
+tools/lint_skills.py    # checks the catalog's conventions
+tools/test_scripts.py   # tests every helper script against its sample and the I/O contract
+.github/workflows/validate.yml   # runs both on every push and pull request
 ```
 
-## Conventions / contributing
-
-Every skill follows the same shape so the set stays consistent:
-
-- **Frontmatter.** Required `name` (kebab-case, equals the folder name, ≤ 64 chars, no reserved
-  words) and `description` (third person, ≤ 1024 chars, says **what** it does **and when** to use
-  it with trigger synonyms). Plus `metadata` (`version`, `category` =
-  orchestrator/phase/discipline/artifact, `phase`, `related`) and `license: MIT`.
-- **Body sections** (in order): Overview · When to use this skill · Methodology fit · Inputs you
-  need · Workflow · Quality checklist · Anti-patterns · Resources · Related skills.
-- **Cross-links are reciprocal.** If skill A lists B in `related`, B lists A. Reference skills by
-  their exact backticked folder name.
-- **Scripts are stdlib-only**, take CSV/JSON, support `--help`, and ship with a sample input in
-  `assets/` that doubles as the template.
-
-Validate everything with the linter (folder/name match, frontmatter rules, reciprocal links,
-dead/orphan file links, body length):
+## Quality checks and CI
 
 ```bash
-python tools/lint_skills.py
+python tools/lint_skills.py      # conventions: exits non-zero on any error
+python tools/test_scripts.py     # ~390 checks across the 11 helper scripts
 ```
+
+**The linter** checks the following:
+- Frontmatter: name, description, version, category and phase.
+- Related links are reciprocal and match the *Related skills* bullets in the same order.
+- The canonical sections are present and in order, and the body stays under 500 lines.
+- No placeholder text such as TODO or TBD.
+- Every file the skills name exists: references in SKILL.md, pointers inside `references/` and
+  `assets/` Markdown, and paths in this README. Files that SKILL.md never mentions are flagged.
+- Every script's `--help` runs.
+
+**The test harness** runs each script in these ways and checks the result:
+- On its sample, and again through stdin, as JSON, with a BOM, with CRLF line endings and with
+  semicolons. All of these must give identical output.
+- On empty, header-only, `nan` and malformed-JSON input, which must give a clean `error:` and
+  exit 2.
+- For the validators, on a deliberately broken input, which must exit 1.
+
+## Conventions and contributing
+
+Every skill has the same shape, which keeps the set consistent:
+
+- **Frontmatter.**
+  - Required: `name`, which is kebab-case, equals the folder name, is at most 64 characters and
+    contains no reserved words.
+  - Required: `description`, which is third person, at most 1024 characters and has no angle
+    brackets. It says what the skill does and when to use it ("Use when…"), lists trigger
+    phrases ("Triggers: …"), and points to sibling skills for neighbouring requests.
+  - Also: `metadata` (`version`; `category` of orchestrator, phase, discipline or artifact;
+    `phase`; `related`) and `license: MIT`.
+- **Body sections, in this order:** Overview · When to use this skill · Methodology fit · Inputs
+  you need · Workflow (numbered steps, each ending with *Done:*) · Quality checklist ·
+  Anti-patterns · Resources · Related skills.
+- **Cross-links are reciprocal.** If skill A lists B in `related`, B lists A. Refer to skills by
+  their exact backticked folder name.
+- **Templates and samples are separate files** (`*-template`, `*-sample`). Samples follow the
+  Helios example.
+- **Scripts follow the I/O contract** described under [Helper scripts](#helper-scripts). Each
+  ships with a sample input in `assets/` and an entry in `tools/test_scripts.py`.
+
+Before you open a pull request, run `python tools/lint_skills.py` and
+`python tools/test_scripts.py`.
 
 ## License
 

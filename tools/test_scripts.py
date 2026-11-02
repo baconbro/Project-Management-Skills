@@ -10,7 +10,8 @@ For each script it checks:
   * bad input is rejected with `error: ...` on stderr and exit 2, never a traceback:
     empty file, header-only file, a `nan` value, a JSON file passed without --json,
     a JSON list containing a non-object
-  * validators (wbs_validate, raci_validate) return exit 1 on a deliberately broken input
+  * validators (wbs_validate, raci_validate, issue_log_check) return exit 1 on a
+    deliberately broken input
 
 Usage:
     python tools/test_scripts.py            # run everything
@@ -94,7 +95,13 @@ REGISTRY = [
         "sample": "agile-delivery/assets/sprint-history-sample.csv",
         "markers": ["velocity"],
         "numeric_col": "completed_points",
-        "optional": True,
+    },
+    {
+        "script": "project-delivery/scripts/issue_log_check.py",
+        "sample": "project-delivery/assets/issue-log-sample.csv",
+        "markers": ["I001"],
+        "numeric_col": None,
+        "broken": "id,type,description,owner,priority,status,due\nI1,issue,x,,High,Open,\nI1,risk,y,A and B,Urgent,Closed,2026-01-01\n",
     },
 ]
 
