@@ -3,15 +3,17 @@
 Sample only: a filled copy of `project-state-template.md` for the sample Helios project (a
 fictional customer self-service portal used throughout this catalog). Every name and number
 is fictional and follows the catalog's Helios canon; do not copy it into a real project. The
-numbers come from the bundled samples (commands in section 2).
+numbers come from the bundled samples (commands in section 2) and match the weekly status
+report of the same date (`status-report-sample.md` in `status-report`).
 
-As of: end of month 3 of 6 · Filled by: Sam Lee (project manager)
+As of: 2026-07-10, the week after the month-3 close (earned value as at 2026-07-03; change,
+issue and sprint data to 2026-07-10) · Filled by: Sam Lee (project manager)
 
 ## 1. Canvas (the one table)
 
 | Stage | Baseline exists? (scope / schedule / cost) | RAG (overall + worst dimension) | Top risk or issue | Next decision (who, by when) |
 |---|---|---|---|---|
-| Delivery (M1 "Discovery complete" met; M4 "MVP live to pilot" next) | approved / approved / approved | AMBER, worst: schedule (SPI 0.92), direction worsening | R001 identity-provider integration slip has materialised as issue I001 (vendor sandbox outage); work package 1.3.1 Identity / SSO integration is RED — owner Sam Lee | Approve the SSO recovery plan and decide whether to draw management reserve — decider Dana Okoro — at the next bi-weekly steering committee |
+| Delivery (M1 "Discovery complete" met on 2026-05-08; M4 "MVP live to pilot" next, forecast 2026-08-14, one week late) | approved / approved / approved | AMBER, worst: schedule (SPI 0.92), direction worsening | R001 identity-provider integration slip (risk owner Sam Lee) has materialised as issue I001: IdentityCo's sandbox was down from 2026-06-12 to 2026-07-06 and SSO is not yet working in test (issue owner Carla Diaz, due 2026-07-17); work package 1.3.1 Identity / SSO integration is RED | DEC002: approve IdentityCo's recovery plan and decide how to fund the forecast overrun, which is about $10,000 beyond the management reserve — decider Dana Okoro — steering committee 2026-07-14 |
 
 Context:
 - Outcome and measure: cut password-reset and order-status tickets by 50% within 6 months of
@@ -26,29 +28,31 @@ Context:
 
 | Dimension | Baseline (approved) | Position now / forecast | Measure | RAG | Source |
 |---|---|---|---|---|---|
-| Scope | Scope statement signed by Dana Okoro at M1; SSO is in the baseline | CR003 accessibility uplift approved ($12,000 from contingency); CR002, CR004, CR006 pending ($30,000) | Committed + pending $42,000 against $40,000 contingency | AMBER | `change_impact.py` on the change log |
-| Schedule | Critical path A → B → D → F → G → H → J = 18 weeks; milestones M1, M4, M6 | SSO integration two weeks late (task C has only 1 week of float); release outlook 4 sprints likely, 5 pessimistic, 4 left | SPI 0.92 (1.3.1 at 0.75) | AMBER | `health_check.py`, `velocity_forecast.py` |
-| Cost | BAC $500,000 incl. $40,000 contingency | AC $252,000; EAC ≈ $535,000 | CPI 0.93 (1.05 → 1.00 → 0.93), VAC ≈ -$35,000, TCPI 1.07 | AMBER | `health_check.py` |
-| Risk | $40,000 contingency; threat EMV $94,300 → $52,300 after responses | R001 (HIGH, EMV $48,000) occurring; every HIGH/MEDIUM risk has an owner and a response | Contingency nearly consumed by the forecast overrun and changes | AMBER | `risk_score.py --check` |
-| Quality | Definition of done; quality gates per sprint | No failed gate reported | — | GREEN | sprint reviews |
+| Scope | Scope statement signed by Dana Okoro at M1; SSO is in the baseline | CR003 accessibility uplift approved ($12,000 from contingency); CR002 partner-login SSO pending ($18,000, 10 days; CCB 2026-07-14); the $20,000 SSO crash option (ACT004) goes to steering with DEC002 | Committed + pending $30,000 against the $40,000 contingency ($28,000 undrawn); with the crash option, $38,000 asked | AMBER | `change_impact.py` on the change log |
+| Schedule | Critical path A → B → D → F → G → H → J = 18 weeks; milestones M1, M4, M6 | SSO working in test two weeks late (forecast 2026-07-17; task C has only 1 week of float); M4 forecast +1 week, inside the 2-week tolerance; after sprint S4, 149 points left and 6 sprints left: likely 6, pessimistic 7 | SPI 0.92 (1.3.1 at 0.75); release outlook AMBER | AMBER | `health_check.py`, `velocity_forecast.py` |
+| Cost | BAC $500,000, including the $40,000 contingency; $25,000 management reserve above BAC | AC $252,000; EAC ≈ $535,000. BAC already contains the contingency, so the forecast has used all of it and overruns BAC by about $35,000, about $10,000 more than the management reserve: a sponsor decision | CPI 0.93 (1.05 → 1.00 → 0.93), VAC ≈ -$35,000, TCPI 1.07 | AMBER | `health_check.py` |
+| Risk | Contingency $40,000, about P50 of a simulation of the residual register (P80 $99,000; the $52,300 summed residual EMV is the mean, not the reserve); the sponsor accepted the gap to P80 | R001 (HIGH, EMV $48,000) has occurred; every HIGH/MEDIUM risk has an owner and a response | $12,000 of contingency drawn (CR003) and $28,000 undrawn, but the cost forecast already needs all of it | AMBER | `risk_score.py --check` |
+| Quality | Definition of done; quality gates per sprint | No gate failed; I003 (stale QA data, 2 days overdue) makes test results unreliable; ACT003 (real-provider journey tests) blocked until SSO works in test | 1 overdue and 1 blocked item the M4 gate depends on | AMBER | `issue_log_check.py` |
 
-Overall AMBER: no dimension is RED, but schedule and cost are both below 0.95 and worsening.
+Overall AMBER: no dimension is RED, but every dimension is AMBER, schedule and cost are below
+0.95 and worsening, and work package 1.3.1 is RED.
 
 Commands that produced these numbers (run from the repository root):
 - `python .claude/skills/cost-management/scripts/health_check.py .claude/skills/cost-management/assets/evm-snapshot.csv`
 - `python .claude/skills/cost-management/scripts/health_check.py .claude/skills/cost-management/assets/evm-history-sample.csv` (the CPI trend)
-- `python .claude/skills/agile-delivery/scripts/velocity_forecast.py .claude/skills/agile-delivery/assets/sprint-history-sample.csv --backlog .claude/skills/agile-delivery/assets/product-backlog-sample.csv --sprints-left 4`
+- `head -5 .claude/skills/agile-delivery/assets/sprint-history-sample.csv | python .claude/skills/agile-delivery/scripts/velocity_forecast.py - --remaining 149 --sprints-left 6` (sprints S1-S4 only; the bundled history runs on to S6, ending 2026-07-31)
 - `python .claude/skills/risk-register/scripts/risk_score.py .claude/skills/risk-register/assets/risk-register-template.csv --check`
-- `python .claude/skills/change-request/scripts/change_impact.py .claude/skills/change-request/assets/change-log.csv`
+- `python .claude/skills/change-request/scripts/change_impact.py .claude/skills/change-request/assets/change-log.csv --reserve-cost 40000` (the bundled log runs to 2026-07-21: on 2026-07-10 only CR002 was pending, since CR004 was raised on 2026-07-14 and CR006 on 2026-07-21)
+- `python .claude/skills/project-delivery/scripts/issue_log_check.py .claude/skills/project-delivery/assets/issue-log-sample.csv --as-of 2026-07-10`
 
 ## 3. Artifact checklist by stage
 
 | Stage | Artifact | Owning skill | Exists? | Approved (date) |
 |---|---|---|---|---|
-| Initiation | Business case and benefits register | `business-case` | yes | before M1 |
-| Initiation | Signed charter | `project-charter` | yes | before M1 |
-| Initiation | Stakeholder register and engagement strategy | `stakeholder-management` | yes | M1 |
-| Initiation | Kickoff held, decisions and actions recorded | `project-initiation`, `meeting-management` | yes | M1 |
+| Initiation | Business case and benefits register | `business-case` | yes | 2026-03-20 |
+| Initiation | Signed charter | `project-charter` | yes | 2026-04-02 |
+| Initiation | Stakeholder register and engagement strategy | `stakeholder-management` | yes | 2026-04-15 |
+| Initiation | Kickoff held, decisions and actions recorded | `project-initiation`, `meeting-management` | yes | 2026-04-07 |
 | Planning | Scope statement and requirements traceability matrix | `scope-and-requirements` | yes | M1 |
 | Planning | WBS and WBS dictionary | `work-breakdown-structure` | yes | M1 |
 | Planning | Estimates with basis of estimate | `estimation` | yes | M1 |
@@ -63,16 +67,16 @@ Commands that produced these numbers (run from the repository root):
 | Planning | Procurement plan and contracts | `procurement-management` | yes (IdentityCo, firm fixed price) | M1 |
 | Planning | Ordered backlog and definition of ready | `agile-delivery` | yes | M1 |
 | Planning | Assumptions and constraints log | `project-planning` | yes (A1 identity licence still open) | M1 |
-| Planning | Project management plan; baseline approved | `project-planning` | yes | M1 |
-| Delivery | Issue, action and decision log | `project-delivery` | yes | ongoing |
-| Delivery | Weekly status report | `status-report` | yes | weekly |
+| Planning | Project management plan; baseline approved | `project-planning` | yes | M1 (2026-05-08) |
+| Delivery | Issue log: issues, actions, decisions and dependencies | `project-delivery` | yes | ongoing |
+| Delivery | Weekly status report | `status-report` | yes | weekly (latest 2026-07-10) |
 | Delivery | Change log with decisions | `change-request` | yes | ongoing |
-| Delivery | Go/no-go checklist, cutover runbook, hypercare plan | `release-and-cutover` | no — due before the M4 pilot | — |
+| Delivery | Go/no-go checklist, cutover runbook, hypercare plan | `release-and-cutover` | no — start about four weeks before the M4 pilot | — |
 | Closure | (not yet due) | `project-closure` | n.a. | — |
 
 ## 4. Gaps and routing (at most two routes)
 
 | # | Gap | Route to | First action | Artifact expected | Owner | By |
 |---|---|---|---|---|---|---|
-| 1 | SSO vendor slip threatens the M4 pilot | `procurement-management` | Hold IdentityCo to a dated recovery plan under the contract remedies | Updated vendor register and recovery milestone | Sam Lee | next steering |
-| 2 | TCPI 1.07 exceeds CPI 0.93 by more than 0.10 and contingency is nearly gone | `cost-management` | Re-forecast EAC and prepare the reserve or re-plan decision for the sponsor | Revised forecast and reserve request | Sam Lee | next steering |
+| 1 | SSO vendor slip threatens the M4 pilot | `procurement-management` | Hold IdentityCo to its dated recovery plan under the contract remedies (SSO working in test by 2026-07-17) | Updated vendor register and recovery milestone | Sam Lee | 2026-07-14 |
+| 2 | TCPI 1.07 exceeds CPI 0.93 by more than 0.10; the EAC of about $535,000 has used the whole contingency and overruns BAC by about $35,000, about $10,000 beyond the $25,000 management reserve | `cost-management` | Re-forecast the EAC and prepare the sponsor's options: draw the management reserve, fund the remaining gap, or trade scope through change control | Revised forecast and a funding request through change control | Sam Lee | 2026-07-14 |

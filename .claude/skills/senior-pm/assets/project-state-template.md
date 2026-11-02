@@ -38,6 +38,8 @@ Helper commands (run from the repository root on your own files):
 - Earned value: `python .claude/skills/cost-management/scripts/health_check.py <your-evm.csv>`
 - Velocity and release outlook: `python .claude/skills/agile-delivery/scripts/velocity_forecast.py <your-sprint-history.csv> --sprints-left <N>`
 - Risk exposure: `python .claude/skills/risk-register/scripts/risk_score.py <your-risk-register.csv>`
+- Open, overdue and escalated items: `python .claude/skills/project-delivery/scripts/issue_log_check.py <your-issue-log.csv> --as-of <YYYY-MM-DD>`
+- Change burden against the contingency: `python .claude/skills/change-request/scripts/change_impact.py <your-change-log.csv> --reserve-cost <contingency>`
 
 ## 3. Artifact checklist by stage
 
@@ -65,7 +67,7 @@ the owning skill is where to route it.
 | Planning | Ordered backlog and definition of ready (if agile or hybrid) | `agile-delivery` | `<yes / no / n.a.>` | `<date>` |
 | Planning | Assumptions and constraints log | `project-planning` | `<yes / no>` | `<date>` |
 | Planning | Project management plan; baseline approved | `project-planning` | `<yes / no>` | `<date>` |
-| Delivery | Issue, action and decision log | `project-delivery` | `<yes / no>` | `<date>` |
+| Delivery | Issue log: issues, actions, decisions and dependencies | `project-delivery` | `<yes / no>` | `<date>` |
 | Delivery | Status report on the agreed cadence | `status-report` | `<yes / no>` | `<date>` |
 | Delivery | Change log with decisions | `change-request` | `<yes / no>` | `<date>` |
 | Delivery | Go/no-go checklist, cutover runbook, hypercare plan | `release-and-cutover` | `<yes / no / n.a.>` | `<date>` |

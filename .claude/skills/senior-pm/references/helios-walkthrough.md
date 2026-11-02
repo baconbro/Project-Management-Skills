@@ -304,10 +304,12 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
   the 2026-07-14 steering committee; routes to `procurement-management` and `cost-management`.
 
 **3.8 Go live** — `release-and-cutover`
-- Artifacts: `.claude/skills/release-and-cutover/assets/go-no-go-checklist.md`,
-  `.claude/skills/release-and-cutover/assets/cutover-runbook-sample.csv`,
+- Artifacts: `.claude/skills/release-and-cutover/assets/cutover-runbook-sample.csv` (the
+  Helios GA runbook; the blank is `cutover-runbook-template.csv`), with the blank
+  `.claude/skills/release-and-cutover/assets/go-no-go-checklist.md` and
   `.claude/skills/release-and-cutover/assets/hypercare-plan-template.md`. No helper.
-- Result: a pilot at M4, then GA at M6 by a feature-flag ramp (25% → 50% → 100%); the GA
+- Result: a pilot at M4, then GA at M6 by a feature-flag ramp (25% → 50% → 100% from
+  2026-10-03 to 2026-10-12); the GA
   go/no-go returns CONDITIONAL GO with owned, dated conditions; the rehearsed runbook carries
   verifications and rollback triggers; hypercare runs to measured exit criteria before the
   service is handed to Support Operations.
@@ -315,19 +317,34 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
 ## Stage 4 — Closure (`project-closure`)
 
 **4.1 Accept and hand over** — `project-closure` (with `scope-and-requirements` for scope validation)
-- Artifact: `.claude/skills/project-closure/assets/closure-report.md`. No helper.
-- Result: deliverables accepted against the signed scope statement; the service handed to
-  operations and the benefits to Priya Nair; final cost against BAC and the reserve drawdown
-  explained in the closure report.
+- Artifacts: `.claude/skills/project-closure/assets/closure-report-sample.md` (signed
+  2026-11-20) and `.claude/skills/project-closure/assets/closeout-log-sample.csv` (22 rows,
+  none left open); the blanks are `closure-report.md`, `closeout-log-template.csv` and
+  `acceptance-record-template.md`. No helper.
+- Result: deliverables D1-D11 accepted against the signed scope statement (final acceptance
+  by Dana Okoro on 2026-10-14); hypercare exited on 2026-10-30 and the service was handed to
+  Priya Nair, who also owns the benefits. Final cost $518,600 against the $500,000 BAC (final
+  CPI 0.96): the whole $40,000 contingency was used, $18,600 of the $25,000 management reserve
+  was drawn through change control and $6,400 returned to Finance — better than the month-3
+  forecast of about $535,000. CR002 and CR004 passed undecided to the phase-2 backlog; CR006
+  was withdrawn. Project closed on 2026-11-20.
 
 **4.2 Close the contracts** — `procurement-management`
-- Artifact: `.claude/skills/procurement-management/assets/vendor-register-sample.csv` (status
-  closed). Retention is released once acceptance and the warranty period are complete.
+- Artifacts: `.claude/skills/procurement-management/assets/vendor-register-sample.csv` (shown
+  as during delivery, IdentityCo active and RED; at closure its row moves to closed) and
+  section 6 of `.claude/skills/project-closure/assets/closure-report-sample.md`.
+- Result: IdentityCo's services contract closed on 2026-11-13 at $21,120 ($880 delay credit
+  applied); the $2,200 retention was released after acceptance and the warranty period ended;
+  the subscription and hosting transfer to operating owners.
 
 **4.3 Learn** — `lessons-learned`
-- Artifact: `.claude/skills/lessons-learned/assets/lessons-learned.csv`. No helper.
-- Result: lessons with owners and dates, e.g. give vendor onboarding a named owner in the
-  plan; report AMBER the moment a milestone is threatened.
+- Artifact: `.claude/skills/lessons-learned/assets/lessons-learned-sample.csv` (LL001-LL007;
+  the blank is `lessons-learned.csv`, with `retrospective-record-template.md` and
+  `post-mortem-template.md`). No helper.
+- Result: lessons were captured throughout, not only at the end (sprint retrospectives from
+  2026-06-05, the post-project review on 2026-11-04), each with an owner and a date, e.g.
+  LL001 give vendor onboarding a named owner from the day of award; LL002 report AMBER the
+  moment a milestone is threatened.
 
 **4.4 Track the benefits** — `business-case`
 - Artifact: `.claude/skills/business-case/assets/benefits-register-sample.csv`.
@@ -336,34 +353,42 @@ stage the user is in. Hand the user one or two skills at a time, not this whole 
 
 ## Asset map — which step uses which file
 
-| Skill | Files (under `.claude/skills/<skill>/assets/`) | Step |
-|---|---|---|
-| `senior-pm` | `project-state-template.md`, `project-state-sample.md` | 0, 3.7 |
-| `business-case` | `business-case-template.md`, `cashflows.csv`, `cashflows-options-sample.csv`, `benefits-register-sample.csv` | 1.1, 4.4 |
-| `project-charter` | `charter-template.md` | 1.2 |
-| `stakeholder-management` | `stakeholder-register.csv`, `engagement-matrix.md` | 1.3 |
-| `project-initiation` | `kickoff-deck-outline.md` | 1.4 |
-| `meeting-management` | `agenda-template.md`, `action-items.csv` | 1.4, 3.6 |
-| `scope-and-requirements` | `scope-statement-template.md`, `scope-statement-sample.md`, `requirements-traceability-template.csv`, `requirements-traceability-sample.csv` | 2.1, 4.1 |
-| `work-breakdown-structure` | `wbs-template.md`, `wbs-template.csv`, `wbs-sample.csv` | 2.2 |
-| `procurement-management` | `statement-of-work-template.md`, `vendor-scorecard-template.csv`, `vendor-scorecard-sample.csv`, `vendor-onboarding-checklist.md`, `vendor-register-template.csv`, `vendor-register-sample.csv` | 2.3, 3.4, 4.2 |
-| `estimation` | `estimation-worksheet-template.csv`, `estimation-worksheet-sample.csv`, `duration-worksheet-sample.csv` | 2.4 |
-| `project-schedule` | `schedule-template.csv`, `schedule-sample.csv` | 2.5 |
-| `resource-management` | `resource-allocation-template.csv`, `resource-allocation-sample.csv`, `team-charter-template.md` | 2.6 |
-| `raci-matrix` | `raci-template.md`, `raci-template.csv`, `raci-sample.csv`, `daci-decisions-sample.csv` | 2.7 |
-| `risk-register` | `risk-register-template.csv` | 2.8 |
-| `cost-management` | `cost-baseline-template.csv`, `evm-snapshot.csv`, `evm-history-sample.csv` | 2.9, 3.2 |
-| `quality-management` | `definition-of-done.md` | 2.10 |
-| `project-communication` | `communication-plan.csv` | 2.10 |
-| `agile-delivery` | `product-backlog-template.csv`, `product-backlog-sample.csv`, `sprint-plan-template.md`, `sprint-history-sample.csv` | 2.11, 3.1 |
-| `project-planning` | `project-management-plan.md`, `project-management-plan-sample.md`, `assumptions-log.csv`, `assumptions-log-sample.csv` | 2.12 |
-| `project-delivery` | `issue-log.csv` | 3.3 |
-| `change-request` | `change-request-template.md`, `change-request-sample.md`, `change-log.csv` | 3.5 |
-| `status-report` | `status-report-template.md`, `status-report.csv` | 3.6 |
-| `release-and-cutover` | `go-no-go-checklist.md`, `cutover-runbook-template.csv`, `cutover-runbook-sample.csv`, `hypercare-plan-template.md` | 3.8 |
-| `project-closure` | `closure-report.md` | 4.1 |
-| `lessons-learned` | `lessons-learned.csv` | 4.3 |
+All files are under `.claude/skills/<skill>/assets/`. "Filled Helios data" is what the steps
+above read; "Blank to copy" is what you copy for a real project. A few Helios files keep
+their original script-input names (`cashflows.csv`, `evm-snapshot.csv`, `change-log.csv`,
+`cost-baseline-template.csv`, `risk-register-template.csv`): they hold Helios data even
+though they are not named `-sample`.
 
-Skills with no asset of their own in this walk: `risk-management` (process, step 2.8),
-`change-management` (thresholds and CCB, steps 2.10 and 3.5). File names can change between
+| Skill | Filled Helios data | Blank to copy | Step |
+|---|---|---|---|
+| `senior-pm` | `project-state-sample.md` | `project-state-template.md` | 0, 3.7 |
+| `business-case` | `cashflows.csv`, `cashflows-options-sample.csv`, `benefits-register-sample.csv` | `business-case-template.md` | 1.1, 4.4 |
+| `project-charter` | `charter-sample.md` | `charter-template.md` | 1.2 |
+| `stakeholder-management` | `stakeholder-register-sample.csv`, `engagement-matrix-sample.md` | `stakeholder-register.csv`, `engagement-matrix.md` | 1.3 |
+| `project-initiation` | `initiation-gate-record-sample.md`, `kickoff-deck-sample.md` | `initiation-gate-record.md`, `kickoff-deck-outline.md` | 1.4 |
+| `meeting-management` | `agenda-sample.md`, `action-items-sample.csv`, `decision-log-sample.csv` | `agenda-template.md`, `action-items.csv`, `decision-log.csv` | 1.4, 3.6 |
+| `scope-and-requirements` | `scope-statement-sample.md`, `requirements-traceability-sample.csv` | `scope-statement-template.md`, `requirements-traceability-template.csv` | 2.1, 4.1 |
+| `work-breakdown-structure` | `wbs-sample.csv` | `wbs-template.md`, `wbs-template.csv` | 2.2 |
+| `procurement-management` | `vendor-scorecard-sample.csv`, `vendor-register-sample.csv` | `statement-of-work-template.md`, `vendor-scorecard-template.csv`, `vendor-register-template.csv`, `vendor-onboarding-checklist.md` | 2.3, 3.4, 4.2 |
+| `estimation` | `estimation-worksheet-sample.csv`, `duration-worksheet-sample.csv` | `estimation-worksheet-template.csv` | 2.4 |
+| `project-schedule` | `schedule-sample.csv` | `schedule-template.csv` | 2.5 |
+| `resource-management` | `resource-allocation-sample.csv` | `resource-allocation-template.csv`, `team-charter-template.md` | 2.6 |
+| `raci-matrix` | `raci-sample.csv`, `daci-decisions-sample.csv` | `raci-template.md`, `raci-template.csv` | 2.7 |
+| `risk-register` | `risk-register-template.csv` | — (copy the header rows) | 2.8 |
+| `risk-management` | `risk-management-plan-sample.md`, `risk-response-plan-sample.csv` | `risk-management-plan-template.md`, `risk-response-plan-template.csv`, `risk-workshop-template.md` | 2.8 |
+| `cost-management` | `cost-baseline-template.csv`, `evm-snapshot.csv`, `evm-history-sample.csv` | — (copy the header rows) | 2.9, 3.2 |
+| `quality-management` | `quality-plan-sample.md`, `definition-of-done-sample.md`, `defect-log-sample.csv`, `quality-audit-log-sample.csv` | `quality-plan-template.md`, `definition-of-done.md`, `defect-log-template.csv`, `quality-audit-log-template.csv` | 2.10 |
+| `project-communication` | `communication-plan-sample.csv`, `communication-review-log-sample.csv` | `communication-plan.csv`, `communication-review-log.csv`, `escalation-ladder-template.md` | 2.10 |
+| `change-management` | `change-control-plan-sample.md`, `adoption-plan-sample.md` | `change-control-plan-template.md`, `adoption-plan-template.md` | 2.10, 3.5 |
+| `agile-delivery` | `product-backlog-sample.csv`, `sprint-history-sample.csv` | `product-backlog-template.csv`, `sprint-plan-template.md` | 2.11, 3.1 |
+| `project-planning` | `project-management-plan-sample.md`, `assumptions-log-sample.csv` | `project-management-plan.md`, `assumptions-log.csv` | 2.12 |
+| `project-delivery` | `issue-log-sample.csv` | `issue-log.csv`; `rebaseline-template.md` (only for a project running without a baseline, which Helios was not) | 3.3 |
+| `change-request` | `change-log.csv`, `change-request-sample.md` | `change-request-template.md` | 3.5 |
+| `status-report` | `status-report-sample.md`, `rag-history-sample.csv` | `status-report-template.md`, `rag-history-template.csv` | 3.6 |
+| `release-and-cutover` | `cutover-runbook-sample.csv` | `cutover-runbook-template.csv`, `go-no-go-checklist.md`, `hypercare-plan-template.md` | 3.8 |
+| `project-closure` | `closure-report-sample.md`, `closeout-log-sample.csv` | `closure-report.md`, `closeout-log-template.csv`, `acceptance-record-template.md` | 4.1 |
+| `lessons-learned` | `lessons-learned-sample.csv` | `lessons-learned.csv`, `retrospective-record-template.md`, `post-mortem-template.md` | 4.3 |
+
+All 27 skills appear above. Where "Blank to copy" says "copy the header rows", keep the
+file's columns and replace the Helios rows with your own. File names can change between
 catalog versions; `ls .claude/skills/<skill>/assets/` is authoritative.
