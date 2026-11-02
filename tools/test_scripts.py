@@ -49,7 +49,7 @@ REGISTRY = [
     {
         "script": "project-schedule/scripts/critical_path.py",
         "sample": ["project-schedule/assets/schedule-sample.csv", "project-schedule/assets/schedule-template.csv"],
-        "markers": ["Critical path", "18"],
+        "markers": ["Critical path: A -> B -> D -> G -> H -> J", "Project duration: 25"],
         "numeric_col": "duration",
     },
     {
