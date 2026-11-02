@@ -1,20 +1,10 @@
 ---
 name: project-communication
 description: >-
-  Designs and revises the project communication plan: who needs what and why,
-  in which mode (push, pull or interactive), channel and cadence, from whom,
-  how feedback comes back, and an escalation ladder with forecast-based
-  triggers and time-boxes; then checks that messages land. Use when the user
-  wants to build a communication plan, decide who needs to know what and how
-  often, tailor one update for executives, the team and customers, set
-  feedback channels or an escalation path, or fix communication that is not
-  landing. Triggers: "communication plan", "comms plan",
-  "communication matrix", "who needs to know", "who hears what", "reporting
-  cadence", "escalation path", "escalation ladder", "push, pull or
-  interactive", "nobody told me", "people are surprised by decisions". Turns
-  the engagement strategy from stakeholder-management into scheduled messages;
-  for one report, use status-report; for cutover-day messages, use
-  release-and-cutover. Works for waterfall, agile, and hybrid projects.
+  Builds the communication plan: who needs what, how and how often, from whom, feedback
+  channels and an escalation ladder, then checks that messages land. Use when planning
+  stakeholder updates, setting a reporting cadence or escalation path, or when people are
+  surprised by decisions.
 metadata:
   version: 1.1.0
   category: discipline

@@ -26,6 +26,12 @@ works in Claude Code, Claude Desktop and Web, Cowork, Codex and other AI agents.
 3. The helper scripts need only **Python 3**, with nothing to install. Every script supports
    `--help`.
 
+All 27 descriptions together fit in about 7,600 characters, so the whole catalog fits Claude
+Code's skill-listing budget. That budget is about 1% of the context window and is shared
+with any other skills you have installed. If `/context` shows skill descriptions being
+dropped, raise `skillListingBudgetFraction` in your settings, or set skills you never use to
+`"name-only"` under `skillOverrides`.
+
 **Example conversation**
 
 > **You:** "I've been asked to launch a customer self-service portal. Where do I start?"
@@ -235,9 +241,12 @@ Every skill has the same shape, which keeps the set consistent:
 - **Frontmatter.**
   - Required: `name`, which is kebab-case, equals the folder name, is at most 64 characters and
     contains no reserved words.
-  - Required: `description`, which is third person, at most 1024 characters and has no angle
-    brackets. It says what the skill does and when to use it ("Use when…"), lists trigger
-    phrases ("Triggers: …"), and points to sibling skills for neighbouring requests.
+  - Required: `description`, which is third person and has no angle brackets. It says what
+    the skill does and when to use it ("Use when…") in one or two sentences of at most about
+    300 characters. Claude Code shows every skill's name but fits the descriptions into a
+    small listing budget, so the whole catalog stays under 8,000 characters (the linter
+    warns above 350 per skill). The detailed trigger phrases and the "use another skill
+    for…" redirections go in the body's *When to use this skill* section.
   - Also: `metadata` (`version`; `category` of orchestrator, phase, discipline or artifact;
     `phase`; `related`) and `license: MIT`.
 - **Body sections, in this order:** Overview · When to use this skill · Methodology fit · Inputs

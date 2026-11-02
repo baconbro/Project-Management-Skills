@@ -1,19 +1,10 @@
 ---
 name: project-schedule
 description: >-
-  Builds and analyzes a project schedule from task durations and finish-to-start
-  dependencies: forward and backward passes, early/late dates, total and free
-  float, every critical path, near-critical tasks, calendar dates, a text Gantt
-  chart and a Monte Carlo schedule-risk simulation with the bundled
-  critical_path.py helper. Use when the user wants to build a schedule or
-  timeline, sequence tasks and milestones, find the critical path or float, map
-  a plan to calendar dates, compress a schedule, or see which tasks drive the
-  finish date. Triggers: "project schedule", "critical path", "CPM", "total
-  float", "free float", "slack", "finish-to-start", "task dependencies",
-  "network diagram", "Gantt chart", "crash or fast-track", "schedule
-  compression", "milestone dates", "how long will the project take". For sizing
-  the task durations themselves, use estimation. Works for waterfall, agile,
-  and hybrid projects.
+  Builds and analyzes a schedule from durations and dependencies: critical path, float,
+  calendar dates, a text Gantt, schedule-risk simulation and compression
+  (critical_path.py). Use when building a timeline, finding the critical path, or asking
+  how long the project will take or what drives the finish date.
 metadata:
   version: 1.1.0
   category: artifact

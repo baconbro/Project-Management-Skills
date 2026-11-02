@@ -1,19 +1,10 @@
 ---
 name: release-and-cutover
 description: >-
-  Plans and runs the move from built and tested to live and supported: chooses the
-  release strategy (big-bang, phased, pilot, parallel run, feature-flag ramp), sets
-  go-live readiness criteria per workstream, runs the go/no-go decision to a GO,
-  CONDITIONAL GO or NO-GO verdict by a named approver, writes and rehearses a timed
-  cutover runbook with verifications and rollback triggers, then runs hypercare to
-  measured exit criteria and hands the service to operations. Use when the user is
-  preparing a launch, go-live, migration weekend or rollout, needs a go/no-go
-  checklist, cutover runbook, rollback plan or hypercare plan, or must decide
-  whether a release is ready. Triggers: "cutover plan", "cutover runbook", "go/no-go
-  decision", "go-live readiness", "we go live next week", "rollback plan", "release
-  strategy", "phased rollout", "pilot launch", "parallel run", "dress rehearsal",
-  "hypercare". For closing the project after hypercare, use project-closure. Works
-  for waterfall, agile, and hybrid projects.
+  Plans go-live: release strategy, readiness criteria, the go/no-go decision, a rehearsed
+  cutover runbook with rollback triggers, and hypercare through handover to operations.
+  Use when preparing a launch, migration or rollout, or deciding whether a release is
+  ready to go live.
 metadata:
   version: 1.0.0
   category: artifact

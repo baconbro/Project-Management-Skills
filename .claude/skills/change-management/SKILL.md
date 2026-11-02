@@ -1,19 +1,10 @@
 ---
 name: change-management
 description: >-
-  Governs change in both senses: change CONTROL, the procedure that raises, logs,
-  assesses, decides, communicates and verifies changes to the scope, schedule and
-  cost baselines through a change control board (CCB), approval tolerances, an
-  emergency route and change freezes; and change ADOPTION, sponsor-led readiness,
-  ADKAR, resistance and reinforcement against adoption targets agreed before
-  go-live. Use when the user wants to set up change control or a CCB, decide who
-  approves which changes, stop scope creep, know who updates which baseline after
-  approval, or plan adoption of a new way of working. Triggers: "change
-  management", "change control process", "change control board", "CCB", "scope
-  creep", "integrated change control", "approval tolerances", "emergency change",
-  "change freeze", "ADKAR", "user adoption", "change readiness assessment",
-  "resistance to change". For raising, scoring or logging one change request, use
-  change-request. Works for waterfall, agile, and hybrid projects.
+  Sets up change control (change control board, approval tolerances, emergency changes,
+  freezes) and plans adoption of the new way of working (readiness, ADKAR, resistance).
+  Use when stopping scope creep, deciding who approves which changes, or preparing people
+  for a change.
 metadata:
   version: 1.1.0
   category: discipline

@@ -1,20 +1,10 @@
 ---
 name: status-report
 description: >-
-  Writes and reviews the periodic project status report evidence-first: gathers
-  earned value and the cost forecast, milestone forecasts, pending change
-  requests, issues, quality and sprint data; rates scope, schedule, cost and
-  quality against agreed tolerances on the forecast, not to-date indices alone;
-  rolls up an overall Red/Amber/Green with previous rating and trend; gives each
-  amber or red item an owner and an action; and asks for decisions with options
-  and a deadline. Use when the
-  user wants to write or review a status report, weekly update or steering pack,
-  set or defend a RAG rating, or explain why a project is amber. Triggers:
-  "status report", "weekly update", "status update", "progress report", "RAG
-  status", "RAG rating", "traffic-light status", "steering pack", "watermelon
-  report", "why is my project amber". For the reporting cadence and audiences,
-  use project-communication; for a diagnostic health check that routes to the
-  next skill, use senior-pm. Works for waterfall, agile, and hybrid projects.
+  Writes evidence-based project status reports: RAG ratings against tolerances on the
+  forecast, trend, owners and actions for amber and red items, and decisions needed. Use
+  when writing or reviewing a status report, weekly update or steering pack, or explaining
+  a RAG rating.
 metadata:
   version: 1.1.0
   category: artifact

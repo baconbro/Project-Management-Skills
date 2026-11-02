@@ -1,19 +1,9 @@
 ---
 name: work-breakdown-structure
 description: >-
-  Decomposes project scope into a hierarchical work breakdown structure (WBS) of
-  deliverables and verifiable work packages, applies the 100% rule, records the WBS
-  dictionary (owner, acceptance criterion, control account) once in a CSV, and with
-  the bundled wbs_validate.py helper validates hierarchy and weights, suggests
-  corrected weights, rolls weights up to each element's share of the project and
-  budget, and exports the work packages for estimation. Use when the user wants to
-  build a WBS, break scope into deliverables or work packages, check that the
-  breakdown covers 100% of the work, validate weights and parent-child structure,
-  write a WBS dictionary, or allocate a budget by WBS weight. Triggers: "work
-  breakdown structure", "WBS", "WBS dictionary",
-  "decompose scope", "break down the project", "work packages", "100% rule",
-  "deliverable breakdown", "control account". For sequencing the work packages into
-  a timeline, use project-schedule. Works for waterfall, agile, and hybrid projects.
+  Decomposes scope into a WBS of deliverables and work packages (100% rule) with a WBS
+  dictionary, then validates and rolls up weights and budget (wbs_validate.py). Use when
+  breaking a project into work packages or checking a WBS.
 metadata:
   version: 1.1.0
   category: artifact

@@ -1,19 +1,10 @@
 ---
 name: senior-pm
 description: >-
-  Acts as the front door to the project-management catalog: triages a project's
-  lifecycle stage and how it is doing against its baseline on scope, schedule,
-  cost and risk, records it in a one-table project-state
-  canvas, recommends waterfall, agile or hybrid, and routes by stage or symptom to at most
-  two specialist skills with a first action. Holds the PM glossary, a routing map of all
-  27 skills and the worked example. Use when the user is unsure where to start, asks for
-  general project-management help, describes a project or a symptom without naming an
-  artifact, asks whether a project is on track, or wants a methodology recommendation.
-  Triggers: "help me manage a project", "where do I start", "is my project on track",
-  "what should I do next", "which approach should I use", "waterfall or agile", "triage
-  my project", "health check on my project", "what does this PM term mean". For running a
-  baselined project day to day, use project-delivery. Works for waterfall, agile, and
-  hybrid projects.
+  Front door to the project-management skills: triages a project's stage and health,
+  recommends waterfall, agile or hybrid, and routes to the right skill with a first
+  action; holds the PM glossary and a worked example. Use when unsure where to start,
+  asking for general PM help, or asking whether a project is on track.
 metadata:
   version: 1.1.0
   category: orchestrator

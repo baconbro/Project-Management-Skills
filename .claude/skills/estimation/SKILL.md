@@ -1,18 +1,10 @@
 ---
 name: estimation
 description: >-
-  Estimates effort, duration, or cost using analogous, parametric, three-point
-  (PERT), story-point, planning-poker, and wideband-Delphi techniques, and turns
-  three-point inputs into expected values, variance shares, P50/P80/P90 commit
-  levels, a contingency reserve, and a PERT-Beta simulation of the total with the
-  bundled pert_estimate.py helper. Use when the user wants to estimate or size
-  work, produce effort/duration/cost figures with a confidence range, build a
-  PERT or three-point estimate, run planning poker, or size a reserve from a
-  confidence level. Triggers: "estimate", "estimation", "sizing", "three-point",
-  "PERT", "story points", "planning poker", "wideband Delphi", "confidence
-  range", "how much effort", "P80", "basis of estimate". For sequencing
-  durations into a timeline and critical path, use project-schedule. Works for
-  waterfall, agile, and hybrid projects.
+  Estimates effort, duration or cost with analogous, parametric, three-point (PERT),
+  story-point and Delphi techniques, with P50/P80/P90 confidence levels
+  (pert_estimate.py). Use when sizing work, building a PERT estimate, running planning
+  poker, or asking how much effort something will take.
 metadata:
   version: 1.1.0
   category: artifact

@@ -1,20 +1,10 @@
 ---
 name: raci-matrix
 description: >-
-  Builds and validates a responsibility assignment matrix (RACI, RASCI or DACI)
-  giving every activity, work package or decision exactly one Accountable and
-  at least one Responsible, with Consulted and Informed kept lean. Its
-  raci_validate.py helper rejects ambiguous cells, flags contradictory letters,
-  ghost or overloaded roles and single points of failure, writes suggested
-  fixes, and summarises each role's workload. Use when the user wants to
-  create, review, or repair a RACI, RASCI or DACI chart, settle who owns, does,
-  or is only told about each piece of work, or untangle disputed ownership and
-  decision rights. Triggers: "RACI", "RASCI",
-  "DACI", "RACI chart", "responsibility assignment matrix", "who is accountable
-  for", "single point of accountability", "decision rights", "roles and
-  responsibilities matrix", "who does what". For the people behind the roles
-  and their engagement, use stakeholder-management; for their capacity, use
-  resource-management. Works for waterfall, agile, and hybrid projects.
+  Builds and validates a RACI, RASCI or DACI matrix with exactly one Accountable per
+  activity, flagging overloaded roles and single points of failure (raci_validate.py). Use
+  when settling who owns, does, is consulted on or is informed about each piece of work or
+  decision.
 metadata:
   version: 1.1.0
   category: artifact

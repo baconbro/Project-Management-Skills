@@ -1,18 +1,10 @@
 ---
 name: business-case
 description: >-
-  Builds the investment case for a project: the problem and the cost of inaction, options
-  compared against the do-nothing baseline, benefits with baselines, targets, owners and
-  dis-benefits, whole-life costs, a financial
-  appraisal (NPV, IRR, ROI, payback, sensitivity, switching values, stress cases, per-option
-  comparison) with the bundled roi_npv.py helper, then records the funding decision. Use
-  when the user wants to justify, appraise, or get approval for an investment, weigh options
-  against a baseline, quantify benefits and costs, test a case for optimism bias, or compute
-  NPV/IRR/ROI/payback before committing funds. Triggers: "business case",
-  "investment case", "cost-benefit analysis", "options analysis", "justify the project",
-  "NPV", "IRR", "ROI", "payback period", "switching value", "do-nothing option", "benefits
-  register". For authorizing the project once justified, use project-charter; for tracking
-  spend after approval, use cost-management. Works for waterfall, agile, and hybrid projects.
+  Builds the investment case: options against do-nothing, benefits with owners, whole-life
+  costs, and NPV, IRR, ROI, payback and sensitivity (roi_npv.py). Use when justifying or
+  appraising a project, comparing options, or deciding whether an investment is worth
+  funding.
 metadata:
   version: 1.1.0
   category: artifact

@@ -1,20 +1,10 @@
 ---
 name: stakeholder-management
 description: >-
-  Identifies, analyzes and engages project stakeholders: builds the
-  stakeholder register, rates power and interest H/M/L and places each one on
-  the power/interest grid by an explicit rule, applies the salience model and
-  stakeholder cube to contested cases, compares current with desired
-  engagement, and sets concrete actions and a named owner for each. Use when
-  the user wants to find out who the stakeholders are, prioritize them, build
-  a stakeholder register or map, decide how to win over a person or group, or
-  handle a sponsor who has gone quiet or an active blocker. Triggers: "stakeholder analysis", "stakeholder register",
-  "stakeholder map", "power/interest grid", "salience model", "stakeholder
-  cube", "engagement assessment matrix", "who are the stakeholders", "the
-  sponsor has gone quiet", "a stakeholder is blocking us", "win over a
-  resistant stakeholder". For who does each piece of work, use raci-matrix;
-  for the schedule of messages, use project-communication. Works for
-  waterfall, agile, and hybrid projects.
+  Identifies and analyzes stakeholders (register, power/interest grid, salience) and plans
+  engagement with owners and actions. Use when working out who the stakeholders are,
+  prioritizing them, or handling a disengaged sponsor or a stakeholder who is blocking the
+  project.
 metadata:
   version: 1.1.0
   category: discipline

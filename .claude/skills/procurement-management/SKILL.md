@@ -1,20 +1,10 @@
 ---
 name: procurement-management
 description: >-
-  Plans and runs project procurement: make-or-buy per work package, statements
-  of work with deliverables, acceptance and service levels, sourcing by RFI,
-  RFQ or RFP with pass/fail gates, weighted vendor scoring with a
-  switching-weight check and due diligence, the contract type (fixed price,
-  time and materials, cost-plus, agile) and its risk allocation, then vendor
-  onboarding, performance, acceptance before payment, contract changes,
-  disputes and closure. Use when the user wants to decide whether to build or
-  buy, write a statement of work or an RFP, select a vendor, choose a contract
-  type, manage a late or failing supplier, or close out a contract.
-  Triggers: "procurement plan", "make or buy", "build or buy", "statement of
-  work", "SOW", "RFP", "RFQ", "vendor selection", "vendor scorecard", "fixed
-  price or time and materials", "supplier performance", "my vendor is late",
-  "close the contract". For contract costs in the budget, use
-  cost-management. Works for waterfall, agile, and hybrid projects.
+  Plans and runs procurement: make-or-buy, statements of work, RFI/RFQ/RFP, weighted
+  vendor selection, contract type and risk, then supplier performance, acceptance and
+  contract closure. Use when deciding to build or buy, writing an SOW or RFP, choosing a
+  vendor, or managing a late supplier.
 metadata:
   version: 1.0.0
   category: discipline

@@ -1,20 +1,10 @@
 ---
 name: quality-management
 description: >-
-  Plans, assures and controls project quality: objectives and metrics, the
-  cost-of-quality balance that decides what is good enough, the
-  acceptance-criteria standard, a definition of done, quality gates with entry
-  and exit criteria, and process audits (quality assurance) kept apart from
-  testing and the defect log (quality control). Use when the user wants a
-  quality management plan, a definition of done, gate exit criteria, a review
-  and test cadence, quality metrics, a process audit or defect severities, or
-  the team disputes whether work is done. Triggers: "quality management plan",
-  "definition of done", "DoD", "quality gate", "entry and exit criteria",
-  "acceptance criteria", "Given/When/Then", "cost of quality", "quality
-  assurance vs quality control", "process audit", "defect log", "escaped
-  defects", "quality vs grade". For each requirement's acceptance test and
-  sign-off, use scope-and-requirements; for go-live readiness, use
-  release-and-cutover. Works for waterfall, agile, and hybrid projects.
+  Plans and controls quality: objectives and metrics, cost of quality, acceptance
+  criteria, definition of done, quality gates, process audits (QA) and the defect log
+  (QC). Use when writing a quality plan, a definition of done or gate criteria, or when
+  the team disputes whether work is done.
 metadata:
   version: 1.1.0
   category: discipline

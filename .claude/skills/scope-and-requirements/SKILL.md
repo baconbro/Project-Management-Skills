@@ -1,19 +1,10 @@
 ---
 name: scope-and-requirements
 description: >-
-  Defines what a project will and will not deliver: elicits and writes functional,
-  non-functional and transition requirements with MoSCoW priorities and acceptance
-  tests, drafts the scope statement (deliverables, acceptance criteria, exclusions,
-  assumptions, constraints), traces each requirement to its objective, WBS work
-  package and test in a traceability matrix, and runs scope validation, the formal
-  acceptance of finished deliverables. Use when the user wants to gather
-  requirements, write a scope statement, settle what is in or out of scope,
-  prioritise requirements, build or audit a traceability matrix, or get deliverables
-  signed off. Triggers: "requirements gathering", "elicit
-  requirements", "scope statement", "requirements traceability matrix", "RTM",
-  "MoSCoW", "non-functional requirements", "is this in scope", "validate scope",
-  "deliverable sign-off". For decomposing the agreed scope into work packages, use
-  work-breakdown-structure. Works for waterfall, agile, and hybrid projects.
+  Defines what the project will deliver: requirements with MoSCoW priorities and
+  acceptance tests, the scope statement and exclusions, a traceability matrix, and formal
+  acceptance of deliverables. Use when gathering requirements, writing a scope statement,
+  or deciding whether something is in scope.
 metadata:
   version: 1.0.0
   category: artifact

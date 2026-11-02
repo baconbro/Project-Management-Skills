@@ -1,20 +1,10 @@
 ---
 name: lessons-learned
 description: >-
-  Runs retrospectives, blameless post-mortems and lessons-learned reviews, then
-  turns what was learned into owned, dated improvements and checks that they
-  worked. Picks a format (start/stop/continue, 4Ls, sailboat,
-  mad/sad/glad, 5 whys, timeline post-mortem), grounds each lesson in evidence
-  and a root cause, classifies it by category and impact, and routes it: sprint
-  retrospective actions into the next sprint backlog, project actions into the
-  issue log, organisational lessons into standards. Use when the user wants to
-  run a retrospective or post-mortem, capture or classify lessons, find the
-  root cause of a failure, or stop repeating the same mistakes. Triggers:
-  "lessons learned", "lessons log", "retrospective", "sprint retrospective",
-  "post-mortem", "post-implementation review", "what went well", "start stop
-  continue", "5 whys", "root cause analysis", "same mistakes again",
-  "continuous improvement". For the close-out around a final review, use
-  project-closure. Works for waterfall, agile, and hybrid projects.
+  Runs retrospectives and blameless post-mortems, finds root causes (5 whys, timelines)
+  and turns lessons into owned, dated actions that are checked later. Use when running a
+  sprint retrospective, project review or post-mortem, or when the same mistakes keep
+  happening.
 metadata:
   version: 1.1.0
   category: artifact

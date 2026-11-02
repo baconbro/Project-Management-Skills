@@ -1,20 +1,10 @@
 ---
 name: agile-delivery
 description: >-
-  Runs agile delivery inside any project: builds and orders the product backlog
-  with INVEST user stories and a definition of ready, plans and runs sprints,
-  tracks velocity and burnup, and forecasts the sprints the remaining backlog
-  needs as an optimistic, likely and pessimistic range with a priority cut line
-  against a fixed date, using the bundled velocity_forecast.py helper; maps story
-  points onto hybrid baselines, earned value and change control. Use when the
-  user wants to write or split user stories, refine or order a backlog, plan the
-  next sprint, run a sprint review, or forecast a release date or the scope that
-  fits a date. Triggers: "agile delivery", "scrum", "kanban", "sprint planning",
-  "plan the next sprint", "product backlog", "user stories", "definition of
-  ready", "velocity", "burndown", "burnup", "how many sprints are left", "release
-  forecast", "sprint review", "backlog refinement". For sizing stories with
-  planning poker, use estimation. Works for waterfall, agile, and hybrid
-  projects.
+  Runs agile delivery: backlog and INVEST user stories, sprint planning and review,
+  velocity and burnup, and a release forecast range with a cut line
+  (velocity_forecast.py). Use when writing or splitting stories, planning a sprint, or
+  forecasting how many sprints are left or what scope fits a date.
 metadata:
   version: 1.0.0
   category: discipline

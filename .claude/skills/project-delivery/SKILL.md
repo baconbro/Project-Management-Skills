@@ -1,20 +1,10 @@
 ---
 name: project-delivery
 description: >-
-  Runs a baselined project day to day: tracks progress against the baseline,
-  verifies and accepts finished deliverables, keeps one log of issues, actions,
-  decisions and dependencies (checked by the bundled issue_log_check.py helper),
-  executes risk responses when risks occur, controls change, escalates, and
-  prepares go-live and the handover to closure; builds a one-day interim
-  baseline for a running project that has none. Use when the user is executing a
-  plan, keeping a running project in control, logging or escalating a problem
-  happening now, accepting a finished deliverable, or taking over a mid-flight
-  project with no baseline. Triggers: "we are in delivery", "execute the plan",
-  "monitor and control", "track progress against the baseline", "issue log",
-  "log an issue", "escalate a blocker", "a risk has happened", "project already
-  running with no baseline". For writing the status report itself, use
-  status-report; for sprint mechanics, use agile-delivery. Works for waterfall,
-  agile, and hybrid projects.
+  Runs a baselined project day to day: tracks progress, accepts deliverables, keeps one
+  issue, action, decision and dependency log (issue_log_check.py) and escalates. Use when
+  executing or controlling a running project, logging or escalating a problem, or taking
+  over a project with no baseline.
 metadata:
   version: 1.1.0
   category: phase

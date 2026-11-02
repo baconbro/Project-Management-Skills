@@ -1,20 +1,10 @@
 ---
 name: project-planning
 description: >-
-  Builds the integrated project management plan and sets the performance
-  baseline in one ordered pass: agrees the scope statement, decomposes it into a
-  WBS, decides make-or-buy, estimates, staffs and levels the schedule, analyses
-  risk to size contingency, plans quality, sets the cost baseline with the
-  management reserve above it, plans responsibilities, communications and
-  change control, keeps an assumptions and constraints log, then reconciles the
-  parts for one sponsor approval. Use when the user has an authorized project
-  and needs to plan it end to end, write a project management plan, set or
-  re-set a baseline, or check that scope, schedule, cost and resources agree
-  before sign-off. Triggers: "project management plan", "integrated project
-  plan", "planning phase", "set the baseline", "ready to baseline",
-  "rolling-wave plan", "assumptions log", "reconcile the plan". For one
-  component alone, use its specialist skill (for staffing, resource-management).
-  Works for waterfall, agile, and hybrid projects.
+  Builds the integrated project plan and baseline in one ordered pass (scope, WBS,
+  estimates, resources, schedule, risk, quality, cost, communications, change control) and
+  reconciles it for sponsor approval. Use when planning a project end to end or setting or
+  re-setting a baseline.
 metadata:
   version: 1.1.0
   category: phase

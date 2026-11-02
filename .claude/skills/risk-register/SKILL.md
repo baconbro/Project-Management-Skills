@@ -1,18 +1,9 @@
 ---
 name: risk-register
 description: >-
-  Produces and maintains a project risk register — threats and opportunities with
-  owners, triggers, responses, residual scores and status — and scores it by exposure
-  (probability x impact, i.e. expected monetary value) into HIGH/MEDIUM/LOW bands with
-  the bundled risk_score.py helper, which also simulates total threat exposure for
-  reserve sizing and checks the register before a review. Use when the user wants to
-  create, update, prioritize, or review a risk register or risk log, capture and rank
-  project risks, compute exposure per risk and for the portfolio, or decide which
-  risks to act on first. Triggers: "risk register", "risk log", "log a risk",
-  "prioritize risks", "rank the risks", "risk exposure", "risk scoring",
-  "probability-impact grid", "residual exposure". For the broader process of
-  identifying, analyzing, responding to, and governing risk, use risk-management.
-  Works for waterfall, agile, and hybrid projects.
+  Keeps the risk register of threats and opportunities and scores it by exposure (EMV)
+  into HIGH, MEDIUM and LOW, with residual scores, a reserve simulation and pre-review
+  checks (risk_score.py). Use when logging, ranking or reviewing project risks.
 metadata:
   version: 1.1.0
   category: artifact

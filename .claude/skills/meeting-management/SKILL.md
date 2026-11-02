@@ -1,20 +1,10 @@
 ---
 name: meeting-management
 description: >-
-  Plans, runs and follows up project meetings — kickoff, steering committee,
-  daily stand-up, gate and sprint reviews, decision workshops: a one-line
-  purpose, the right people, a timeboxed agenda, a decision method chosen
-  before debate, a parking lot, and decisions and actions captured live and fed
-  into the issue log. Use when the user wants to write an agenda, run or
-  facilitate a meeting, fix meetings that overrun or decide nothing, prepare a
-  steering committee, or record what a meeting decided and who acts by when.
-  Triggers: "meeting agenda", "run a meeting", "facilitate a workshop",
-  "parking lot", "kickoff meeting agenda", "steering committee meeting",
-  "stand-up keeps overrunning", "meeting minutes", "action items from the
-  meeting", "meeting decision log", "our meetings go nowhere". For
-  retrospective formats, use lessons-learned; for the project's issue and
-  decision log, use project-delivery; for which meetings exist and how often,
-  use project-communication. Works for waterfall, agile, and hybrid projects.
+  Plans and runs project meetings (kickoff, steering committee, stand-up, reviews,
+  workshops) with a purpose, a timeboxed agenda, a decision method, and decisions and
+  actions captured live. Use when writing an agenda, facilitating a meeting, or fixing
+  meetings that overrun or decide nothing.
 metadata:
   version: 1.1.0
   category: artifact

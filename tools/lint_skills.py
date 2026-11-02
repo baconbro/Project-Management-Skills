@@ -9,7 +9,8 @@ Checks per skill (.claude/skills/<name>/SKILL.md):
   1. Frontmatter parses; folder name == `name`; name is kebab-case, <= 64 chars,
      without the reserved words "claude"/"anthropic".
   2. `description` present, <= 1024 chars, no XML angle brackets, third person,
-     contains a "use when" cue.
+     contains a "use when" cue; warns above 350 chars per skill or 8,000 for the
+     whole catalog (Claude Code's skill-listing budget).
   3. `metadata.version` is semver; `category` and `phase` use the allowed values.
   4. `metadata.related` entries resolve to existing skills AND are reciprocal; the
      "## Related skills" bullets name exactly the same skills in the same order.
@@ -41,6 +42,11 @@ import sys
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
 RESERVED = ("claude", "anthropic")
+# Claude Code lists every skill's name but fits descriptions into a budget of about 1% of
+# the context window (8,000-character fallback) and drops the least-used ones first. Keep
+# each description short and the whole catalog under the fallback so all 27 stay visible.
+DESC_SOFT_MAX = 350
+CATALOG_DESC_BUDGET = 8000
 CATEGORIES = {"orchestrator", "phase", "discipline", "artifact"}
 PHASES = {"initiation", "planning", "delivery", "closure", "cross-cutting"}
 SECTIONS = [
@@ -202,6 +208,9 @@ def lint(skills_dir: str, run_scripts: bool = True):
                 errors.append(f"{tag} description contains XML angle brackets")
             if len(desc) < 40:
                 warnings.append(f"{tag} description looks short ({len(desc)} chars)")
+            if len(desc) > DESC_SOFT_MAX:
+                warnings.append(f"{tag} description is {len(desc)} chars (> {DESC_SOFT_MAX}); long descriptions "
+                                "eat the skill-listing budget and get dropped")
             if "use when" not in desc.lower():
                 warnings.append(f"{tag} description has no 'use when' cue")
             unquoted = re.sub(r'"[^"]*"', "", desc)
@@ -278,6 +287,11 @@ def lint(skills_dir: str, run_scripts: bool = True):
                             errors.append(f"{tag} scripts/{fname} --help exited {proc.returncode}: {proc.stderr.strip()[:200]}")
                     except Exception as exc:  # pragma: no cover
                         errors.append(f"{tag} scripts/{fname} --help failed to run: {exc}")
+
+    total_desc = sum(len(fm.get("description") or "") for fm, _ in parsed.values())
+    if total_desc > CATALOG_DESC_BUDGET:
+        warnings.append(f"[catalog] descriptions total {total_desc} chars (> {CATALOG_DESC_BUDGET}); Claude Code "
+                        "may drop some from the skill listing")
 
     # 9. pointers inside supporting Markdown files and the repo README
     all_basenames = set()

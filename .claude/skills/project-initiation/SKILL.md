@@ -1,20 +1,9 @@
 ---
 name: project-initiation
 description: >-
-  Runs the initiation phase from idea to a planning-ready project or phase:
-  frames the problem and sponsor, commissions a business case (three options
-  including do-nothing, every benefit with a measured baseline and an owner),
-  chooses waterfall, agile or hybrid delivery, gets the charter signed,
-  identifies stakeholders, passes an initiation gate with a recorded verdict,
-  sets what the kickoff covers, and hands an initiation pack to planning. Use
-  when the user is starting a project from an idea or mandate, wants
-  initiation run end to end, or asks what is still missing before planning can
-  begin. Triggers: "start a new project", "initiate a project", "stand up a
-  project", "get a project off the ground", "initiation phase", "initiation
-  gate", "are we ready to start planning", "what do I do before planning",
-  "kickoff deck", "what should the kickoff cover". For the charter alone, use
-  project-charter; for running the kickoff meeting itself, use
-  meeting-management. Works for waterfall, agile, and hybrid projects.
+  Takes a project from idea to planning-ready: problem and sponsor, business case,
+  delivery approach, signed charter, stakeholders, an initiation gate and the kickoff. Use
+  when starting a new project or asking what is still missing before planning can begin.
 metadata:
   version: 1.1.0
   category: phase

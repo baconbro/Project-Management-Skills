@@ -1,20 +1,9 @@
 ---
 name: change-request
 description: >-
-  Captures and assesses a single change request from description to a recorded
-  decision — justification, impact on scope, cost, schedule, quality and risk,
-  options, a recommendation, approval authority, funding and baselines to update —
-  and keeps the change log. The bundled change_impact.py helper scores weighted
-  impact into an impact band, routes each request to the PM, CCB or sponsor,
-  totals the change burden against the reserve, and tests band sensitivity to the
-  weights. Use when the user wants to raise, write, assess, or decide a change
-  request, size the impact of a proposed change, rank pending change requests by
-  impact, or work out who must approve a change. Triggers: "change request",
-  "change request form", "raise a change request", "CR form", "change impact
-  assessment", "assess a change", "variation request", "log a change request",
-  "who approves this change". For the change-control process, the board and its
-  tolerances, use change-management. Works for waterfall, agile, and hybrid
-  projects.
+  Writes and assesses one change request: impact on scope, cost, schedule, quality and
+  risk, options, recommendation and approver, and keeps the change log (change_impact.py
+  scores and routes requests). Use when raising, assessing, ranking or deciding a change.
 metadata:
   version: 1.1.0
   category: artifact

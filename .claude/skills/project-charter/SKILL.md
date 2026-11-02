@@ -1,20 +1,10 @@
 ---
 name: project-charter
 description: >-
-  Produces the project charter, the short document that formally authorizes a
-  project: sponsor, project manager and PM authority, business need, SMART
-  objectives with success criteria, high-level scope boundaries, milestones,
-  budget range, assumptions, constraints, top risks, key stakeholders, approval
-  requirements and exit or cancellation criteria; then verifies the sponsor's
-  sign-off (unsigned, it is a draft). Use
-  when the user wants to write, review or get sign-off on a charter or project
-  brief, put a project's purpose, sponsor and boundaries on one page, or set the
-  conditions under which the project would be stopped. Triggers: "project
-  charter", "write a charter", "review my charter", "project brief", "project
-  mandate", "project one-pager", "authorize a project", "charter sign-off",
-  "cancellation criteria", "PM authority". For the whole initiation phase
-  around it, use project-initiation; for the detailed scope statement, use
-  scope-and-requirements. Works for waterfall, agile, and hybrid projects.
+  Writes the project charter that authorizes a project: sponsor, PM authority, SMART
+  objectives, scope boundaries, milestones, budget range, top risks and cancellation
+  criteria, with the sponsor's sign-off. Use when writing, reviewing or getting approval
+  for a charter or project brief.
 metadata:
   version: 1.1.0
   category: artifact

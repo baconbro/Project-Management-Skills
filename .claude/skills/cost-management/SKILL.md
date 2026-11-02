@@ -1,19 +1,10 @@
 ---
 name: cost-management
 description: >-
-  Builds and controls the project cost baseline: aggregates the work-package
-  estimates from estimation up the WBS, sizes contingency and management reserve,
-  time-phases the budget into an S-curve and BAC, fixes the earned-value earning
-  rules, then tracks performance with earned-value management (CV/SV, CPI/SPI,
-  EAC/ETC/VAC, TCPI, percent complete) and a RAG verdict using the bundled
-  health_check.py helper. Use when the user wants to set a cost baseline,
-  time-phase a budget, size reserves, track budget vs actuals, compute earned
-  value, forecast the cost at completion, or rate cost health. Triggers: "cost
-  management", "cost baseline", "budget", "earned value", "EVM", "CPI", "SPI",
-  "EAC", "cost variance", "burn rate", "forecast at completion", "BAC", "TCPI",
-  "management reserve", "over budget". For producing the underlying effort and
-  cost estimates, use estimation; for the periodic narrative, use status-report.
-  Works for waterfall, agile, and hybrid projects.
+  Sets the cost baseline and reserves, then tracks cost with earned value: CPI, SPI, EAC,
+  TCPI and a RAG verdict (health_check.py). Use when building or time-phasing a budget,
+  sizing reserves, comparing budget with actuals, forecasting cost at completion, or
+  checking whether a project is over budget.
 metadata:
   version: 1.1.0
   category: discipline

@@ -1,20 +1,10 @@
 ---
 name: project-closure
 description: >-
-  Formally closes a project or phase, including one cancelled or stopped early:
-  obtains formal acceptance (agreeing criteria with the sponsor if none exist),
-  confirms the handover to operations and the benefits owners, disposes of every
-  open item and contract in a closeout log, reconciles final cost, runs the
-  post-project review, releases the team and issues a signed closure report. Use
-  when the work is built and the user needs final sign-off, a handover, a
-  closure report or a post-project review, or a project is being cancelled,
-  stopped early or left half-closed. Triggers: "close the project",
-  "project closeout", "closure report", "phase closure", "handover to
-  operations", "post-project review", "release the team", "cancel the project",
-  "stop the project early", "premature closure", "wrap up the project". For
-  go-live and hypercare exit, use release-and-cutover; for closing one vendor
-  contract, use procurement-management. Works for waterfall, agile, and hybrid
-  projects.
+  Closes a project or phase, including a cancelled one: formal acceptance, handover to
+  operations, open items and contracts, final cost, post-project review, team release and
+  closure report. Use when the work is done and needs sign-off and handover, or when a
+  project is being stopped early.
 metadata:
   version: 1.1.0
   category: phase

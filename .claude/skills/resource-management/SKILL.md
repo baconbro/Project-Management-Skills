@@ -1,20 +1,10 @@
 ---
 name: resource-management
 description: >-
-  Plans the project team and its capacity: roles and skills, acquiring and
-  onboarding people, a team charter, capacity versus allocation per person and
-  period, resource leveling and smoothing, and releasing people. The bundled
-  capacity_check.py sums per-assignment rows per person and week or sprint,
-  flags OVER, HIGH, OK or UNDER on each person's peak, shows headroom to a
-  target, names key-person risks and proposes a leveling plan with the
-  unabsorbed residual. Use when the user wants to staff a project, check who
-  is overloaded, level or smooth workloads, write a team charter or working
-  agreement, onboard or release people, or gate a baseline on capacity.
-  Triggers: "resource plan", "staffing plan", "team capacity", "who is
-  over-allocated", "utilization by week", "resource leveling", "resource
-  smoothing", "team charter", "working agreement", "ways of working",
-  "key-person risk", "onboard the team". For who is accountable for each piece
-  of work, use raci-matrix. Works for waterfall, agile, and hybrid projects.
+  Plans the team and its capacity: roles, staffing, onboarding, team charter, allocation
+  against capacity, leveling and release (capacity_check.py flags over-allocation and
+  proposes moves). Use when staffing a project, checking who is overloaded, or leveling
+  workloads.
 metadata:
   version: 1.0.0
   category: discipline

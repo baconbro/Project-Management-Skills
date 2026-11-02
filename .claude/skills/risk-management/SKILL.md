@@ -1,20 +1,10 @@
 ---
 name: risk-management
 description: >-
-  Runs the project risk process end to end: a risk management plan (scales,
-  appetite, thresholds, cadence, escalation), threats and opportunities
-  identified with an owner each, probability-impact ranking, quantification of
-  the material ones, responses, a contingency reserve sized from residual threat
-  exposure at an agreed confidence, responses built into the schedule and
-  budget, and governance through delivery. Use when the user wants to set up
-  risk management, run a risk workshop or pre-mortem, choose a response
-  strategy, decide how much contingency to hold, compare options with a
-  decision tree, or set risk reviews and escalation. Triggers: "risk management
-  plan", "risk process", "identify risks", "pre-mortem", "risk workshop", "risk
-  response strategy", "contingency reserve", "how much contingency", "decision
-  tree", "risk appetite", "risk governance". For the register and the script
-  that scores each risk, use risk-register. Works for waterfall, agile, and
-  hybrid projects.
+  Runs the risk process: risk plan and appetite, identification workshops and pre-mortems,
+  quantification, response strategies, a contingency reserve sized at a confidence level,
+  and risk governance. Use when setting up risk management, choosing responses, or
+  deciding how much contingency to hold.
 metadata:
   version: 1.1.0
   category: discipline
