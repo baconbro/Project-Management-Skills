@@ -1,0 +1,4 @@
+person,role,skills,period,project,capacity,allocated,unit
+<person name>,<primary role e.g. Backend engineer>,<other roles they can cover separated by / or blank>,<period e.g. W6 or Sprint 3 or 2027-02; or delete the column for one flat period>,<project or work package this row's allocation is for>,<capacity in the period after leave and non-project time; same number on all of this person's rows in the period>,<work assigned in the period in the same unit>,<hours or days or percent or fte; one unit for the whole file>
+<same person, second assignment in the same period>,<same role>,<same skills>,<same period>,<another project or work package>,<same capacity as the row above>,<work assigned on this assignment>,<same unit>
+<next person>,<primary role>,<other roles or blank>,<period>,<project or work package>,<capacity>,<allocated>,<unit>

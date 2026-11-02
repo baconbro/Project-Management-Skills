@@ -1,57 +1,92 @@
-# Kickoff deck outline — fill in per slide
+# Kickoff deck outline — <project name>
 
-A slide-by-slide outline for a project kickoff deck. Fill each slide with content drawn
-from the charter, the business case, and the stakeholder analysis. Keep one idea per
-slide. The running example is **Helios**, a customer self-service portal.
+> Fill-in template: copy it, replace every `<placeholder>`, then turn each section into one
+> slide. Every slide names its **source**: take the words from that signed document and add
+> nothing new. The timed agenda that walks these slides is in `references/kickoff-agenda.md`;
+> the meeting itself is run with `meeting-management`. A filled example is
+> `kickoff-deck-sample.md`.
 
 ---
 
-## Slide 1 — Title
-- Project name: _e.g. Helios — Customer Self-Service Portal_
-- Sponsor: _<name>_  |  Project manager: _<name>_
-- Date and version.
+## Slide 1 — Title and purpose of today
+Source: charter header.
+- <project name> — project kickoff — <YYYY-MM-DD> — deck v<n>
+- Sponsor: <name, title> | Project manager: <name>
+- Today we will: <understand why, what and how; agree ways of working; leave with owned first actions>
+- How decisions are made today: <decider and method for ways-of-working choices>
 
 ## Slide 2 — Why we are here
-- The business problem in 1-2 sentences. _e.g. Support call volume is rising and customers
-  cannot self-serve common requests._
-- The opportunity / target outcome.
+Source: business case section 2 (problem). The sponsor presents this slide.
+- The problem in one or two sentences, with its size: <volume, cost, delay or risk in numbers>
+- What doing nothing costs: <cost per year and how it grows>
 
-## Slide 3 — Objectives and success criteria
-- 2-4 SMART objectives.
-- For each, how success is measured. _e.g. Deflect 30% of routine tickets within 6 months._
+## Slide 3 — Objective and benefits: how we will prove success
+Source: charter section 2; business case section 5 (benefits register).
 
-## Slide 4 — Scope boundaries
-- In scope: the outcomes this project will deliver.
-- Out of scope: an explicit list of what it will NOT deliver. _State this out loud._
+| Objective | Measure | Baseline (measured value, source, date) | Target and date | Benefit owner |
+|---|---|---|---|---|
+| <id: objective> | <metric> | <value — source — date or window> | <target — date> | <name, role> |
 
-## Slide 5 — High-level timeline
-- Major milestones and the next stage gate.
-- Hard deadlines or fixed dates.
+- Dis-benefits we will manage: <dis-benefit — who is affected — mitigation>
 
-## Slide 6 — Team and roles
-- Sponsor, PM, core team, key stakeholders.
-- A RACI-at-a-glance for the major activities (see `raci-matrix`).
-- How decisions get made and who signs off.
+## Slide 4 — Why this option
+Source: business case section 4 (options) and the decision record.
+- Options compared: do nothing, <do minimum>, <recommended>, <alternative>
+- Why the recommendation won: <NPV or the deciding criterion; how far benefits or costs can move before the answer changes>
 
-## Slide 7 — Delivery approach
-- Waterfall / agile / hybrid and why.
-- The governance and reporting cadence.
+## Slide 5 — Scope boundaries
+Source: charter section 3. Read the out-of-scope list aloud.
+- In scope (outcomes): <outcome>; <outcome>; <outcome>
+- Out of scope: <exclusion — where it goes instead>; <exclusion — where it goes instead>
 
-## Slide 8 — Top risks and assumptions
-- The 3-5 biggest known risks (qualitative).
-- The biggest assumptions the plan depends on.
+## Slide 6 — Milestones, budget range and stop triggers
+Source: charter sections 4, 5 and 10.
+- Milestones: <id — name — target — what must be true>
+- Budget range: <range, funding source>; spend allowed before the baseline: <what>
+- We stop or re-scope if: <trigger — threshold — checked when and by whom>
 
-## Slide 9 — How we will plan
-- The path from here to a baseline via `project-planning`.
-- What planning will produce (scope/WBS, schedule, budget, plan).
+## Slide 7 — Team and roles (draft)
+Source: charter sections 8 and 9. **Draft of roles:** the full responsibility (RACI) matrix is
+built in planning with `raci-matrix` once the work is broken down.
 
-## Slide 10 — Next steps
-- The first 3-5 actions, each with an owner and a date.
-- When and how we meet next.
+| Role | Name | Decides or accepts |
+|---|---|---|
+| Sponsor | <name> | <what the sponsor decides> |
+| Project manager | <name> | <authority in money and days; who decides above it> |
+| Product owner (agile or hybrid) | <name> | <backlog order; increment acceptance> |
+| Benefit owner | <name> | <the benefit and its measurement after handover> |
+| <tech lead / approver / budget holder> | <name> | <what they accept or sign off> |
+| Core team | <names> | <their area> |
+
+## Slide 8 — Delivery approach and cadence
+Source: gate record section 2.
+- Approach: <waterfall / agile / hybrid> — because <checklist count and override>
+- What is fixed and what flexes: <fixed frame> / <what flexes and who orders it>
+- Cadence: <stand-up>, <sprint length and review>, <status report>, <steering committee>
+
+## Slide 9 — Top risks and assumptions
+Source: charter sections 6 and 7.
+- Top risks: <cause → event → effect — owner> (3 to 5)
+- Assumptions to validate: <assumption — owner — validate by>
+
+## Slide 10 — How we will plan
+Source: gate record section 6.
+- Planning produces: <scope statement, WBS, estimates, schedule, risk and reserves, cost baseline, RACI, communication and change-control plans — or the agile equivalents>
+- Baseline approval: <milestone, date, approver>
+- Open gate conditions: <id — condition — owner — due>
+
+## Slide 11 — Next steps
+Source: live capture during the meeting (`meeting-management`).
+- Actions: <id — verb-first action — one owner — due date> (3 to 5)
+- Parking lot outcomes: <item — owner and next step, or dropped>
+- Next meeting: <meeting, date>
 
 ---
 
-## Tips
-- Replace every _<placeholder>_ before presenting.
-- Cut any slide the audience already knows; a kickoff should energize, not exhaust.
-- Keep the out-of-scope slide — it is the cheapest insurance in the deck.
+## Before you present
+- [ ] Every `<placeholder>` is replaced, and every figure matches the signed charter and the
+      approved business case.
+- [ ] Slide 7 says "draft" and names no RACI letters.
+- [ ] The out-of-scope list is on slide 5 and will be read aloud.
+- [ ] The deck went out with the agenda two business days ahead.
+- [ ] Slides the audience already knows are cut; slides 2, 3, 5 and 11 are never cut.

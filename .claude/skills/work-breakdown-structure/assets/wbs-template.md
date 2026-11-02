@@ -10,7 +10,9 @@
 
 ## WBS dictionary
 Generate the table from the CSV (the headers below are the ones the validator accepts) and
-paste it here:
+paste it here. Need more dictionary fields — assumptions, dependencies, an estimate
+reference? Add them as extra columns in the CSV; the validator carries every extra column
+into this table, so it is still entered only once.
 
 ```bash
 python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py <your-wbs.csv> --rollup --budget <BAC> --format md
@@ -37,7 +39,9 @@ throughout this catalog) — `assets/wbs-sample.csv` run with `--rollup --budget
 A control account is the element where cost and schedule performance (earned value in
 `cost-management`) is measured and where one manager answers for the budget: a work
 package, or a parent that groups several small ones. Every work package belongs to exactly
-one. The validator prints this table under `--rollup`; add the manager.
+one: a work package whose `control account` cell is blank inherits the nearest ancestor that
+is a control account, and control accounts never nest. The validator prints this table under
+`--rollup` and warns about nesting and uncovered work packages; add the manager.
 
 | Control account | Name | Work packages | Share of project (%) | Budget | Control account manager |
 |---|---|---|---|---|---|

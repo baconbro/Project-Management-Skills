@@ -3,75 +3,94 @@
 
 Reads a WBS from CSV or JSON, infers every element's parent from its dotted id (the
 parent of 1.3.2 is 1.3; an id without a dot is top level), prints the WBS as an indented
-tree, then a validation report and a PASS/FAIL verdict. Optional flags suggest or write
+table, then a validation report and a PASS/FAIL verdict. Optional flags suggest or write
 corrected weights, roll the weights up into each element's share of the whole project,
 allocate a budget to the work packages and control accounts, and export the work
 packages in the estimation-worksheet format. Standard library only.
 
 INPUT COLUMNS / KEYS  (case-insensitive; spacing, underscores and punctuation in a header are
 ignored, so "WBS id", "wbs_id" and "wbsid" are one column, as are "Weight (%)" and "weight")
-    id        dotted identifier: 1, 1.3, 1.3.2 ...     aliases: wbs id, wbs_id, wbs, code, wbs code, element id  (required)
-    name      element name                            aliases: element, deliverable, title, work package, task (optional)
-    weight    percent of the PARENT (effort/cost/value) aliases: weight (%), weight %, weight pct, pct, percent (optional)
-    control account   id (or name) of the element where cost/schedule performance is measured     (optional)
-    any other column (owner, description, acceptance criterion, ...) is carried through:
-    --require checks it on work packages, --fix preserves it, --format md|csv|json prints it.
-  Weights are finite numbers >= 0; a trailing '%', thousands separators and currency signs are
-  stripped ("35%" -> 35); 'nan', 'inf', negatives and booleans are rejected; a blank weight
-  means "not weighted". Ids: every dotted segment must be non-empty ("1.", "1..2" and blank
-  ids are rejected) and spaces inside an id are removed ("1. 1" -> "1.1"). In JSON, ids MUST
-  be strings: a number loses its trailing zeros (1.10 becomes 1.1) and is rejected with a hint.
-  CSV: the delimiter is auto-detected (, ; tab |) or forced with --delimiter; a UTF-8 BOM and
-  CRLF line ends are tolerated; blank lines are skipped. JSON: a list of objects or
-  {"wbs": [...]}; pass --json (always, also for JSON on stdin).
+    id        dotted identifier: 1, 1.3, 1.3.2 ...      aliases: wbs id, wbs, code, wbs code, element id   (required)
+    name      element name                             aliases: element, deliverable, title, work package, task
+    weight    percent of the PARENT (effort/cost/value) aliases: weight (%), weight %, weight pct, pct, percent
+    control account   id (or name) of the element where cost and schedule performance are measured;
+              a work package with a blank value inherits the nearest ancestor that is a control account
+    any other column (owner, description, acceptance criterion ...) is carried through: --require checks
+    it on work packages, --fix preserves it, --format md|csv|json prints it. Columns this script itself
+    outputs (level, parent, type, share %, share of project (%), budget) are ignored on input and recomputed.
+  Weights: finite numbers >= 0 in percent. A trailing '%', thousands separators and currency signs are
+  stripped ("35%" -> 35, "$100" -> 100, "80,000" -> 80000); a comma followed by one or two digits is a
+  decimal comma ("33,3" -> 33.3); 'nan', 'inf', negatives and booleans are rejected; a blank cell means
+  "not weighted". Ids: every dotted segment must be non-empty ("1.", "1..2" and blank ids are rejected),
+  spaces around the dots are removed ("1. 1" -> "1.1"), and a template placeholder such as <1.2> is
+  rejected. In JSON, ids MUST be strings: a number loses its trailing zeros (1.10 becomes 1.1).
+  CSV: the delimiter is auto-detected (, ; tab |) or forced with --delimiter; a UTF-8 BOM and CRLF
+  line ends are tolerated; blank lines are skipped. JSON: a list of objects or {"wbs": [...]}; pass
+  --json (always, also for JSON on stdin).
 
 CHECKS
   ERROR  duplicate id             the same id on two rows
   ERROR  orphan                   a dotted id whose parent id does not exist
   ERROR  100% rule                a parent's children must have weights summing to 100 (+/- --tolerance,
-                                  default 0.1, applied to the rounded sum); the top level is checked the
-                                  same way when several top-level elements carry weights
+                                  default 0.1, applied to the sum rounded to 6 decimals); the top level is
+                                  checked the same way when several top-level elements carry weights
   ERROR  partly weighted          if ANY child of a parent has a weight, every child must have one
-  ERROR  --require col[,col]      a work package (leaf) with a blank value in a required column
-  WARN   single child             a parent with exactly one child is a rename, not a decomposition
-  WARN   leading zeros            sibling ids that differ only by leading zeros (1.01 vs 1.1)
+  ERROR  --require col[,col]      a work package (leaf) with a blank or <placeholder> value in a required column
+  WARN   single child             a parent with exactly one child (counting missing parents its orphans imply)
+  WARN   leading zeros            ids that differ only by leading zeros (1.01 vs 1.1)
   WARN   root weight              a weight on a single top-level element is ignored (the root is 100%)
   WARN   several roots            more than one top-level element and none of them is weighted
-  WARN   --max-children N         a parent with more than N children (flat list, no real structure)
+  WARN   names                    elements with a blank name or a TODO name (from --fix)
+  WARN   zero weight              an element weighted 0% of its parent (out of scope, or mis-weighted?)
+  WARN   placeholders             cells that still hold a template <placeholder>
+  WARN   --max-children N         a parent with more than N children (a flat list, not a structure)
+  WARN   --max-depth N            an element deeper than level N
   WARN   uneven decomposition     work packages whose levels differ by more than 2
-  WARN   control account          a value that matches no element, or is not the element or an ancestor
+  WARN   control accounts         a value that matches no element or is not the element or an ancestor;
+                                  control accounts nested inside each other; work packages left without one
   WARN   --max-leaf-share PCT     with --rollup: a work package above PCT% of the project (default 20)
   --strict turns warnings into a FAIL (exit 1) for CI gates.
 
 FORMULAS
   share of project (--rollup)    share(root) = 100 (or its own weight when several roots are weighted);
-                                 share(e) = share(parent) x weight(e) / 100; "n/a" when a weight on the chain is missing
-  budget (--budget AMOUNT)       work package = AMOUNT x share / 100 rounded to the cent by largest remainder, so the
-                                 work packages sum to exactly AMOUNT when their shares total 100 (within tolerance);
-                                 a summary element = the sum of its children; a control account = the sum of the
-                                 work packages assigned to it
-  normalised weights (--suggest) w_i x 100 / sum(w), rounded to 0.1 by largest remainder so the result sums to exactly
-                                 100.0 (33.3/33.3/33.3 -> 33.4/33.3/33.3); when the weighted siblings total less than
-                                 100, the unweighted ones get the remainder split equally
-  --fix OUT.csv                  writes the input with every fixable suggestion applied (normalised weights, stub rows
-                                 for missing parents, renumbered duplicates, dropped root weight), all other columns
-                                 untouched; the exit code still reflects the INPUT, so re-run the validator on OUT.csv
+                                 share(e) = share(parent) x weight(e) / 100; "n/a" when a weight on the chain
+                                 is missing.  Helios 1.3.1 = 45 x 35 / 100 = 15.75% of the project.
+  budget (--budget AMOUNT)       work package = AMOUNT x share / sum(work-package shares), rounded to the cent by
+                                 largest remainder, so the work packages sum to exactly AMOUNT when their shares
+                                 total 100 within --tolerance (otherwise only AMOUNT x share / 100 is allocated
+                                 and a note says how much is missing); a summary element = the sum of its
+                                 children; a control account = the sum of its work packages.
+                                 Helios: 500000 x 15.75% = 78,750.00 for 1.3.1.
+  normalised weights (--suggest) w_i x 100 / sum(w), rounded to 0.1 (finer only if that would zero a weight) by
+                                 largest remainder so the result sums to exactly 100 (33.3/33.3/33.3 is within
+                                 tolerance; 30/30/30 -> 33.4/33.3/33.3; 60/30 -> 66.7/33.3);
+                                 partly weighted siblings: the unweighted ones share the remainder equally when
+                                 the weighted ones leave more than the tolerance, otherwise a decision is needed
+  --fix OUT.csv                  first applies the structural fixes (stub rows for missing parents, renumbered
+                                 duplicates and leading-zero ids, a dropped root weight), then re-validates and
+                                 applies the weight fixes, so a stub parent gets the weight its siblings leave;
+                                 every other column is kept; the report gives the verdict for OUT.csv, while
+                                 the exit code still reflects the INPUT
 
-OUTPUT   --format table (default) | json | csv | md.  csv prints the element rows to stdout and the one-line
-         verdict to stderr; md prints the WBS dictionary table for assets/wbs-template.md.
+OUTPUT   --format table (default) | json | csv | md.  csv prints one row per element to stdout and the
+         verdict to stderr; md prints the WBS dictionary (and control accounts with --rollup) for
+         assets/wbs-template.md; json prints {"rows": [...], "summary": {...}}.
+         --export-estimation PATH writes id, task, unit, technique, optimistic, most_likely, pessimistic,
+         assumptions, estimators (= the owner column when present), actual: the worksheet that
+         .claude/skills/estimation/scripts/pert_estimate.py reads once O, M and P are filled in.
 
-EXIT CODES   0 PASS  -  1 FAIL (errors, or warnings with --strict)  -  2 bad input, bad option or internal
-             error ("error: ..." on stderr, never a traceback)
+EXIT CODES   0 PASS  -  1 FAIL (errors, or warnings with --strict)  -  2 bad input, bad option or
+             internal error ("error: ..." on stderr, never a traceback)
 
 EXAMPLES
-  python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py .claude/skills/work-breakdown-structure/assets/wbs-sample.csv
-  python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py .claude/skills/work-breakdown-structure/assets/wbs-sample.csv --rollup --budget 500000
-  python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py my-wbs.csv --suggest --fix my-wbs-fixed.csv
-  python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py my-wbs.csv --require owner,acceptance --max-children 7 --strict
-  python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py my-wbs.csv --export-estimation estimation-worksheet.csv
-  python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py my-wbs.csv --format md > wbs-dictionary.md
-  python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py my-wbs.json --json --format json
-  cat my-wbs.csv | python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py - --rollup --format csv > wbs-rollup.csv
+  CSV    python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py .claude/skills/work-breakdown-structure/assets/wbs-sample.csv
+         python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py .claude/skills/work-breakdown-structure/assets/wbs-sample.csv --rollup --budget 500000
+         python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py my-wbs.csv --suggest --fix my-wbs-fixed.csv
+         python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py my-wbs.csv --require owner,acceptance --max-children 7 --strict
+         python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py my-wbs.csv --export-estimation estimation-worksheet.csv
+         python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py my-wbs.csv --rollup --budget 500000 --format md > wbs-dictionary.md
+  JSON   python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py my-wbs.json --json --format json
+  stdin  cat my-wbs.csv | python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py - --rollup --format csv > wbs-rollup.csv
 """
 from __future__ import annotations
 
@@ -90,14 +109,20 @@ NAME_WIDTH = 42
 DEFAULT_TOLERANCE = 0.1
 DEFAULT_MAX_LEAF_SHARE = 20.0
 MAX_LEVEL_SPREAD = 2
+LIST_CAP = 8
 
 ID_ALIASES = ("id", "wbs id", "wbs_id", "wbs", "code", "wbs code", "element id")
 NAME_ALIASES = ("name", "element", "deliverable", "title", "work package", "task")
 WEIGHT_ALIASES = ("weight", "weight (%)", "weight %", "weight pct", "pct", "percent")
 CONTROL_ACCOUNT_ALIASES = ("control account", "control_account", "ca id")
+OWNER_ALIASES = ("owner", "work package owner", "responsible")
+DERIVED_COLUMNS = ("level", "parent", "type", "share", "share %", "share_pct", "share of project (%)", "budget")
 ESTIMATION_COLUMNS = ("id", "task", "unit", "technique", "optimistic", "most_likely",
                       "pessimistic", "assumptions", "estimators", "actual")
 FORMATS = ("table", "json", "csv", "md")
+PLACEHOLDER_RE = re.compile(r"^<[^<>]*>$")
+DECIMAL_COMMA_RE = re.compile(r"^\s*-?\d+,\d{1,2}\s*%?\s*$")
+CONNECTOR_WORDS = {"&", "and", "-", "/", "+", "of", "for", "the", "a", "an", "to", "with", "–", "—"}
 
 
 # ----------------------------------------------------------------------------- input helpers
@@ -123,8 +148,8 @@ def sniff_delimiter(text):
         return ","
 
 
-def load_rows(text, as_json, json_key, delimiter=None):
-    """Return (rows, headers, lines). CSV auto-detects , ; tab | unless delimiter is given.
+def load_rows(text, as_json, json_key, delimiter=","):
+    """Return (rows, headers, lines). CSV uses the given delimiter (auto-detected by the caller).
     JSON: a list of objects or {json_key: [...]}. lines holds the CSV line number per row
     (None for JSON) so errors can point at the editor line."""
     if not as_json and text.lstrip()[:1] in ("[", "{"):
@@ -145,6 +170,11 @@ def load_rows(text, as_json, json_key, delimiter=None):
             if not isinstance(item, dict):
                 raise ValueError(f"JSON item {n} is not an object: {item!r}")
             row = {str(k).strip(): v for k, v in item.items()}
+            normed = [_norm(k) for k in row if _norm(k)]
+            clash = sorted({k for k in normed if normed.count(k) > 1})
+            if clash:
+                raise ValueError(f"JSON item {n}: keys {sorted(row)} collide once case and punctuation are "
+                                 f"ignored ({clash}); keep one of each")
             rows.append(row)
             for k in row:
                 if k not in headers:
@@ -152,8 +182,7 @@ def load_rows(text, as_json, json_key, delimiter=None):
         if not rows:
             raise ValueError("JSON contains no items")
         return rows, headers, [None] * len(rows)
-    delim = delimiter or sniff_delimiter(text)
-    reader = csv.DictReader(io.StringIO(text), delimiter=delim)
+    reader = csv.DictReader(io.StringIO(text), delimiter=delimiter)
     headers = [(h or "").strip() for h in (reader.fieldnames or [])]
     if not any(headers):
         raise ValueError("input is empty (no header row)")
@@ -193,9 +222,9 @@ def require_columns(headers, groups):
         found = [h for h in headers if h]
         hints = [f"accepted names for '{g[0]}': {', '.join(g)}" for g in groups if g[0] in missing]
         if len(found) == 1:
-            for d, label in ((";", "';'"), ("\t", "tab"), ("|", "'|'")):
+            for d, label in ((";", ";"), ("\t", "\\t"), ("|", "|"), (",", ",")):
                 if d in found[0]:
-                    hints.append(f"the header looks {label}-delimited; pass --delimiter {label.strip(chr(39))!r}")
+                    hints.append(f"the header looks '{label}'-delimited; pass --delimiter '{label}'")
                     break
         raise ValueError(f"missing column(s): {missing}; found headers: {found} ({'; '.join(hints)})")
 
@@ -223,6 +252,27 @@ def _num(raw, where, minimum=None, maximum=None, integer=False):
     return v
 
 
+def _is_placeholder(value):
+    return isinstance(value, str) and bool(PLACEHOLDER_RE.match(value.strip()))
+
+
+def _weight(raw, where):
+    """A weight cell: template placeholders rejected with a hint; '33,3' read as a decimal comma."""
+    if _is_placeholder(raw):
+        raise ValueError(f"{where}: {raw!r} is still a template placeholder - enter the percent of the parent "
+                         f"or leave the cell blank")
+    if isinstance(raw, str) and DECIMAL_COMMA_RE.match(raw):
+        raw = raw.replace(",", ".")
+    return _num(raw, where, minimum=0)
+
+
+def _had_bom(path):
+    if path == "-":
+        return False
+    with open(path, "rb") as fh:
+        return fh.read(3) == b"\xef\xbb\xbf"
+
+
 # ----------------------------------------------------------------------------- formatting helpers
 def _sanitize(value, width=None):
     """Collapse whitespace/newlines; truncate with an ellipsis when width is given."""
@@ -239,16 +289,19 @@ def _fmt(x, places=2):
 
 
 def _fmt_w(x):
-    """A weight/percent: at most two decimals, trailing zeros trimmed (35, 33.3, 12.75)."""
-    r = round(x, 2)
-    if r == int(r):
-        return str(int(r))
-    return f"{r:.2f}".rstrip("0").rstrip(".")
+    """A weight/percent: up to four decimals, trailing zeros trimmed (35, 33.3, 12.75); never '-0'."""
+    s = f"{round(x, 4):.4f}".rstrip("0").rstrip(".")
+    return "0" if s in ("-0", "") else s
 
 
 def _title(header):
     s = header.replace("_", " ").strip()
     return s[:1].upper() + s[1:]
+
+
+def _cap(items, n=LIST_CAP):
+    items = list(items)
+    return ", ".join(items[:n]) + (f" (+{len(items) - n} more)" if len(items) > n else "")
 
 
 def _table(headers, rows, numeric=()):
@@ -281,24 +334,36 @@ def _parent_of(eid):
     return eid.rsplit(".", 1)[0] if "." in eid else None
 
 
+def _is_ancestor(anc, eid):
+    return eid.startswith(anc + ".")
+
+
 def parse(rows, headers, lines):
     """Turn input rows into element dicts; raises ValueError naming row, id and column."""
     require_columns(headers, [ID_ALIASES])
     known = {_norm(a) for a in ID_ALIASES + NAME_ALIASES + WEIGHT_ALIASES}
+    derived = {_norm(a) for a in DERIVED_COLUMNS}
     for h in headers:
-        if h and _norm(h) not in known and ("weight" in _norm(h) or "percent" in _norm(h) or "%" in h):
+        n = _norm(h)
+        if h and n not in known and n not in derived and ("weight" in n or "percent" in n or "%" in h):
             raise ValueError(f"column {h!r} looks like a weight column but is not an accepted name "
                              f"({', '.join(WEIGHT_ALIASES)}); rename it or drop it")
-    extra_headers = [h for h in headers if h and _norm(h) and _norm(h) not in known]
-    elements = []
+    extra_headers = [h for h in headers if h and _norm(h) and _norm(h) not in known and _norm(h) not in derived]
+    ignored = [h for h in headers if h and _norm(h) in derived]
+    has_name_col = any(_norm(h) in {_norm(a) for a in NAME_ALIASES} for h in headers if h)
+    elements, placeholders = [], []
     for i, (row, line) in enumerate(zip(rows, lines), start=1):
         where = f"row {i}" + (f" (line {line})" if line else "")
         rid_raw = _get(row, *ID_ALIASES)
         if rid_raw is None or (isinstance(rid_raw, str) and not rid_raw.strip()):
             raise ValueError(f"{where}: id is blank")
         if not isinstance(rid_raw, str):
-            raise ValueError(f"{where}: id must be a string, got {rid_raw!r}; write it as \"{rid_raw}\" "
-                             f"(JSON numbers lose their trailing zeros, so 1.10 would become 1.1)")
+            hint = (" (JSON numbers lose their trailing zeros, so 1.10 would become 1.1)"
+                    if isinstance(rid_raw, (int, float)) and not isinstance(rid_raw, bool) else "")
+            raise ValueError(f"{where}: id must be a string, got {rid_raw!r}; write it as \"{rid_raw}\"{hint}")
+        if _is_placeholder(rid_raw):
+            raise ValueError(f"{where}: id {rid_raw.strip()!r} is still a template placeholder - replace every "
+                             f"<...> value with your own (assets/wbs-sample.csv shows a filled-in example)")
         segs = [s.strip() for s in rid_raw.strip().split(".")]
         if any(s == "" for s in segs):
             raise ValueError(f"{where}: id {rid_raw.strip()!r} has an empty segment (leading, trailing or double dot)")
@@ -308,8 +373,11 @@ def parse(rows, headers, lines):
         w_raw = _get(row, *WEIGHT_ALIASES)
         weight = None
         if w_raw is not None and not (isinstance(w_raw, str) and not w_raw.strip()):
-            weight = _num(w_raw, f"{where}, column weight", minimum=0)
+            weight = _weight(w_raw, f"{where}, column weight")
         extra = {h: _sanitize(row.get(h, "")) for h in extra_headers}
+        for col, val in [("name", name)] + list(extra.items()):
+            if _is_placeholder(val):
+                placeholders.append(f"{rid} {col} {val!r}")
         elements.append({
             "row": i, "line": line, "raw": row,
             "id": rid, "parent": _parent_of(rid), "level": len(segs),
@@ -318,7 +386,9 @@ def parse(rows, headers, lines):
             "extra": extra, "sort_key": _sort_key_of(rid), "norm_id": _norm_id(rid),
             "share": None, "budget": None, "ca_id": None,
         })
-    return elements, extra_headers
+    meta = {"extra_headers": extra_headers, "ignored": ignored, "placeholders": placeholders,
+            "has_name_col": has_name_col}
+    return elements, meta
 
 
 # ----------------------------------------------------------------------------- analysis
@@ -338,37 +408,83 @@ def normalise(values, total=100.0, decimals=1):
     return [b / scale for b in base]
 
 
-def _next_free_id(eid, taken):
-    """Next unused sibling id: numeric last segment + 1 past the highest sibling, else a -2/-3 suffix."""
-    parent = _parent_of(eid)
-    last = eid.rsplit(".", 1)[-1]
-    prefix = f"{parent}." if parent else ""
-    if _is_int_seg(last):
-        nums = [int(t.rsplit(".", 1)[-1]) for t in taken
-                if _parent_of(t) == parent and _is_int_seg(t.rsplit(".", 1)[-1])]
-        n = (max(nums) if nums else 0) + 1
-        while f"{prefix}{n}" in taken:
+def normalise_weights(values, total=100.0):
+    """normalise() at 0.1 precision, refined (0.01, 0.001 ...) only when rounding would zero a positive weight."""
+    result = None
+    for decimals in (1, 2, 3, 4):
+        result = normalise(values, total=total, decimals=decimals)
+        if result is None or all(r > 0 for r, v in zip(result, values) if v > 0):
+            return result
+    return result
+
+
+class IdAllocator:
+    """Hands out unused ids: the next number after the highest numeric sibling, else a -2/-3 suffix."""
+
+    def __init__(self, ids):
+        self.taken, self.maxnum = set(), {}
+        for t in ids:
+            self.add(t)
+
+    def add(self, eid):
+        self.taken.add(eid)
+        last = eid.rsplit(".", 1)[-1]
+        if _is_int_seg(last):
+            p = _parent_of(eid)
+            self.maxnum[p] = max(self.maxnum.get(p, 0), int(last))
+
+    def next_child(self, parent, reserve=True):
+        prefix = f"{parent}." if parent else ""
+        n = self.maxnum.get(parent, 0) + 1
+        while f"{prefix}{n}" in self.taken:
             n += 1
         cand = f"{prefix}{n}"
-    else:
+        if reserve:
+            self.add(cand)
+        return cand
+
+    def next_sibling(self, eid):
+        if _is_int_seg(eid.rsplit(".", 1)[-1]):
+            return self.next_child(_parent_of(eid))
         n = 2
-        while f"{eid}-{n}" in taken:
+        while f"{eid}-{n}" in self.taken:
             n += 1
-        cand = f"{eid}-{n}"
-    taken.add(cand)
-    return cand
+        self.add(f"{eid}-{n}")
+        return f"{eid}-{n}"
+
+
+def _stub_name(orphan_children):
+    """Name a missing parent after the words its orphan children share ('Knowledge base content' and
+    'Knowledge base search' -> 'Knowledge base'); None when fewer than two children or nothing shared."""
+    names = [c["name"].split() for c in orphan_children if c["name"]]
+    if len(names) < 2:
+        return None
+    prefix = []
+    for words in zip(*names):
+        if all(w.lower() == words[0].lower() for w in words):
+            prefix.append(words[0])
+        else:
+            break
+    while prefix and prefix[-1].lower() in CONNECTOR_WORDS:
+        prefix.pop()
+    return " ".join(prefix) or None
 
 
 def _resolve_required(names, extra_headers):
     """Map --require names to ('label', getter) pairs; unknown names are an error."""
+    def filled(v):
+        return bool(v) and not _is_placeholder(v)
     resolved = []
     for req in names:
         key = _norm(req)
         if key in {_norm(a) for a in NAME_ALIASES}:
-            resolved.append(("name", lambda e: e["name"]))
+            resolved.append(("name", lambda e: filled(e["name"])))
             continue
         if key in {_norm(a) for a in WEIGHT_ALIASES}:
             resolved.append(("weight", lambda e: e["weight"] is not None))
+            continue
+        if key in {_norm(a) for a in CONTROL_ACCOUNT_ALIASES}:
+            resolved.append(("control account", lambda e: e["ca_id"] is not None))
             continue
         exact = [h for h in extra_headers if _norm(h) == key]
         partial = [h for h in extra_headers if key and key in _norm(h)]
@@ -377,13 +493,16 @@ def _resolve_required(names, extra_headers):
             raise ValueError(f"--require: column '{req}' not found; columns present: "
                              f"{['id', 'name', 'weight'] + extra_headers}")
         h = match[0]
-        resolved.append((h, lambda e, h=h: e["extra"].get(h, "")))
+        resolved.append((h, lambda e, h=h: filled(e["extra"].get(h, ""))))
     return resolved
 
 
-def analyse(elements, extra_headers, tol=DEFAULT_TOLERANCE, max_children=None, require=(),
+def analyse(elements, meta, tol=DEFAULT_TOLERANCE, max_children=None, max_depth=None, require=(),
             rollup=False, budget=None, max_leaf_share=DEFAULT_MAX_LEAF_SHARE):
     errors, warnings, notes, suggestions = [], [], [], []
+    extra_headers = meta["extra_headers"]
+    if meta["ignored"]:
+        notes.append(f"ignored derived column(s) {meta['ignored']} - recomputed from id and weight")
 
     # duplicates
     by_id = {}
@@ -394,7 +513,7 @@ def analyse(elements, extra_headers, tol=DEFAULT_TOLERANCE, max_children=None, r
         else:
             by_id[e["id"]] = e
     idset = set(by_id)
-    taken = set(idset)
+    alloc = IdAllocator(idset)
 
     # children / leaves
     children, roots = {}, []
@@ -408,31 +527,23 @@ def analyse(elements, extra_headers, tol=DEFAULT_TOLERANCE, max_children=None, r
     leaves = [e for e in elements if e["is_leaf"]]
 
     # orphans -> stub suggestions for every missing ancestor
-    stubs_seen = set()
+    missing = {}
     for e in elements:
         p = e["parent"]
         if p is None or p in idset:
             continue
         errors.append(f"orphan id '{e['id']}' (row {e['row']}): parent '{p}' does not exist")
-        chain = []
         q = p
         while q is not None and q not in idset:
-            chain.append(q)
+            missing.setdefault(q, e)
             q = _parent_of(q)
-        for m in reversed(chain):
-            if m in stubs_seen:
-                continue
-            stubs_seen.add(m)
-            taken.add(m)
-            suggestions.append({"kind": "stub", "id": m, "name": f"<name for {m}>", "before": e, "fixable": True,
-                                "message": f"add a row for the missing parent '{m}' above '{e['id']}' "
-                                           f"(name it, e.g. '<name for {m}>') - or renumber '{e['id']}' "
-                                           f"under an existing element"})
+    for m in sorted(missing, key=_sort_key_of):
+        alloc.add(m)  # reserve the stub ids before any renumbering hands out new ids
 
     # duplicates -> renumber suggestions (children stay with the first occurrence)
     for e in elements:
         if e.get("duplicate"):
-            new = _next_free_id(e["id"], taken)
+            new = alloc.next_sibling(e["id"])
             suggestions.append({"kind": "renumber", "element": e, "new_id": new, "descendants": False,
                                 "fixable": True,
                                 "message": f"renumber the second '{e['id']}' (row {e['row']}) to '{new}' "
@@ -449,56 +560,87 @@ def analyse(elements, extra_headers, tol=DEFAULT_TOLERANCE, max_children=None, r
             ids = [g["id"] for g in grp]
             warnings.append(f"ids {ids} differ only by leading zeros - probable typo (they sort to the same position)")
             for g in grp[1:]:
-                new = _next_free_id(g["id"], taken)
+                new = alloc.next_sibling(g["id"])
                 suggestions.append({"kind": "renumber", "element": g, "new_id": new, "descendants": True,
                                     "fixable": True,
                                     "message": f"renumber '{g['id']}' (row {g['row']}) and its children to '{new}', "
                                                f"or merge it with '{grp[0]['id']}'"})
 
-    # 100% rule per sibling group
-    def check_group(label, kids):
+    # stub rows for missing parents, listed first (hints peek at ids left free after renumbering)
+    stubs = []
+    for m in sorted(missing, key=_sort_key_of):
+        orphan_kids = children.get(m, [])
+        name = _stub_name(orphan_kids)
+        anc = _parent_of(m)
+        while anc is not None and anc not in idset:
+            anc = _parent_of(anc)
+        alt = ""
+        if orphan_kids and anc is not None:
+            alt = (f" - or renumber {_cap(k['id'] for k in orphan_kids)} under the existing "
+                   f"'{anc}' (next free id {alloc.next_child(anc, reserve=False)})")
+        stubs.append({
+            "kind": "stub", "id": m, "name": name or f"TODO name for {m}", "before": missing[m], "fixable": True,
+            "message": (f"add a row '{m}' named '{name}' (the words its children share)" if name else
+                        f"add a row for the missing parent '{m}' and name it after its children "
+                        f"({_cap(k['id'] for k in orphan_kids) or 'its missing children'})") + alt})
+    suggestions[:0] = stubs
+
+    # 100% rule per sibling group; `pending` = stub parents (from orphans) that will join the group
+    def check_group(label, kids, pending=()):
         weighted = [k for k in kids if k["weight"] is not None]
         if not weighted:
             return None
         unweighted = [k for k in kids if k["weight"] is None]
         total = round(sum(k["weight"] for k in weighted), 6)
+        off = abs(total - 100.0) > tol + 1e-9
         if unweighted:
             errors.append(f"100% rule: {label} are only partly weighted (no weight on "
-                          f"{', '.join(k['id'] for k in unweighted)}) - weight all siblings or none")
+                          f"{_cap(k['id'] for k in unweighted)}) - weight all siblings or none")
+        elif off:
+            hint = ""
+            if 0.9 <= total <= 1.1 and all(k["weight"] <= 1 for k in weighted):
+                hint = " - the weights look like fractions of 1; enter percents (0.6 -> 60)"
+            errors.append(f"100% rule: {label} have weights summing to {_fmt_w(total)} "
+                          f"(off by {'+' if total > 100 else '-'}{_fmt_w(abs(total - 100.0))}; "
+                          f"tolerance +/-{_fmt_w(tol)}){hint}")
+        blanks = [k["id"] for k in unweighted] + list(pending)
+        after = f" (counting the missing parent row(s) {_cap(pending)} to be added)" if pending else ""
+        if blanks:
             remainder = round(100.0 - total, 6)
-            if remainder > 0:
-                split = normalise([1.0] * len(unweighted), total=remainder)
+            if remainder > tol + 1e-9:
+                split = normalise_weights([1.0] * len(blanks), total=remainder)
                 suggestions.append({"kind": "weights", "targets": list(zip(unweighted, split)), "fixable": True,
                                     "message": f"{label}: the weighted siblings use {_fmt_w(total)}% - give the "
                                                f"remaining {_fmt_w(remainder)}% to "
-                                               + ", ".join(f"{k['id']}={_fmt_w(w)}" for k, w in zip(unweighted, split))})
+                                               + ", ".join(f"{b}={_fmt_w(w)}" for b, w in zip(blanks, split)) + after})
             else:
-                norm = normalise([k["weight"] for k in weighted]) or normalise([1.0] * len(weighted))
+                mean = total / len(weighted) if total > 0 else 1.0
+                ids = [k["id"] for k in weighted] + blanks
+                norm = normalise_weights([k["weight"] for k in weighted] + [mean] * len(blanks))
                 suggestions.append({"kind": "weights", "targets": [], "fixable": False,
-                                    "message": f"{label}: the weighted siblings already use {_fmt_w(total)}% - either "
-                                               f"remove {', '.join(k['id'] for k in unweighted)} or weight them and "
-                                               f"rescale (weighted-only normalisation: "
-                                               + ", ".join(f"{k['id']}={_fmt_w(w)}" for k, w in zip(weighted, norm))
-                                               + ") - not applied by --fix"})
-            return False
-        if abs(total - 100.0) > tol + 1e-9:
-            errors.append(f"100% rule: {label} have weights summing to {_fmt_w(total)} "
-                          f"(off by {'+' if total > 100 else '-'}{_fmt_w(abs(total - 100.0))}; tolerance +/-{_fmt_w(tol)})")
-            norm = normalise([k["weight"] for k in weighted]) or normalise([1.0] * len(weighted))
+                                    "message": f"{label}: the weighted siblings already use {_fmt_w(total)}% - "
+                                               f"decide: remove {_cap(blanks)} (out of scope?) or weight and "
+                                               f"rescale; if each is as big as an average sibling: "
+                                               + ", ".join(f"{i}={_fmt_w(w)}" for i, w in zip(ids, norm))
+                                               + after + " - needs your decision, not applied by --fix"})
+        elif off:
+            norm = normalise_weights([k["weight"] for k in weighted]) or normalise_weights([1.0] * len(weighted))
             suggestions.append({"kind": "weights", "targets": list(zip(weighted, norm)), "fixable": True,
                                 "message": f"{label}: set "
                                            + ", ".join(f"{k['id']}={_fmt_w(w)}" for k, w in zip(weighted, norm))
-                                           + (" (equal split - all weights were 0)" if total == 0 else " (normalised to 100)")})
-            return False
-        return True
+                                           + (" (equal split - all weights were 0)" if total == 0
+                                              else " (normalised to 100)")})
+        return not (unweighted or off)
 
     parents = sorted((p for p in children if p in idset), key=_sort_key_of)
     n_checked = 0
     for p in parents:
         kids = children[p]
-        if check_group(f"children of '{p}'", kids) is not None:
+        pending = [m for m in sorted(missing, key=_sort_key_of) if _parent_of(m) == p]
+        if check_group(f"children of '{p}'", kids, pending) is not None:
             n_checked += 1
-        if len(kids) == 1:
+        implied = {k["id"] for k in kids} | set(pending)
+        if len(implied) == 1:
             warnings.append(f"single child: '{p}' has only one child ('{kids[0]['id']}') - a rename, not a decomposition")
         if max_children and len(kids) > max_children:
             warnings.append(f"'{p}' has {len(kids)} children (more than --max-children {max_children}) - "
@@ -506,17 +648,22 @@ def analyse(elements, extra_headers, tol=DEFAULT_TOLERANCE, max_children=None, r
     top_checked = False
     if len(roots) > 1:
         if all(r["weight"] is None for r in roots):
-            warnings.append(f"{len(roots)} top-level elements ({', '.join(r['id'] for r in roots)}) - a WBS "
+            warnings.append(f"{len(roots)} top-level elements ({_cap(r['id'] for r in roots)}) - a WBS "
                             f"usually has one project root; add it, or weight the top level so it can be checked")
         else:
-            top_checked = check_group("top-level elements", roots) is not None
+            top_checked = check_group("top-level elements", roots,
+                                      [m for m in sorted(missing, key=_sort_key_of) if _parent_of(m) is None]) is not None
     elif roots and roots[0]["weight"] is not None:
         warnings.append(f"weight {_fmt_w(roots[0]['weight'])} on the single top-level element '{roots[0]['id']}' "
                         f"is ignored (the root is 100% by definition)")
         suggestions.append({"kind": "drop_weight", "element": roots[0], "fixable": True,
                             "message": f"remove the weight from '{roots[0]['id']}'"})
 
-    # uneven decomposition
+    # depth and uneven decomposition
+    if max_depth:
+        deep = [e["id"] for e in sorted(elements, key=lambda x: x["sort_key"]) if e["level"] > max_depth]
+        if deep:
+            warnings.append(f"{len(deep)} element(s) deeper than --max-depth {max_depth}: {_cap(deep)}")
     if len(leaves) > 1:
         lo = min(leaves, key=lambda e: e["level"])
         hi = max(leaves, key=lambda e: e["level"])
@@ -525,28 +672,63 @@ def analyse(elements, extra_headers, tol=DEFAULT_TOLERANCE, max_children=None, r
                             f"'{hi['id']}' sits at level {hi['level']} - branches differ by more than "
                             f"{MAX_LEVEL_SPREAD} levels")
 
-    # required columns on work packages
-    for label, getter in _resolve_required(require, extra_headers):
-        for e in leaves:
-            if not getter(e):
-                errors.append(f"work package '{e['id']}' has no {label} (--require)")
+    # names and leftover template placeholders
+    if meta["has_name_col"]:
+        blank = [e["id"] for e in elements if not e["name"]]
+        if blank:
+            warnings.append(f"{len(blank)} element(s) have no name: {_cap(blank)}")
+    todo = [e["id"] for e in elements if e["name"].startswith("TODO")]
+    if todo:
+        warnings.append(f"element(s) still named TODO: {_cap(todo)} - give each a deliverable noun")
+    if meta["placeholders"]:
+        warnings.append(f"{len(meta['placeholders'])} cell(s) still hold template placeholders: "
+                        f"{_cap(meta['placeholders'], 4)}")
+    zero = [e["id"] for e in sorted(elements, key=lambda x: x["sort_key"])
+            if e["weight"] == 0 and e["parent"] is not None]
+    if zero:
+        warnings.append(f"{len(zero)} element(s) weighted 0% of their parent: {_cap(zero)} - out of scope "
+                        f"(remove it) or mis-weighted?")
 
-    # control accounts
+    # control accounts: resolve, inherit, check nesting and coverage
     name_index = {}
     for e in elements:
         if e["name"]:
             name_index.setdefault(e["name"].lower(), e["id"])
     for e in elements:
         ca = e["control_account"]
-        if not ca:
+        if not ca or _is_placeholder(ca):
             continue
         target = ca if ca in idset else name_index.get(ca.lower())
         if target is None:
             warnings.append(f"control account '{ca}' on '{e['id']}' matches no WBS id or name")
-        elif not (e["id"] == target or e["id"].startswith(target + ".")):
+        elif not (e["id"] == target or _is_ancestor(target, e["id"])):
             warnings.append(f"control account '{ca}' on '{e['id']}' is not that element or one of its ancestors")
         else:
             e["ca_id"] = target
+    ca_targets = {e["ca_id"] for e in elements if e["ca_id"]}
+    for e in leaves:
+        if e["ca_id"] is None:
+            q = e["parent"]
+            while q is not None:
+                if q in ca_targets:
+                    e["ca_id"] = q
+                    break
+                q = _parent_of(q)
+    for t in sorted(ca_targets, key=_sort_key_of):
+        outer = [u for u in ca_targets if _is_ancestor(u, t)]
+        if outer:
+            warnings.append(f"control account '{t}' lies inside control account '{sorted(outer, key=_sort_key_of)[0]}' "
+                            f"- a work package must belong to exactly one control account")
+    if ca_targets:
+        uncovered = [e["id"] for e in sorted(leaves, key=lambda x: x["sort_key"]) if e["ca_id"] is None]
+        if uncovered:
+            warnings.append(f"{len(uncovered)} work package(s) belong to no control account: {_cap(uncovered)}")
+
+    # required columns on work packages
+    for label, ok in _resolve_required(require, extra_headers):
+        for e in sorted(leaves, key=lambda x: x["sort_key"]):
+            if not ok(e):
+                errors.append(f"work package '{e['id']}' has no {label} (--require)")
 
     # shares of the whole project
     top_all_weighted = len(roots) > 1 and all(r["weight"] is not None for r in roots)
@@ -558,14 +740,14 @@ def analyse(elements, extra_headers, tol=DEFAULT_TOLERANCE, max_children=None, r
             ps = p["share"] if p else None
             e["share"] = None if (ps is None or e["weight"] is None) else round(ps * e["weight"] / 100.0, 10)
     if rollup and max_leaf_share:
-        for e in leaves:
+        for e in sorted(leaves, key=lambda x: x["sort_key"]):
             if e["share"] is not None and e["share"] > max_leaf_share + 1e-9:
                 warnings.append(f"work package '{e['id']}' is {_fmt(e['share'])}% of the project (above "
                                 f"--max-leaf-share {_fmt_w(max_leaf_share)}%) - decompose it further")
     allocable = [e for e in leaves if e["share"] is not None]
     leaf_total = round(sum(e["share"] for e in allocable), 6)
 
-    # budget allocation
+    # budget allocation (largest remainder to the cent)
     if budget is not None:
         complete = bool(allocable) and len(allocable) == len(leaves) and abs(leaf_total - 100.0) <= tol + 1e-9
         cents = round(budget * 100)
@@ -577,12 +759,15 @@ def analyse(elements, extra_headers, tol=DEFAULT_TOLERANCE, max_children=None, r
             order = sorted(range(len(raw)), key=lambda i: raw[i] - base[i], reverse=True)
             for i in order[:max(rem, 0)]:
                 base[i] += 1
+            if abs(leaf_total - 100.0) > 1e-9:
+                notes.append(f"budget: work-package shares total {_fmt_w(leaf_total)}% (within tolerance), so each "
+                             f"allocation is scaled by 100/{_fmt_w(leaf_total)} to use the whole budget")
         for e, c in zip(allocable, base):
             e["budget"] = c / 100.0
         if not complete:
-            missing = len(leaves) - len(allocable)
+            n_missing = len(leaves) - len(allocable)
             notes.append(f"budget: work-package shares sum to {_fmt(leaf_total)}%"
-                         + (f" and {missing} work package(s) have no share" if missing else "")
+                         + (f" and {n_missing} work package(s) have no share" if n_missing else "")
                          + f", so only {_fmt(sum(base) / 100.0)} of {_fmt(budget)} is allocated - fix the weights first")
         for e in sorted(elements, key=lambda x: -x["level"]):
             if not e["is_leaf"]:
@@ -601,8 +786,11 @@ def analyse(elements, extra_headers, tol=DEFAULT_TOLERANCE, max_children=None, r
 
 
 # ----------------------------------------------------------------------------- fixes and exports
-def apply_fixes(elements, headers, suggestions):
-    """Return (rows, headers, applied) with every fixable suggestion applied to copies of the input rows."""
+STRUCTURAL = ("stub", "renumber", "drop_weight")
+
+
+def apply_fixes(elements, headers, suggestions, kinds):
+    """Return (rows, headers, applied): copies of the input rows with the fixable suggestions of `kinds` applied."""
     def find(aliases):
         return next((h for h in headers if _norm(h) in {_norm(a) for a in aliases}), None)
     headers_out = list(headers)
@@ -610,7 +798,7 @@ def apply_fixes(elements, headers, suggestions):
     new_ids = {id(e): e["id"] for e in elements}
     new_weights, stubs, applied = {}, [], []
     for s in suggestions:
-        if not s.get("fixable"):
+        if not s.get("fixable") or s["kind"] not in kinds:
             continue
         if s["kind"] == "weights":
             for e, w in s["targets"]:
@@ -622,7 +810,7 @@ def apply_fixes(elements, headers, suggestions):
             new_ids[id(s["element"])] = new
             if s["descendants"]:
                 for x in elements:
-                    if x is not s["element"] and x["id"].startswith(old + "."):
+                    if x is not s["element"] and _is_ancestor(old, x["id"]):
                         new_ids[id(x)] = new + x["id"][len(old):]
         elif s["kind"] == "stub":
             stubs.append(s)
@@ -649,18 +837,41 @@ def apply_fixes(elements, headers, suggestions):
     return rows, headers_out, applied
 
 
-def write_csv(path, headers, rows):
-    with open(path, "w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=headers, extrasaction="ignore")
+def run_fix(elements, headers, res, args):
+    """Two-phase --fix: structural fixes (repeated until none remain), then weights on the final structure.
+    Returns (rows, headers, applied messages, analysis of the fixed rows)."""
+    rows, hdrs, applied, cur_res, cur_el = None, list(headers), [], res, elements
+    for _ in range(3):
+        if not any(s.get("fixable") and s["kind"] in STRUCTURAL for s in cur_res["suggestions"]):
+            break
+        rows, hdrs, done = apply_fixes(cur_el, hdrs, cur_res["suggestions"], STRUCTURAL)
+        applied += done
+        cur_el, meta = parse(rows, hdrs, [None] * len(rows))
+        cur_res = analyse(cur_el, meta, tol=args.tolerance)
+    rows, hdrs, done = apply_fixes(cur_el, hdrs, cur_res["suggestions"], ("weights",))
+    applied += done
+    final_el, final_meta = parse(rows, hdrs, [None] * len(rows))
+    final = analyse(final_el, final_meta, tol=args.tolerance, max_children=args.max_children,
+                    max_depth=args.max_depth, require=args.require_list, rollup=args.rollup,
+                    budget=args.budget_value, max_leaf_share=args.max_leaf_share)
+    return rows, hdrs, applied, final
+
+
+def write_csv(path, headers, rows, delimiter=",", bom=False):
+    with open(path, "w", encoding="utf-8-sig" if bom else "utf-8", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=headers, extrasaction="ignore", delimiter=delimiter)
         writer.writeheader()
         writer.writerows(rows)
 
 
-def estimation_rows(leaves):
+def estimation_rows(leaves, extra_headers):
+    owner_h = next((h for h in extra_headers if _norm(h) in {_norm(a) for a in OWNER_ALIASES}), None)
     rows = []
     for e in sorted(leaves, key=lambda x: x["sort_key"]):
         row = {c: "" for c in ESTIMATION_COLUMNS}
         row["id"], row["task"] = e["id"], e["name"]
+        if owner_h and not _is_placeholder(e["extra"].get(owner_h, "")):
+            row["estimators"] = e["extra"].get(owner_h, "")
         rows.append(row)
     return rows
 
@@ -676,8 +887,9 @@ def _verdict(res, strict):
 
 
 def _checked_line(st):
-    if st["parents"] == 0 and not st["top_level_checked"]:
-        return "100% rule not applicable (no parent has children)"
+    if st["parents"] == 0:
+        return "100% rule checked at the top level" if st["top_level_checked"] else \
+            "100% rule not applicable (no parent has children)"
     if st["parents_checked"] == 0 and not st["top_level_checked"]:
         return f"100% rule NOT checked: no weights given ({st['parents']} parent(s) unweighted) - structural checks only"
     s = f"100% rule checked at {st['parents_checked']} of {st['parents']} parent(s)"
@@ -703,21 +915,28 @@ def _control_accounts(res):
         groups.setdefault(e["ca_id"], []).append(e)
     if list(groups) == [None]:
         return []
+
+    def summ(wps):
+        shares = [w["share"] for w in wps]
+        budgets = [w["budget"] for w in wps]
+        return (None if any(s is None for s in shares) else round(sum(shares), 6),
+                None if any(b is None for b in budgets) else round(sum(budgets), 2))
     out = []
     for ca in sorted((k for k in groups if k is not None), key=_sort_key_of):
-        wps = groups[ca]
-        shares = [w["share"] for w in wps]
-        budgets = [w["budget"] for w in wps]
-        out.append((ca, res["by_id"][ca]["name"], len(wps),
-                    None if any(s is None for s in shares) else round(sum(shares), 6),
-                    None if any(b is None for b in budgets) else round(sum(budgets), 2)))
+        out.append((ca, res["by_id"][ca]["name"], len(groups[ca])) + summ(groups[ca]))
     if None in groups:
-        wps = groups[None]
-        shares = [w["share"] for w in wps]
-        budgets = [w["budget"] for w in wps]
-        out.append(("(none)", "work packages without a control account", len(wps),
-                    None if any(s is None for s in shares) else round(sum(shares), 6),
-                    None if any(b is None for b in budgets) else round(sum(budgets), 2)))
+        out.append(("(none)", "work packages without a control account", len(groups[None])) + summ(groups[None]))
+    return out
+
+
+def _fix_lines(res):
+    fx = res.get("fix")
+    if not fx:
+        return []
+    out = [f"wrote {fx['path']} with {len(fx['applied'])} change(s) applied:"]
+    out += [f"  * {m}" for m in fx["applied"]] or ["  * (nothing fixable)"]
+    out.append(f"re-validation of {fx['path']}: {fx['verdict']}")
+    out += [f"  - still to decide: {m}" for m in fx["remaining"]]
     return out
 
 
@@ -789,11 +1008,13 @@ def render_table(res, opts):
                 out.append(f"  - {s['message']}")
         else:
             out.append("  (nothing to suggest)")
+    fix = _fix_lines(res)
+    if fix:
+        out += ["", "Fix", "---"] + [f"  {m}" for m in fix]
     for m in res.get("written", []):
         out.append(f"  {m}")
     out += ["", f"Checked: {_checked_line(st)}."]
-    failed, line = _verdict(res, opts.strict)
-    out.append(line)
+    out.append(_verdict(res, opts.strict)[1])
     return "\n".join(out)
 
 
@@ -815,7 +1036,7 @@ def element_rows(res, opts, extra_headers):
 def render_json(res, opts, extra_headers):
     failed, line = _verdict(res, opts.strict)
     st = res["stats"]
-    summary = {"status": "FAIL" if failed else "PASS", "verdict": line,
+    summary = {"status": "FAIL" if failed else "PASS", "verdict": line, "checked": _checked_line(st),
                "elements": st["elements"], "work_packages": st["work_packages"], "levels": st["levels"],
                "parents": st["parents"], "parents_checked": st["parents_checked"],
                "top_level_checked": st["top_level_checked"], "tolerance": st["tolerance"],
@@ -824,6 +1045,7 @@ def render_json(res, opts, extra_headers):
                "suggestions": [s["message"] for s in res["suggestions"]] if opts.suggest else [],
                "control_accounts": [{"id": ca, "name": n, "work_packages": k, "share_pct": s, "budget": b}
                                     for ca, n, k, s, b in _control_accounts(res)] if opts.rollup else [],
+               "fix": res.get("fix") or None,
                "written": res.get("written", [])}
     return json.dumps({"rows": element_rows(res, opts, extra_headers), "summary": summary}, indent=2, ensure_ascii=False)
 
@@ -837,7 +1059,7 @@ def render_csv(res, opts, extra_headers):
         r = dict(r)
         r["weight"] = "" if r["weight"] is None else _fmt_w(r["weight"])
         if "share_pct" in r:
-            r["share_pct"] = "" if r["share_pct"] is None else f"{r['share_pct']:.4f}".rstrip("0").rstrip(".")
+            r["share_pct"] = "" if r["share_pct"] is None else _fmt_w(r["share_pct"])
         if "budget" in r:
             r["budget"] = "" if r["budget"] is None else f"{r['budget']:.2f}"
         writer.writerow(r)
@@ -900,10 +1122,10 @@ def render_md(res, opts, extra_headers):
             out.append(f"- suggestion: {s['message']}")
     if not (res["errors"] or res["warnings"] or res["notes"] or (opts.suggest and res["suggestions"])):
         out.append("- no issues")
+    out += [f"- {m}" for m in _fix_lines(res)]
     for m in res.get("written", []):
         out.append(f"- {m}")
-    failed, line = _verdict(res, opts.strict)
-    out += ["", f"**{line}** ({_checked_line(st)})"]
+    out += ["", f"**{_verdict(res, opts.strict)[1]}** ({_checked_line(st)})"]
     return "\n".join(out)
 
 
@@ -919,28 +1141,32 @@ def build_parser():
     parser.add_argument("--json", action="store_true", help="parse the input as JSON (a list of objects or {\"wbs\": [...]})")
     parser.add_argument("--delimiter", metavar="CHAR", help="CSV delimiter (default: auto-detect , ; tab |)")
     parser.add_argument("--tolerance", type=float, default=DEFAULT_TOLERANCE, metavar="PCT",
-                        help="allowed deviation of a sibling group's weight sum from 100 (default %(default)s)")
+                        help="allowed deviation of a sibling group's weight sum from 100, in percentage points "
+                             "(default %(default)s)")
     parser.add_argument("--suggest", action="store_true",
-                        help="print suggestions: normalised weights for failing groups, stub rows for missing parents, "
-                             "new numbers for duplicate ids")
+                        help="print suggestions: normalised weights for failing groups, named stub rows for missing "
+                             "parents, new numbers for duplicate and leading-zero ids")
     parser.add_argument("--fix", metavar="OUT.csv",
-                        help="write the input with every fixable suggestion applied to OUT.csv (implies --suggest; "
-                             "other columns are preserved; the exit code still reflects the input)")
+                        help="write the input with every fixable suggestion applied to OUT.csv and re-validate it "
+                             "(implies --suggest; other columns are kept; the exit code still reflects the input)")
     parser.add_argument("--rollup", action="store_true",
                         help="show each element's absolute share of the project, the work packages ranked by share, "
                              "and the control accounts")
     parser.add_argument("--budget", metavar="AMOUNT",
-                        help="allocate AMOUNT to the work packages by rolled-up share (largest-remainder rounding to "
-                             "the cent; implies --rollup)")
+                        help="allocate AMOUNT (e.g. 500000 or '$500,000') to the work packages by rolled-up share with "
+                             "largest-remainder rounding to the cent; implies --rollup")
     parser.add_argument("--export-estimation", metavar="PATH",
-                        help="write the work packages (id, task, blank O/M/P ...) in the estimation worksheet format "
-                             "read by pert_estimate.py")
+                        help="write the work packages (id, task, blank O/M/P, estimators = owner) in the estimation "
+                             "worksheet format read by pert_estimate.py")
     parser.add_argument("--max-children", type=int, metavar="N",
-                        help="warn when a parent has more than N children (default: off)")
+                        help="warn when a parent has more than N children (default: off; 7-9 is typical)")
+    parser.add_argument("--max-depth", type=int, metavar="N",
+                        help="warn when an element sits deeper than level N (default: off)")
     parser.add_argument("--max-leaf-share", type=float, default=DEFAULT_MAX_LEAF_SHARE, metavar="PCT",
                         help="with --rollup, warn when a work package exceeds PCT%% of the project (default %(default)s)")
     parser.add_argument("--require", metavar="COL[,COL]",
-                        help="columns that every work package must fill, e.g. owner,acceptance (blank -> ERROR)")
+                        help="columns every work package must fill, e.g. owner,acceptance (blank or <placeholder> "
+                             "-> ERROR); 'control account' also accepts an inherited account")
     parser.add_argument("--strict", action="store_true", help="treat warnings as failures (exit 1) for CI gates")
     parser.add_argument("--format", choices=FORMATS, default="table",
                         help="output format (default %(default)s); csv prints rows to stdout and the verdict to stderr")
@@ -948,22 +1174,27 @@ def build_parser():
 
 
 def _check_options(parser, args):
-    if args.delimiter is not None and len(args.delimiter) != 1:
-        parser.error("--delimiter must be a single character")
+    if args.delimiter is not None:
+        if args.delimiter in ("\\t", "tab", "TAB"):
+            args.delimiter = "\t"
+        if len(args.delimiter) != 1 or args.delimiter in ('"', "\n", "\r"):
+            parser.error("--delimiter must be a single character such as ',' ';' '|' or 'tab'")
     if not math.isfinite(args.tolerance) or args.tolerance < 0 or args.tolerance >= 50:
         parser.error("--tolerance must be a finite percentage between 0 and 50")
     if not math.isfinite(args.max_leaf_share) or args.max_leaf_share <= 0 or args.max_leaf_share > 100:
         parser.error("--max-leaf-share must be a percentage above 0 and at most 100")
     if args.max_children is not None and args.max_children < 1:
         parser.error("--max-children must be a whole number of at least 1")
+    if args.max_depth is not None and args.max_depth < 1:
+        parser.error("--max-depth must be a whole number of at least 1")
     budget = None
     if args.budget is not None:
         try:
             budget = _num(args.budget, "--budget", minimum=0)
         except ValueError as exc:
             parser.error(str(exc))
-        if budget <= 0:
-            parser.error("--budget must be greater than 0")
+        if budget <= 0 or budget > 1e15:
+            parser.error("--budget must be greater than 0 and at most 1e15")
         args.rollup = True
     args.budget_value = budget
     args.require_list = [c.strip() for c in (args.require or "").split(",") if c.strip()]
@@ -971,10 +1202,14 @@ def _check_options(parser, args):
         parser.error("--require needs at least one column name")
     if args.fix:
         args.suggest = True
-    for out in (args.fix, args.export_estimation):
-        if out and args.path != "-" and os.path.abspath(out) == os.path.abspath(args.path):
-            parser.error(f"refusing to overwrite the input file {args.path!r}; choose another output path")
-    if args.fix and args.export_estimation and os.path.abspath(args.fix) == os.path.abspath(args.export_estimation):
+    for flag, out in (("--fix", args.fix), ("--export-estimation", args.export_estimation)):
+        if out is None:
+            continue
+        if out in ("", "-"):
+            parser.error(f"{flag} needs a file path (stdout is used by the report)")
+        if args.path != "-" and os.path.realpath(out) == os.path.realpath(args.path):
+            parser.error(f"refusing to overwrite the input file {args.path!r}; choose another output path for {flag}")
+    if args.fix and args.export_estimation and os.path.realpath(args.fix) == os.path.realpath(args.export_estimation):
         parser.error("--fix and --export-estimation must be different files")
 
 
@@ -982,38 +1217,62 @@ def main(argv=None):
     parser = build_parser()
     args = parser.parse_args(argv)
     _check_options(parser, args)
+    failed = False
     try:
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(errors="replace")
         text = read_text(args.path)
-        rows, headers, lines = load_rows(text, args.json, JSON_KEY, args.delimiter)
-        elements, extra_headers = parse(rows, headers, lines)
-        res = analyse(elements, extra_headers, tol=args.tolerance, max_children=args.max_children,
+        delim = "," if args.json else (args.delimiter or sniff_delimiter(text))
+        rows, headers, lines = load_rows(text, args.json, JSON_KEY, delim)
+        elements, meta = parse(rows, headers, lines)
+        res = analyse(elements, meta, tol=args.tolerance, max_children=args.max_children, max_depth=args.max_depth,
                       require=args.require_list, rollup=args.rollup, budget=args.budget_value,
                       max_leaf_share=args.max_leaf_share)
         res["written"] = []
+        bom = _had_bom(args.path)
         if args.fix:
-            fixed_rows, fixed_headers, applied = apply_fixes(elements, headers, res["suggestions"])
-            write_csv(args.fix, fixed_headers, fixed_rows)
-            res["written"].append(f"wrote {args.fix} with {len(applied)} change(s) applied - re-run the validator on it")
+            fixed_rows, fixed_headers, applied, final = run_fix(elements, headers, res, args)
+            write_csv(args.fix, fixed_headers, fixed_rows, delimiter=delim, bom=bom)
+            res["fix"] = {"path": args.fix, "applied": applied, "verdict": _verdict(final, args.strict)[1],
+                          "remaining": final["errors"] + (final["warnings"] if args.strict else [])}
         if args.export_estimation:
-            write_csv(args.export_estimation, list(ESTIMATION_COLUMNS), estimation_rows(res["leaves"]))
-            res["written"].append(f"wrote {len(res['leaves'])} work package(s) to {args.export_estimation} "
-                                  f"for .claude/skills/estimation/scripts/pert_estimate.py")
+            write_csv(args.export_estimation, list(ESTIMATION_COLUMNS),
+                      estimation_rows(res["leaves"], meta["extra_headers"]), delimiter=delim, bom=bom)
+            res["written"].append(f"wrote {len(res['leaves'])} work package(s) to {args.export_estimation} - fill in "
+                                  f"optimistic, most_likely and pessimistic, then run "
+                                  f".claude/skills/estimation/scripts/pert_estimate.py on it")
         if args.format == "json":
-            output = render_json(res, args, extra_headers)
+            output = render_json(res, args, meta["extra_headers"])
         elif args.format == "csv":
-            output = render_csv(res, args, extra_headers)
+            output = render_csv(res, args, meta["extra_headers"])
         elif args.format == "md":
-            output = render_md(res, args, extra_headers)
+            output = render_md(res, args, meta["extra_headers"])
         else:
             output = render_table(res, args)
         failed, verdict = _verdict(res, args.strict)
-    except (OSError, ValueError, TypeError, UnicodeDecodeError, OverflowError, ZeroDivisionError,
+        print(output)
+        if args.format == "csv":
+            print(verdict, file=sys.stderr)
+        sys.stdout.flush()
+    except BrokenPipeError:
+        # the reader (e.g. `| head`) closed the pipe; exit quietly with the verdict
+        try:
+            sys.stdout = open(os.devnull, "w")
+        except OSError:
+            pass
+        return 1 if failed else 0
+    except UnicodeDecodeError as exc:
+        print(f"error: {args.path} is not UTF-8 text ({exc.reason} at byte {exc.start}); "
+              f"re-save it as 'CSV UTF-8'", file=sys.stderr)
+        return 2
+    except (OSError, ValueError, TypeError, OverflowError, ZeroDivisionError,
             KeyError, IndexError, RecursionError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
-    print(output)
-    if args.format == "csv":
-        print(verdict, file=sys.stderr)
+    except Exception as exc:  # internal error: never a traceback, never the validation-FAIL code
+        print(f"error: internal error ({type(exc).__name__}: {exc}); please report it with the input file",
+              file=sys.stderr)
+        return 2
     return 1 if failed else 0
 
 

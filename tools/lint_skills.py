@@ -19,6 +19,11 @@ Checks per skill (.claude/skills/<name>/SKILL.md):
      another skill's folder when written as .claude/skills/<other>/...), and every
      file in those folders is mentioned in the body (orphan -> warning).
   8. Every helper script under scripts/ runs with --help (exit 0).
+  9. Every Markdown file under references/ and assets/ (and the repo README.md) only
+     points at files that exist: `.claude/skills/<s>/...` paths and folder-relative
+     references/ assets/ scripts/ paths must resolve, and a bare `file.csv`-style
+     name in backticks must exist somewhere in the catalog (catches stale pointers
+     after a file is renamed or removed).
 
 Usage:
     python tools/lint_skills.py            # lint .claude/skills relative to cwd
@@ -45,6 +50,10 @@ SECTIONS = [
 FILE_REF_RE = re.compile(r"(?:\.claude/skills/([a-z0-9-]+)/)?\b(references|assets|scripts)/([A-Za-z0-9_\-./]+)")
 PLACEHOLDER_RE = re.compile(r"\b(TODO|TBD|FIXME|lorem ipsum)\b", re.I)
 BULLET_SKILL_RE = re.compile(r"^\s*[-*]\s+`([a-z0-9-]+)`")
+FULL_PATH_RE = re.compile(r"\.claude/skills/([a-z0-9-]+)(?:/([A-Za-z0-9_\-./]+))?")
+BARE_FILE_RE = re.compile(r"`([A-Za-z0-9_\-.]+\.(?:md|csv|py|json))`")
+# illustrative names used in examples, not files the catalog ships
+ILLUSTRATIVE = re.compile(r"^(OUT|out|data|my[-_]|your[-_]|new[-_]|fixed[-_]|old[-_]|bad|broken|input|output|report|plan|register|results?)\b|^SKILL\.md$|^README\.md$")
 
 try:  # optional strict YAML parsing
     import yaml  # type: ignore
@@ -269,6 +278,52 @@ def lint(skills_dir: str, run_scripts: bool = True):
                             errors.append(f"{tag} scripts/{fname} --help exited {proc.returncode}: {proc.stderr.strip()[:200]}")
                     except Exception as exc:  # pragma: no cover
                         errors.append(f"{tag} scripts/{fname} --help failed to run: {exc}")
+
+    # 9. pointers inside supporting Markdown files and the repo README
+    all_basenames = set()
+    for dirpath, dirnames, filenames in os.walk(skills_dir):
+        dirnames[:] = [d for d in dirnames if not d.startswith((".", "__"))]
+        all_basenames.update(filenames)
+    docs = []
+    for name in skills:
+        for fname in set(BARE_FILE_RE.findall(FULL_PATH_RE.sub("", "\n".join(parsed[name][1])))):
+            if fname not in all_basenames and not ILLUSTRATIVE.search(fname):
+                errors.append(f"[{name}] SKILL.md names '{fname}', which exists nowhere in the catalog")
+        for sub in ("references", "assets"):
+            subdir = os.path.join(skills_dir, name, sub)
+            for dirpath, dirnames, filenames in os.walk(subdir) if os.path.isdir(subdir) else []:
+                docs += [(name, os.path.join(dirpath, f)) for f in sorted(filenames) if f.endswith(".md")]
+    readme = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(skills_dir))), "README.md")
+    if os.path.isfile(readme):
+        docs.append((None, readme))
+    for owner, doc in docs:
+        with open(doc, encoding="utf-8") as fh:
+            text = fh.read()
+        shown = os.path.relpath(doc, os.path.join(skills_dir, owner)) if owner else "README.md"
+        tag = f"[{owner}] {shown}" if owner else "[README.md]"
+        seen = set()
+        for other, rest in FULL_PATH_RE.findall(text):
+            rest = rest.rstrip(".,;:)/")
+            if (other, rest) in seen:
+                continue
+            seen.add((other, rest))
+            target = os.path.join(skills_dir, other, rest) if rest else os.path.join(skills_dir, other)
+            if not os.path.exists(target):
+                errors.append(f"{tag} points at missing '.claude/skills/{other}{'/' + rest if rest else ''}'")
+        stripped = FULL_PATH_RE.sub("", text)
+        for _, sub, rel in FILE_REF_RE.findall(stripped):
+            rel = rel.rstrip(".,;:)/")
+            if not rel or "<" in rel or (sub, rel) in seen:
+                continue
+            seen.add((sub, rel))
+            own = owner and os.path.exists(os.path.join(skills_dir, owner, sub, rel))
+            anywhere = own or any(os.path.exists(os.path.join(skills_dir, s, sub, rel)) for s in skills)
+            if not anywhere and os.path.basename(rel) not in all_basenames:
+                errors.append(f"{tag} points at missing '{sub}/{rel}'")
+        for fname in set(BARE_FILE_RE.findall(stripped)):
+            if fname in all_basenames or ILLUSTRATIVE.search(fname):
+                continue
+            errors.append(f"{tag} names '{fname}', which exists nowhere in the catalog")
 
     print(f"Linted {len(parsed)} skills in {skills_dir}" + ("" if yaml else " (PyYAML not installed: using minimal frontmatter parser)"))
     for w in warnings:

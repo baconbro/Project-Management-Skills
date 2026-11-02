@@ -1,9 +1,4 @@
-Activity,Sponsor,Project Manager,Tech Lead,UX Designer,Support Lead
-Approve Helios project charter,A,R,C,I,I
-Define portal requirements,C,A,R,C,C
-Design self-service UX,I,A,C,R,C
-Build account and ticket APIs,I,A,R,I,
-Integrate identity provider,I,A,R,I,I
-User acceptance testing,C,A,C,R,R
-Production launch and cutover,A,R,C,I,C
-Train support agents,I,C,I,C,A/R
+Activity,<Role 1>,<Role 2>,<Role 3>,<Role 4>,<Role 5>
+<WBS id and work package 1>,<R/A/C/I or blank>,<R/A/C/I or blank>,<R/A/C/I or blank>,<R/A/C/I or blank>,<R/A/C/I or blank>
+<WBS id and work package 2>,<R/A/C/I or blank>,<R/A/C/I or blank>,<R/A/C/I or blank>,<R/A/C/I or blank>,<R/A/C/I or blank>
+<WBS id and work package 3>,<R/A/C/I or blank>,<R/A/C/I or blank>,<R/A/C/I or blank>,<R/A/C/I or blank>,<R/A/C/I or blank>

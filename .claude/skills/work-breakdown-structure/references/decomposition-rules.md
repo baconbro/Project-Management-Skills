@@ -63,7 +63,10 @@ parent that groups several small ones. Every work package belongs to exactly one
 1.1 Project management; 1.2 Discovery & design (grouping 1.2.1 and 1.2.2); 1.3.1–1.3.4,
 1.4.1, 1.4.2, 1.5.1 and 1.5.2 each measured on their own — exactly the ten lines of the
 earned-value snapshot in `cost-management`. Record it in the `control account` column of
-the CSV; the validator rolls shares and budget up per control account under `--rollup`.
+the CSV; a work package left blank inherits the nearest ancestor that is a control account,
+so naming the parent once is enough. Control accounts never nest (one inside another would
+count the same work twice), and the validator warns when they do or when a work package
+belongs to none. It rolls shares and budget up per control account under `--rollup`.
 
 ## Numbering and weights
 - Ids are dotted: level 1 is `1`, level 2 `1.3`, level 3 `1.3.2`; the parent is the id
@@ -74,8 +77,12 @@ the CSV; the validator rolls shares and budget up per control account under `--r
   product of the weights down the chain: Helios 1.3.1 = 45% × 35% = 15.75%. With a BAC of
   $500,000 that is $78,750 — the per-work-package BAC that `cost-management` uses.
 - Allocating a budget by weight uses largest-remainder rounding so the work packages add up
-  to the budget exactly; a 33.3 / 33.3 / 33.3 split is accepted (tolerance 0.1) and
-  normalises to 33.4 / 33.3 / 33.3.
+  to the budget exactly. A 33.3 / 33.3 / 33.3 split is accepted (tolerance 0.1) and a
+  $100,000 budget is scaled to 33,333.34 / 33,333.33 / 33,333.33; a split outside the
+  tolerance, such as 30 / 30 / 30, fails and `--suggest` normalises it to 33.4 / 33.3 / 33.3.
+- A weight of 0 says the element is not part of the work: remove it (out of scope) or give
+  it its real share. Weights may be typed as `35`, `35%` or `35,5` (decimal comma), never
+  as fractions of 1.
 
 ## The Helios WBS (weights = % of parent)
 ```

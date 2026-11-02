@@ -1,0 +1,5 @@
+req_id,requirement,type,priority,source,objective,wbs_id,acceptance_test,status
+<REQ-001>,<one atomic and testable statement of what the product must do>,functional,<Must | Should | Could>,<stakeholder - elicitation event or document>,<OBJ-n>,<work package id; several separated by semicolons>,<test id: pass condition>,<proposed | approved | in build | verified | accepted>
+<REQ-002>,<how well or under what conditions the product must perform; one quality with a number>,non-functional,<Must | Should | Could>,<stakeholder - policy or standard>,<OBJ-n or CON-n>,<work package id>,<test id: measurable pass condition>,<proposed | approved | in build | verified | accepted>
+<REQ-003>,<what people or operations need to move to the new state: training or data migration or handover>,transition,<Must | Should | Could>,<stakeholder - elicitation event>,<OBJ-n>,<work package id>,<test id: pass condition>,<proposed | approved | in build | verified | accepted>
+<REQ-004>,<a request agreed as out of this release>,<functional | non-functional | transition>,Won't,<stakeholder - change request id or session>,,,,<deferred | rejected>

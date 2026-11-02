@@ -1,0 +1,40 @@
+person,role,skills,period,project,capacity,allocated,unit
+Ava Chen,Product owner,,W6,Helios backlog & acceptance,40,32,hours
+Ben Adeyemi,Tech lead,Backend engineer / Frontend engineer,W6,Helios architecture & reviews,40,14,hours
+Ben Adeyemi,Tech lead,Backend engineer / Frontend engineer,W6,Helios 1.3.1 Identity / SSO integration,40,12,hours
+Carla Diaz,Backend engineer,,W6,Helios 1.3.1 Identity / SSO integration,40,28,hours
+Carla Diaz,Backend engineer,,W6,Helios 1.3.3 Knowledge base,40,18,hours
+Devin Patel,Frontend engineer,,W6,Helios 1.3.2 Self-service UI,40,36,hours
+Elena Rossi,UX designer,Frontend engineer,W6,Helios 1.3.2 Self-service UI,40,10,hours
+Elena Rossi,UX designer,Frontend engineer,W6,Design system (other team),40,8,hours
+Frank Müller,QA engineer,,W6,Helios 1.4.1 Test preparation,40,16,hours
+Ava Chen,Product owner,,W7,Helios backlog & acceptance,40,34,hours
+Ben Adeyemi,Tech lead,Backend engineer / Frontend engineer,W7,Helios architecture & reviews,40,14,hours
+Ben Adeyemi,Tech lead,Backend engineer / Frontend engineer,W7,Helios 1.3.1 Identity / SSO integration,40,12,hours
+Carla Diaz,Backend engineer,,W7,Helios 1.3.1 Identity / SSO integration,40,30,hours
+Carla Diaz,Backend engineer,,W7,Helios 1.3.3 Knowledge base,40,20,hours
+Devin Patel,Frontend engineer,,W7,Helios 1.3.2 Self-service UI,40,36,hours
+Devin Patel,Frontend engineer,,W7,Helios 1.3.3 Knowledge base,40,6,hours
+Elena Rossi,UX designer,Frontend engineer,W7,Helios 1.3.2 Self-service UI,40,10,hours
+Elena Rossi,UX designer,Frontend engineer,W7,Design system (other team),40,8,hours
+Frank Müller,QA engineer,,W7,Helios 1.4.1 Test preparation,40,20,hours
+Frank Müller,QA engineer,,W7,Helios 1.3.2 UI test automation,40,8,hours
+Ava Chen,Product owner,,W8,Helios backlog & acceptance,40,38,hours
+Ben Adeyemi,Tech lead,Backend engineer / Frontend engineer,W8,Helios architecture & reviews,40,16,hours
+Ben Adeyemi,Tech lead,Backend engineer / Frontend engineer,W8,Helios 1.3.1 Identity / SSO integration,40,14,hours
+Carla Diaz,Backend engineer,,W8,Helios 1.3.1 Identity / SSO integration,40,30,hours
+Carla Diaz,Backend engineer,,W8,Helios 1.3.3 Knowledge base,40,14,hours
+Devin Patel,Frontend engineer,,W8,Helios 1.3.2 Self-service UI,40,34,hours
+Devin Patel,Frontend engineer,,W8,Helios 1.3.3 Knowledge base,40,8,hours
+Elena Rossi,UX designer,Frontend engineer,W8,Helios 1.3.2 Self-service UI,40,8,hours
+Elena Rossi,UX designer,Frontend engineer,W8,Design system (other team),40,8,hours
+Frank Müller,QA engineer,,W8,Helios 1.4.1 Test preparation,24,20,hours
+Ava Chen,Product owner,,W9,Helios backlog & acceptance,40,30,hours
+Ben Adeyemi,Tech lead,Backend engineer / Frontend engineer,W9,Helios architecture & reviews,32,14,hours
+Ben Adeyemi,Tech lead,Backend engineer / Frontend engineer,W9,Helios 1.3.1 Identity / SSO integration,32,12,hours
+Carla Diaz,Backend engineer,,W9,Helios 1.3.1 Identity / SSO integration,40,30,hours
+Devin Patel,Frontend engineer,,W9,Helios 1.3.2 Self-service UI,40,36,hours
+Elena Rossi,UX designer,Frontend engineer,W9,Helios 1.3.2 Self-service UI,40,6,hours
+Elena Rossi,UX designer,Frontend engineer,W9,Design system (other team),40,8,hours
+Frank Müller,QA engineer,,W9,Helios 1.4.1 Test preparation,40,18,hours
+Frank Müller,QA engineer,,W9,Helios 1.3.2 UI test automation,40,10,hours

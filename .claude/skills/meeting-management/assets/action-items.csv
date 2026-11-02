@@ -1,7 +1,2 @@
-id,action,owner,due,status
-AI001,Confirm identity-provider sandbox access with the vendor,Tech Lead,2026-06-18,in-progress
-AI002,Draft recovery plan to add an integration engineer,PM,2026-06-17,open
-AI003,Circulate UAT entry criteria to the test team,QA Lead,2026-06-19,open
-AI004,Update the change log with the SSO decision (CR001),PM,2026-06-16,done
-AI005,Book steering committee slot to approve added budget,PM,2026-06-20,open
-AI006,Prepare support-agent training schedule for review,Support Lead,2026-06-23,blocked
+id,action,owner,source_meeting,raised_on,due,status,notes,log_ref
+<AI001>,<verb-first action that makes sense to someone who was not in the room>,<one named person - not a team>,<meeting name YYYY-MM-DD>,<YYYY-MM-DD captured>,<YYYY-MM-DD do by>,<Open / In progress / Blocked / Closed>,<what blocks it and its id - or how it closed: done or cancelled and why>,<issue-log id once merged - e.g. ACT007 - blank until then - local if the project keeps no issue log>

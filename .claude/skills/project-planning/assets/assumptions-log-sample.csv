@@ -1,0 +1,10 @@
+id,type,statement,owner,validated_by,status
+A1,assumption,The existing identity provider supports customer logins without a license upgrade,Ben Adeyemi,W6 (vendor sandbox),open
+A2,assumption,The order system API returns current order status on request,Carla Diaz,M1,validated
+A3,assumption,Support Operations releases 20 agents for UAT,Priya Nair,M3,open
+A4,assumption,The 150 articles to migrate are accurate and current,Priya Nair,M2,open
+A5,assumption,200 pilot customers can be recruited before M4,Ava Chen,M3,open
+CON-1,constraint,"Budget: BAC $500,000 including $40,000 contingency; $25,000 management reserve held by the sponsor above the baseline",Dana Okoro,M1,validated
+CON-2,constraint,"Schedule: 6 months; MVP live to the pilot cohort of 200 at M4, general availability at M6",Dana Okoro,M1,validated
+CON-3,constraint,Data-residency policy: customer personal data stored and processed only in the approved region,Hana Sato,M1,validated
+CON-4,constraint,Accessibility policy: customer-facing services conform to WCAG 2.1 AA,Hana Sato,M1,validated

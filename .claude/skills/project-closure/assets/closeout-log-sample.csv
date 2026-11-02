@@ -1,0 +1,23 @@
+id,item_type,source_ref,description,current_owner,disposition,receiving_owner,receiver_agreed,due,status,evidence
+C01,deliverable-condition,Final acceptance condition (D11),Priya Nair to accept D11 Operational handover at hypercare exit,Sam Lee,closed,,,2026-10-30,done,Hypercare exit record signed by Priya Nair on 2026-10-30 (release-and-cutover); final acceptance by Dana Okoro on 2026-10-14
+C02,defect,Hypercare defect list,2 open severity-3 defects in the order-status journey,Ben Adeyemi,transferred,Ava Chen (product backlog),2026-10-30,2026-10-30,done,Hypercare exit criterion E6 met; backlog items prioritised for the first phase-2 sprint
+C03,defect,Hypercare defect list,2 open severity-4 (cosmetic) defects,Frank Müller,transferred,Priya Nair (Support Operations backlog),2026-10-30,2026-10-30,done,Hypercare exit criterion E6 met
+C04,issue,I001,Identity-provider sandbox outage blocking integration testing,Carla Diaz,closed,,,2026-07-10,done,Sandbox restored; SSO working in test; IdentityCo recovery plan delivered
+C05,risk,R001,Identity-provider integration slips,Sam Lee,closed,,,2026-08-07,done,SSO in production since the M4 pilot; risk can no longer occur
+C06,risk,R002,Undocumented requirements expand scope,Dana Okoro,closed,,,2026-11-20,done,Scope baseline closed at final acceptance; new needs go to the phase-2 backlog
+C07,risk,R003,Lead engineer leaves,Sam Lee,closed,,,2026-11-06,done,Ben Adeyemi released on 2026-11-06 after the operations backlog handover
+C08,risk,R004,Cloud hosting costs exceed the budget,Finance,transferred,Finance (operating budget holder),2026-11-13,2026-11-13,done,Hosting is now an operating cost; risk moved to the operations risk log
+C09,risk,R005,Minor UI rework after usability testing,Elena Rossi,closed,,,2026-06-26,done,"Rework done inside the sprint buffer; $4,000 drawn from contingency"
+C10,risk,R006 (opportunity),Knowledge base deflects tickets earlier than planned,Priya Nair,transferred,Priya Nair (benefit B001 tracking),2026-11-13,2026-11-13,done,Weekly deflection rate tracked as the leading measure of B001
+C11,change-request,CR001,Add live-chat widget (deferred to phase 2),Sam Lee,transferred,Ava Chen (phase-2 backlog); funding decision Dana Okoro,2026-11-13,2026-11-13,done,Change log updated with the new owner
+C12,change-request,CR002,Extend SSO to partner logins (still under assessment),Sam Lee,transferred,Ava Chen (phase-2 backlog); funding decision Dana Okoro,2026-11-13,2026-11-13,done,Needs a priced IdentityCo amendment before any decision
+C13,change-request,CR004,"Add Spanish-language knowledge base (raised, not assessed)",Sam Lee,transferred,Ava Chen (phase-2 backlog); funding decision Dana Okoro,2026-11-13,2026-11-13,done,Change log updated with the new owner
+C14,change-request,CR006,Reduce pilot cohort from 200 to 50 users,Sam Lee,cancelled,,,2026-07-28,done,Withdrawn: the pilot ran with the full cohort of 200
+C15,requirement,REQ-011 (Could),Requirement not built in this project,Ava Chen,transferred,Ava Chen (product backlog),2026-10-14,2026-10-14,done,Traceability row set to deferred at final acceptance
+C16,contract,V01 IdentityCo services,"Firm fixed price $22,000 for sandbox, configuration, integration and go-live support",Sam Lee,closed,,,2026-11-13,done,"Closed through procurement-management: all milestones accepted; $880 delay credit applied; $2,200 retention released after the warranty ended on 2026-10-30; sandbox access revoked; vendor review written"
+C17,contract,V01 IdentityCo subscription,"Customer sign-in subscription at $1,200 a month",Sam Lee,transferred,Priya Nair (operating contract),2026-10-30,2026-10-30,done,Support moved from hypercare terms to the standard contract (hypercare exit criterion E7)
+C18,contract,V02 Cloud hosting,Portal hosting under the enterprise agreement,Finance,transferred,Finance (operating budget holder),2026-11-13,2026-11-13,done,Continues as an operating cost after handover
+C19,contract,V04 Accessibility audit firm,"WCAG 2.2 AA audit and one retest (CR003), $4,000",Frank Müller,closed,,,2026-09-18,done,Audit and retest accepted; invoice paid in full
+C20,access,"Production, identity-provider console and repositories",Project team admin access,Marcus Webb,closed,,,2026-11-06,done,Access review signed by Marcus Webb; squad on-call rota stood down on 2026-10-30
+C21,finance,Helios cost codes,Close the project cost codes to new charges,Sam Lee,closed,,,2026-11-20,done,Finance confirmation after the last invoice was paid on 2026-11-13
+C22,document,Project records,"Charter, baselines, logs, acceptance log, closeout log and closure report",Sam Lee,transferred,PMO Lead (PMO repository),2026-11-20,2026-11-20,done,Archived under Helios/closed; contract records kept 7 years

@@ -1,0 +1,13 @@
+criterion,weight,vendor_a,vendor_b,vendor_c,scoring_basis
+Vendor name,,<vendor A legal name>,<vendor B legal name>,<vendor C legal name>,<one column per bidder; add or delete vendor columns to match the bidders>
+G1 <pass/fail must-have: legal or regulatory>,gate,<pass | fail>,<pass | fail>,<pass | fail>,<evidence required to pass and who checks it>
+G2 <pass/fail must-have: security or data protection>,gate,<pass | fail>,<pass | fail>,<pass | fail>,<evidence required to pass and who checks it>
+G3 <pass/fail must-have: technical or contractual>,gate,<pass | fail>,<pass | fail>,<pass | fail>,<evidence required to pass and who checks it>
+<criterion 1 e.g. functional fit>,<weight; all criterion weights sum to 100>,<score 0-5; blank if the vendor failed a gate>,<score 0-5>,<score 0-5>,<what a 3 and a 5 look like for this criterion>
+<criterion 2 e.g. integration effort>,<weight>,<score 0-5>,<score 0-5>,<score 0-5>,<what a 3 and a 5 look like>
+<criterion 3 e.g. security and compliance beyond the gates>,<weight>,<score 0-5>,<score 0-5>,<score 0-5>,<what a 3 and a 5 look like>
+<criterion 4 e.g. delivery support and service levels>,<weight>,<score 0-5>,<score 0-5>,<score 0-5>,<what a 3 and a 5 look like>
+Whole-life cost (project + <n> years' run),<weight>,<5 x lowest compliant whole-life cost / this vendor's>,<price score>,<price score>,<each vendor's whole-life cost and what it includes>
+<criterion 6 e.g. vendor viability and references>,<weight>,<score 0-5>,<score 0-5>,<score 0-5>,<what a 3 and a 5 look like>
+Weighted total (out of 100),100,<sum of weight x score / 5>,<weighted total>,<weighted total>,<a vendor that failed a gate shows excluded: failed Gn>
+Rank,,<rank>,<rank>,<rank>,<margin between first and second; the smallest weight change that flips them; the decision and the delegated authority who approved it>

@@ -1,84 +1,169 @@
 ---
 name: project-charter
 description: >-
-  Creates a project charter that formally authorizes a project, names the
-  sponsor and project manager, and captures objectives, scope boundaries,
-  high-level milestones, budget, assumptions, top risks, and success criteria.
-  Use when the user wants to start, authorize, or kick off a project, write or
-  review a charter or project brief, define a project's purpose, scope,
-  objectives, or sponsor, or needs a one-page mandate before planning begins.
-  Triggers: "project charter", "project brief", "authorize a project", "project
-  mandate", "kickoff document", "start a new project", "project one-pager".
-  Works for waterfall, agile, and hybrid projects.
+  Produces the project charter, the short document that formally authorizes a
+  project: sponsor, project manager and PM authority, business need, SMART
+  objectives with success criteria, high-level scope boundaries, milestones,
+  budget range, assumptions, constraints, top risks, key stakeholders, approval
+  requirements and exit or cancellation criteria; then verifies the sponsor's
+  sign-off (unsigned, it is a draft). Use
+  when the user wants to write, review or get sign-off on a charter or project
+  brief, put a project's purpose, sponsor and boundaries on one page, or set the
+  conditions under which the project would be stopped. Triggers: "project
+  charter", "write a charter", "review my charter", "project brief", "project
+  mandate", "project one-pager", "authorize a project", "charter sign-off",
+  "cancellation criteria", "PM authority". For the whole initiation phase
+  around it, use project-initiation; for the detailed scope statement, use
+  scope-and-requirements. Works for waterfall, agile, and hybrid projects.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   category: artifact
   phase: initiation
-  related: [project-initiation, business-case, stakeholder-management, project-planning]
+  related: [project-initiation, project-planning, stakeholder-management, business-case, scope-and-requirements]
 license: MIT
 ---
 
 # Project Charter
 
 ## Overview
-A project charter is the short, authoritative document that authorizes a project to
-exist, appoints the project manager, and aligns the sponsor and stakeholders on why
-the project exists and what "done" means. It is the reference point every later
-decision traces back to.
+A project charter is the short, authoritative document that brings a project into existence:
+the sponsor commits funding and appoints the project manager, and both agree on why the
+project exists, what success means, where its boundaries lie, what the PM may decide alone, who
+approves what, and under which conditions it stops. Every later decision traces back to it.
+This skill produces that document and verifies its approval; the initiation phase that
+sequences the business case, charter, stakeholder analysis and kickoff is `project-initiation`.
+A charter is authorized only when the sponsor signs a specific version: until then it is a
+draft. The examples use the sample Helios project (a fictional customer self-service portal used
+throughout this catalog): sponsor Dana Okoro, PM Sam Lee, objective OBJ-1 (cut password-reset and
+order-status tickets by 50% within 6 months of launch), a $450k–$550k budget range, milestones
+M1/M4/M6, and v1.0 approved on 2026-04-02 (`assets/charter-sample.md`).
 
 ## When to use this skill
-- The user is starting, authorizing, or kicking off a new project or phase.
-- The user asks for a "charter", "project brief", "mandate", or "one-pager".
-- A project is already underway but has no agreed statement of purpose and scope.
+- The user needs to write a charter, project brief or one-page mandate for a project or phase.
+- The user has a draft charter and wants it reviewed, tightened or made ready for sign-off.
+- The user must confirm whether a project is actually authorized (is the charter signed?).
+- The user needs approval requirements, the PM's authority or stop/cancellation criteria
+  written down for a sponsor.
+- A project is already under way with no agreed statement of purpose and boundaries.
+- Do NOT use this to run the whole initiation phase (business case, charter, stakeholders,
+  kickoff in order) — use `project-initiation` instead.
 - Do NOT use this to justify the investment financially — use `business-case`.
-- Do NOT use this to build the detailed plan — use `project-planning`.
+- Do NOT use this to write the detailed scope statement or requirements — use
+  `scope-and-requirements`.
+- Do NOT use this to build the plan or baselines — use `project-planning`; for a *team*
+  charter (working agreement), use `resource-management`.
 
 ## Methodology fit
-- **Waterfall:** full charter, formally signed off before planning starts.
-- **Agile:** lightweight charter / project brief — objectives and guardrails, not fixed scope.
-- **Hybrid:** charter fixes outcomes and constraints; the delivery approach stays flexible.
+- **Waterfall:** a full charter, signed before planning starts; the signature is the gate into
+  planning, the in/out-of-scope lists are the starting point for the scope baseline, and any
+  change to a boundary after approval is re-signed as a new version.
+- **Agile:** a one-page brief: sponsor and product owner (with the product owner's decision
+  rights), outcome objectives, guardrails instead of fixed scope (team cost per sprint, latest
+  date, compliance limits, exclusions), the first release goal and outcome-based stop rules; still
+  signed by the sponsor.
+- **Hybrid (Helios):** the charter fixes OBJ-1, the budget range, M1/M4/M6 and the fixed
+  elements (SSO through the existing identity provider, data residency, accessibility); portal and
+  knowledge-base features flex in sprints that the product owner, Ava Chen, orders inside those
+  boundaries.
 
 ## Inputs you need
-Sponsor name, the business need or problem, the target outcome, a rough budget and
-timeline, known constraints and assumptions, and the key stakeholders. If the business
-need is unclear or unjustified, pause and run `business-case` first.
+The sponsor (one executive with funding authority) and the PM; the approved business case or
+its key figures (problem, recommended option, funding range, benefits and benefit owner,
+switching values), or a recorded waiver; the target outcome with a baseline measure; a rough
+timeline and fixed dates; known constraints (budget ceiling, regulation, technology) and
+assumptions; the key stakeholders and who approves what; and the organization's governance
+(who may authorize projects, steering committee, the PM's usual limits). With no sponsor, stop:
+an unsponsored charter authorizes nothing — return to `project-initiation`. With no business
+case and no waiver, run `business-case` first.
 
 ## Workflow
-1. Confirm the **sponsor** and the **project manager**. A charter without a named
-   sponsor is not authorized — flag this explicitly. *Done: both are named.*
-2. State the **business need / problem** in 1-2 sentences, pulling from the business
-   case if one exists. *Done: a non-technical reader understands why this project exists.*
-3. Define **objectives** as SMART outcomes plus **success criteria** (how success is
-   measured). *Done: each objective is measurable.*
-4. Set **scope boundaries** — in-scope outcomes and an explicit out-of-scope list. The
-   out-of-scope list prevents the most expensive disputes. *Done: both lists present.*
-5. Capture **high-level milestones, budget range, key assumptions, constraints**, and
-   the **top risks** (qualitative only — full analysis belongs in `risk-management`).
-6. List **key stakeholders** and the PM's **authority level**. For a full analysis,
-   hand off to `stakeholder-management`.
-7. Fill `assets/charter-template.md`, keep it to ~1-2 pages, and route it to the
-   sponsor for sign-off. *Done: template complete with no placeholder left unfilled.*
+1. **Confirm the authority.** Name the sponsor and the PM in the header of a copy of
+   `assets/charter-template.md`, reference the business case (or its waiver) and state the
+   delivery approach. A committee is not a sponsor. *Done: one sponsor with funding authority
+   and one PM are named, and the business case is referenced or its waiver recorded.*
+2. **State the business need.** One or two plain sentences with the size of the pain, taken
+   from the business case (section 1). *Done: a non-specialist can say why the project exists
+   and what the problem costs.*
+3. **Write objectives and success criteria.** SMART outcomes with an id, metric, baseline,
+   target, date and benefit owner (section 2); see `references/charter-elements.md`. Helios:
+   OBJ-1, measured on monthly ticket volume against the 3-month pre-launch average, owned by
+   Priya Nair. *Done: every objective has all five parts and an id requirements can trace to.*
+4. **Fence the scope at outcome level.** List in-scope outcomes and explicit exclusions with a
+   reason and a destination (section 3). Keep requirements and features out: the detailed scope
+   statement is written in planning with `scope-and-requirements`. *Done: both lists exist and
+   every exclusion has a destination.*
+5. **Set milestones, budget range, assumptions and constraints.** Three to six milestones with
+   what must be true at each; a budget range with its basis, funding source and allowed
+   pre-baseline spend; assumptions with owner and validate-by; constraints with owner (sections
+   4–6). Helios: $450k–$550k including all reserves; A1–A5; CON-1–CON-4. *Done: no milestone
+   without evidence, no budget without a source, no assumption without an owner.*
+6. **Name the top risks and key stakeholders.** Three to five risks as cause → event → effect,
+   rated H/M/L with an owner; stakeholders with what each approves, accepts or provides
+   (sections 7–8). Full analysis belongs in `risk-register` and `stakeholder-management`.
+   *Done: each risk and stakeholder row is complete.*
+7. **Write the PM's authority, approval requirements and exit criteria.** PM limits in money and
+   days and who decides above them (section 9); who approves the charter, baseline, each
+   deliverable, release decisions, completion and business success; the normal exit; and the
+   cancellation triggers with threshold, check point and checker (section 10). Helios: Sam Lee up
+   to $5,000 and 2 working days; a stop decision by Dana Okoro if the cost forecast passes
+   $550,000 with no recovery plan, or fewer than 40 of the 200 pilot customers (20%) complete a
+   self-service journey within 4 weeks of M4. *Done: every approval names a person and every
+   stop trigger has a threshold, a check point and a checker.*
+8. **Review the draft.** Walk the rubric in `references/charter-review.md` (section 1), check
+   consistency with the business case, and cut to one or two pages. *Done: every rubric line is
+   PASS or named as an open point, and no `<placeholder>` is left.*
+9. **Get and verify sign-off.** Walk the sponsor through objectives, boundaries, budget and
+   section 10, then obtain a decision on the exact version. Verify it with the sign-off checklist
+   in `references/charter-review.md` (section 2). Until it passes, the charter is a draft and
+   authorizes no hiring, contracts or spend. *Done: the sponsor's name, decision, version and
+   date are recorded in section 11, the evidence is filed, and Status reads Approved.*
+10. **Hand off and protect it.** Distribute the approved charter; pass the objectives and
+    boundaries to `scope-and-requirements`, the assumptions and constraints to
+    `project-planning`, and the stakeholder list to `stakeholder-management`. Re-issue a new
+    signed version whenever a boundary in `references/charter-review.md` (section 3) changes.
+    *Done: the planning owners have the approved version, and the version history shows every
+    change with its approver.*
 
 ## Quality checklist
-- [ ] Named sponsor AND named project manager.
-- [ ] Business need stated in plain language.
-- [ ] Objectives are measurable with explicit success criteria.
-- [ ] Both in-scope and out-of-scope lists are present.
-- [ ] Milestones, budget range, assumptions, constraints, and top risks captured.
-- [ ] Fits on ~1-2 pages with no unresolved placeholders.
+- [ ] Exactly one named sponsor with funding authority and one named PM.
+- [ ] The business case is referenced with its version, or a waiver names who waived it and why.
+- [ ] The business need states the problem and its size in plain language.
+- [ ] Every objective has an id, metric, baseline, target, date and benefit owner.
+- [ ] In-scope items are outcomes, not requirements; every exclusion has a reason and a destination.
+- [ ] Each milestone states what must be true; the budget is a range with basis and funding source.
+- [ ] Every assumption has an owner and a validate-by date; every constraint has an owner.
+- [ ] Three to five top risks, each cause → event → effect with an owner.
+- [ ] The PM's authority is written in money and days, with who decides above it.
+- [ ] Approval requirements name a person for the charter, baseline, deliverables, releases,
+      completion and business success.
+- [ ] Exit criteria and at least one measurable cancellation trigger with a checker are present.
+- [ ] Sponsor sign-off recorded (name, decision, version, date), evidence filed, Status = Approved.
+- [ ] One to two pages, no `<placeholder>` left, and consistent with the business case.
 
 ## Anti-patterns
-- Turning the charter into a detailed plan or schedule — that is `project-planning`.
-- Omitting out-of-scope items, the most common source of later scope fights.
-- Vague objectives ("improve efficiency") with no measure of success.
-- Writing a charter with no sponsor able to authorize and fund the work.
+- Treating an unsigned or out-of-date charter as authorization to spend, hire or contract.
+- A committee or a sponsor with no budget authority: nobody can decide when it matters.
+- Turning the charter into a detailed plan, schedule or requirements list — that is
+  `project-planning` and `scope-and-requirements`.
+- Omitting the out-of-scope list, the most common source of later scope fights.
+- Vague objectives ("improve efficiency") with no baseline, target or owner.
+- No stop rule, so the project can end only by finishing, however poor the forecast.
+- A single precise budget figure before planning, or a range with no funding source.
+- Editing an approved charter without re-approval.
 
 ## Resources
-- `references/charter-elements.md` — definition and an example of each charter element.
-- `assets/charter-template.md` — fill-in-the-blanks charter template.
+- `references/charter-elements.md` — definition, quality test and Helios example for each
+  charter element, the charter versus neighbouring documents, and the lightweight agile variant.
+- `references/charter-review.md` — 15-line review rubric, the sign-off verification checklist,
+  when a change needs re-approval, and common review defects.
+- `assets/charter-template.md` — fill-in charter (`<placeholders>`), sections 1–11 including PM
+  authority, approval requirements, exit and cancellation criteria, sign-off and version history.
+- `assets/charter-sample.md` — sample Helios charter v1.0 as approved by Dana Okoro.
+- Unfamiliar term? See the PM glossary in the `senior-pm` skill.
 
 ## Related skills
-- `business-case` — establishes the financial justification this charter assumes.
-- `project-initiation` — the broader phase this charter sits inside.
-- `stakeholder-management` — deeper analysis of the stakeholders listed here.
-- `project-planning` — the next step once the charter is authorized.
+- `project-initiation` — the phase that sequences this charter after the business case and before the stakeholder analysis and kickoff; it receives the signed charter as its authorization gate.
+- `project-planning` — receives the approved charter and carries its milestones, budget range, assumptions and constraints into the plan and baselines.
+- `stakeholder-management` — turns the charter's key stakeholders and approvers into the full register and engagement strategy.
+- `business-case` — supplies the need, recommended option, funding range and switching values the charter cites and its stop triggers reuse.
+- `scope-and-requirements` — expands the charter's objectives and in/out-of-scope lists into the detailed scope statement and traceability matrix.

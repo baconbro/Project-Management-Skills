@@ -76,31 +76,36 @@ which `cost-management` will measure performance (control accounts).
    1.3 Portal build, 1.4 Test & launch, 1.5 Adoption & handover. *Done: one principle per
    level, and nothing the charter lists as out of scope.*
 2. **Decompose each deliverable into work packages** named as nouns ("Identity / SSO
-   integration", not "integrate SSO"), mutually exclusive, and sized by the 8/80 rule; stop
-   when a package has one owner and a verifiable "done". A level-of-effort element such as
-   project management may stay undecomposed. *Done: every leaf is a work package.*
-3. **Weight the children of every parent to 100** (percent of the parent's effort, cost, or
-   value). Helios level 1: 10 / 15 / 45 / 20 / 10; under Portal build: SSO 35, UI 30,
-   knowledge base 20, reporting 15. Siblings are weighted all or none. *Done: every parent's
-   children sum to 100.*
-4. **Record the WBS dictionary once** in a copy of `assets/wbs-template.csv`: `id, name,
-   weight` plus `owner`, `description`, `acceptance criterion` (from `quality-management`)
-   and `control account` — the element where cost and schedule performance will be measured
-   (the work package itself, or a parent such as Helios 1.2 Discovery & design).
-   `assets/wbs-sample.csv` shows the whole Helios WBS filled in. The CSV is the single source;
-   never retype it into another document. *Done: every work package has an owner, a
-   description, an acceptance criterion and a control account.*
+   integration", not "integrate SSO"), mutually exclusive, and sized by the 8/80 rule in
+   `references/decomposition-rules.md`; stop when a package has one owner and a verifiable
+   "done". A level-of-effort element such as project management may stay undecomposed.
+   *Done: every leaf is a work package.*
+3. **Weight the children of every parent to 100** in the `weight` column of your copy of
+   `assets/wbs-template.csv` (percent of the parent's effort, cost, or value). Helios level 1:
+   10 / 15 / 45 / 20 / 10; under Portal build: SSO 35, UI 30, knowledge base 20, reporting 15.
+   Siblings are weighted all or none, and a 0% sibling is out of scope, not a work package.
+   *Done: every parent's children sum to 100.*
+4. **Record the WBS dictionary once** in the same CSV: `id, name, weight` plus `owner`,
+   `description`, `acceptance criterion` (from `quality-management`) and `control account` —
+   the element where cost and schedule performance will be measured (the work package itself,
+   or a parent such as Helios 1.2 Discovery & design; a work package left blank inherits the
+   nearest ancestor that is a control account). `assets/wbs-sample.csv` shows the whole Helios
+   WBS filled in. The CSV is the single source; never retype it into another document.
+   *Done: every work package has an owner, a description, an acceptance criterion and a
+   control account.*
 5. **Validate** the hierarchy, the weights and the dictionary columns:
    ```bash
    python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py .claude/skills/work-breakdown-structure/assets/wbs-sample.csv --require owner,acceptance
    ```
    The report lists ERRORs (duplicate ids, orphans, children not summing to 100 ± 0.1,
-   partly weighted siblings, blank required columns) and warnings (single child,
-   leading-zero ids such as 1.01 vs 1.1, uneven depth, more than `--max-children`). Add
-   `--suggest` for largest-remainder normalised weights, stub rows for missing parents and
-   new numbers for duplicates, and `--fix OUT.csv` to write them to a new file (review it,
-   then re-validate). Fix every ERROR; justify each warning. *Done: PASS, with `--strict` in
-   CI so warnings fail too.*
+   partly weighted siblings, blank required columns) and warnings (single child, 0% weights,
+   leading-zero ids such as 1.01 vs 1.1, uneven depth, leftover `<placeholders>`, nested or
+   missing control accounts, `--max-children` and `--max-depth` limits). Add `--suggest` for
+   largest-remainder normalised weights, named stub rows for missing parents and new numbers
+   for duplicates, and `--fix OUT.csv` to write them to a new file: structural fixes first,
+   then weights, then a re-validation of the new file. Weights that need a scope decision are
+   left to you. Fix every ERROR; justify each warning. *Done: PASS, with `--strict` in CI so
+   warnings fail too.*
 6. **Roll up and allocate** to see what each element really is and to seed the cost baseline:
    ```bash
    python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py .claude/skills/work-breakdown-structure/assets/wbs-sample.csv --rollup --budget 500000
@@ -114,7 +119,8 @@ which `cost-management` will measure performance (control accounts).
    agreed with `cost-management`.*
 7. **Publish and hand off.** `--format md` renders the dictionary table for
    `assets/wbs-template.md` (paste it, do not retype); `--export-estimation PATH` writes the
-   work packages in the worksheet format `estimation` reads; the ids go to
+   work packages in the worksheet format `estimation` reads, with each owner pre-filled as
+   the estimator and O/M/P left for the estimators; the ids go to
    `project-schedule`, the owners to `raci-matrix`, the acceptance criteria back to
    `quality-management`. Re-run the validator whenever an approved change request alters
    scope. *Done: the WBS is baselined and every downstream artefact keys on its ids.*
@@ -123,7 +129,8 @@ which `cost-management` will measure performance (control accounts).
 - [ ] One organizing principle per level; deliverables and work packages are named as nouns.
 - [ ] A project-management element is included.
 - [ ] 100% of the scope and nothing else: every parent's children carry weights summing to
-      100 (siblings weighted all or none) and no out-of-scope item from the charter appears.
+      100 (siblings weighted all or none, none at 0%) and no out-of-scope item from the
+      charter appears.
 - [ ] Siblings are mutually exclusive; no parent has a single child.
 - [ ] Every work package has one owner, a description, a verifiable acceptance criterion,
       and a control account.
@@ -157,11 +164,13 @@ which `cost-management` will measure performance (control accounts).
   dictionary table (same headers the validator accepts; generated with `--format md`),
   control accounts, validation result, and sign-off.
 - `scripts/wbs_validate.py` — validates ids, hierarchy, the 100% rule (`--tolerance`),
-  partly weighted siblings and `--require col,col`; warns on single children, leading-zero
-  ids, uneven depth, `--max-children N` and `--max-leaf-share PCT`; `--suggest` and
-  `--fix OUT.csv` for normalised weights, stub parents and renumbered duplicates; `--rollup`
-  shares and control accounts; `--budget AMOUNT` allocation; `--export-estimation PATH`;
-  `--strict`; `--json`; `--delimiter`; `--format table|json|csv|md`. Run
+  partly weighted siblings and `--require col,col`; warns on single children, 0% weights,
+  leading-zero ids, placeholders, control accounts, uneven depth, `--max-children N`,
+  `--max-depth N` and `--max-leaf-share PCT`; `--suggest` and `--fix OUT.csv` for normalised
+  weights, named stub parents and renumbered duplicates; `--rollup` shares and control
+  accounts; `--budget AMOUNT` allocation; `--export-estimation PATH`; `--strict`; `--json`;
+  `--delimiter`; `--format table|json|csv|md`. Accepts the template headers (`WBS id`,
+  `Weight (%)`) as aliases. Run
   `python .claude/skills/work-breakdown-structure/scripts/wbs_validate.py --help`.
 - Unfamiliar term? See the PM glossary in the `senior-pm` skill.
 
