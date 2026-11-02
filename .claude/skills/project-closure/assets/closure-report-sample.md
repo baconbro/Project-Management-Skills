@@ -111,10 +111,10 @@ review; full log: the lessons log in `lessons-learned` (LL001-LL007).
 | Lesson id | Lesson (what to repeat or change) | Owner | Routed to |
 |---|---|---|---|
 | LL001 | Give vendor onboarding a named owner from the day of award; the late sandbox request delayed SSO | PMO Lead | PMO standard plan template: vendor onboarding workstream |
-| LL002 | Report amber the moment a milestone is threatened, not two weeks later | Project Manager | PMO status-report standard |
-| LL007 | Finish support-agent training one week before launch | Support Lead | PMO standard plan template |
-| LL006 | Repeat: an explicit out-of-scope list prevented late scope disputes | Project Manager | Charter template (required element) |
-| LL003 | Repeat: the reusable API design cut build time | Tech Lead | Engineering standards library |
+| LL002 | Report amber the moment a milestone is threatened, not two weeks later | Sam Lee | PMO status-report standard |
+| LL007 | Finish support-agent training one week before launch | Priya Nair | PMO standard plan template |
+| LL006 | Repeat: an explicit out-of-scope list prevented late scope disputes | Sam Lee | Charter template (required element) |
+| LL003 | Repeat: the reusable API design cut build time | Ben Adeyemi | Engineering standards library |
 
 ## 9. Team and records
 | Person | Role | Released on | Feedback to line manager |
