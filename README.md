@@ -16,12 +16,51 @@ works in Claude Code, Claude Desktop and Web, Cowork, Codex and other AI agents.
 - **One worked example**, "Helios", that runs through every skill.
 - **Tooling**: a linter, a script test harness and CI that keep the catalog consistent.
 
+## Install
+
+The catalog is packaged as one plugin, `project-management-skills`, so it installs the same way
+everywhere you use Claude. Pick your surface.
+
+**Claude.ai, Claude Desktop and Cowork**
+
+- From Anthropic's directory, once the listing is live: open **Customize → Plugins →
+  Discover**, search for *Project Management Skills* and add it. A plugin added there also
+  reaches your Claude Code sessions as a synced plugin.
+- From a file: download `project-management-skills-plugin.zip` from the latest
+  [release](https://github.com/baconbro/Project-Management-Skills/releases) and use
+  **Customize → Plugins → Add → Upload plugin**. To install single skills instead, the same
+  release has one ZIP per skill for **Customize → Skills → + → Create skill → Upload a skill**.
+- Team and Enterprise: an Owner can publish the plugin for the organisation under
+  **Organization settings → Plugins & skills** and set it to *Installed by default*.
+
+**Claude Code**
+
+```text
+/plugin marketplace add baconbro/Project-Management-Skills
+/plugin install project-management-skills@baconbro-pm-skills
+```
+
+Or in one step on Claude Code 2.1.275 or later:
+`/plugin install project-management-skills --marketplace baconbro/Project-Management-Skills`.
+Update with `/plugin update project-management-skills@baconbro-pm-skills`. Plugin skills carry
+the plugin's name, so the front door is `/project-management-skills:senior-pm`; plain-language
+triggering works exactly as before.
+
+**Copy the folder, no plugin**
+
+Copy `.claude/skills/` into your repository, or into `~/.claude/skills/` for every project.
+Claude Code discovers skills in `.claude/skills/` in the directory where you start it and in
+every parent directory up to the repository root, and invokes them as `/senior-pm`. Do not
+combine this with the plugin in the same repository, or each skill loads twice.
+
+**What the plugin contains and runs.** Everything is text: `SKILL.md` instructions, Markdown
+references, CSV and Markdown templates, and standard-library Python scripts that run locally on
+the files you give them. There are no hooks, MCP servers, executables or network calls, and
+nothing is sent anywhere.
+
 ## Quick start
 
-1. Copy the `.claude/skills/` folder into your project. To make the skills available in every
-   project, copy it to `~/.claude/skills/` instead. Claude Code discovers skills in
-   `.claude/skills/` in the directory where you start it and in every parent directory up to
-   the repository root.
+1. Install the skills (above).
 2. Describe what you need in plain language and the right skill triggers on its own. You can
    also start the front door explicitly with `/senior-pm`.
 3. The helper scripts need only **Python 3**, with nothing to install. Every script supports
@@ -214,9 +253,12 @@ For a recommendation based on your project, ask **`senior-pm`**. Its
 ├── references/*.md     # deeper guides, loaded only when needed
 ├── assets/*            # fill-in templates and filled Helios samples (.md, .csv)
 └── scripts/*.py        # dependency-free helpers, run on demand
+.claude-plugin/plugin.json       # the plugin manifest: name, version, where the skills are
+.claude-plugin/marketplace.json  # lets Claude Code install the plugin from this repository
 tools/lint_skills.py    # checks the catalog's conventions
 tools/test_scripts.py   # tests every helper script against its sample and the I/O contract
-.github/workflows/validate.yml   # runs both on pull requests and on every push to main
+.github/workflows/validate.yml   # lint, tests and plugin validation on PRs and pushes to main
+.github/workflows/release.yml    # on a version tag, builds the plugin and per-skill ZIPs
 ```
 
 ## Quality checks and CI

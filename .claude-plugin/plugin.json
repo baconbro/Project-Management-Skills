@@ -1,0 +1,27 @@
+{
+  "name": "project-management-skills",
+  "displayName": "Project Management Skills",
+  "version": "1.1.0",
+  "description": "27 skills that work like a senior project manager: initiate, plan, deliver and close a project (waterfall, agile or hybrid), with 11 standard-library Python helpers for NPV, PERT, critical path, earned value, risk scoring and more.",
+  "author": {
+    "name": "baconbro",
+    "url": "https://github.com/baconbro"
+  },
+  "homepage": "https://github.com/baconbro/Project-Management-Skills",
+  "repository": "https://github.com/baconbro/Project-Management-Skills",
+  "license": "MIT",
+  "keywords": [
+    "project-management",
+    "pmo",
+    "project-planning",
+    "risk-management",
+    "earned-value",
+    "critical-path",
+    "agile",
+    "status-report"
+  ],
+  "icon": "./.claude-plugin/icon.png",
+  "documentationUrl": "https://github.com/baconbro/Project-Management-Skills#readme",
+  "supportUrl": "https://github.com/baconbro/Project-Management-Skills/issues",
+  "skills": ["./.claude/skills/"]
+}
