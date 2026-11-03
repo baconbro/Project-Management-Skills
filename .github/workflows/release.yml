@@ -1,0 +1,59 @@
+name: Release ZIPs
+
+# Builds the upload files for Claude.ai, Claude Desktop and Cowork and attaches them to
+# the GitHub release for the pushed tag:
+#   dist/project-management-skills-plugin.zip   whole plugin  -> Customize > Plugins > Add > Upload plugin
+#   dist/skills/<skill>.zip                     one skill     -> Customize > Skills > + > Create skill > Upload a skill
+# Tag with `git tag v1.2.0 && git push --tags`, or `claude plugin tag --push` (tag project-management-skills--v1.2.0).
+
+on:
+  push:
+    tags:
+      - "v*"
+      - "*--v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Install optional strict YAML parser
+        run: python -m pip install --quiet pyyaml
+      - name: Lint skill conventions
+        run: python tools/lint_skills.py
+      - name: Test helper scripts
+        run: python tools/test_scripts.py
+      - name: Build the ZIPs
+        run: |
+          set -euo pipefail
+          rm -rf dist && mkdir -p dist/skills
+          # One ZIP per skill. The ZIP holds the skill folder itself (risk-register/SKILL.md ...),
+          # which is what Claude.ai's "Upload a skill" expects.
+          (cd .claude/skills && for d in */; do
+            n="${d%/}"
+            zip -qr "../../dist/skills/$n.zip" "$n" -x '*/__pycache__/*' '*.pyc'
+          done)
+          # The whole plugin folder, for "Upload plugin" and `claude --plugin-url`.
+          zip -qr dist/project-management-skills-plugin.zip .claude-plugin .claude LICENSE README.md \
+            -x '*/__pycache__/*' '*.pyc'
+          ls -l dist dist/skills
+      - name: Keep the ZIPs as a workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zips
+          path: dist
+      - name: Publish the GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            dist/project-management-skills-plugin.zip dist/skills/*.zip \
+            --title "Project Management Skills $GITHUB_REF_NAME" --generate-notes

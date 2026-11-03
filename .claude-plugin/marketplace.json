@@ -1,0 +1,17 @@
+{
+  "name": "baconbro-pm-skills",
+  "owner": {
+    "name": "baconbro"
+  },
+  "metadata": {
+    "description": "Project-management skills for Claude: a senior-PM catalog that initiates, plans, delivers and closes projects.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "project-management-skills",
+      "source": "./",
+      "description": "27 project-management skills with helper scripts: initiate, plan, deliver and close a project as waterfall, agile or hybrid."
+    }
+  ]
+}

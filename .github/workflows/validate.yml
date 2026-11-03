@@ -22,3 +22,10 @@ jobs:
         run: python tools/lint_skills.py
       - name: Test helper scripts
         run: python tools/test_scripts.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate the plugin and marketplace manifests
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude plugin validate .
